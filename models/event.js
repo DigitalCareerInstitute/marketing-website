@@ -1,4 +1,3 @@
-
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
@@ -7,6 +6,7 @@ var EventSchema   = new Schema({
     name: String,
     text: String,
     start: Date,
+    location: { type: Schema.ObjectId, ref: "Location" },
     url: String
 });
 

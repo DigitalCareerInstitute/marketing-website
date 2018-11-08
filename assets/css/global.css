@@ -6,7 +6,7 @@ html {
   width: 100%;
   z-index: +1;
 }
-.btn {
+body:not(.admin).btn {
   border-radius: 2px;
   font-size: 1rem;
   font-weight: 500;

@@ -5,29 +5,36 @@ const Contact = require("../models/contact");
 const Category = require("../models/category");
 const Location = require("../models/location");
 const Course = require("../models/course");
+const Event = require("../models/event");
 
 const express = require("express");
 const router = express.Router();
 
 const nodemailer = require("nodemailer");
 
-//LANDING PAGE ROUTE
 router.get("/", async (req, res) => {
   try {
     const stories = await Story.find({})
       .populate("categories")
       .sort("order")
       .exec({});
-    //const categories = await Category.find({story.categories}).exec({});
     const locations = await Location.find({})
 
     let courses = await Course.find({})
-    // console.log(courses)
+    let events = []
+    for await (let loc of locations){
+      if(!events){
+        events[await Event.findOne({ location: loc._id }).populate("location")]
+      } else {
+        events.push(await Event.findOne({ location: loc._id }).populate("location"))
+      }
+    }
 
     res.render("index", {
-      stories: stories,
-      locations: locations,
-      courses: courses
+      events,
+      stories,
+      locations,
+      courses
     });
   } catch (err) {
     console.log(err);
@@ -36,7 +43,7 @@ router.get("/", async (req, res) => {
 
 
 router.post('/contact', async (req, res) => {
-  var contact = new Contact(); // create a new instance of the contact model
+  var contact = new Contact(); 
 
   contact.name = req.body.name;
   contact.email = req.body.email;
@@ -62,8 +69,6 @@ router.post('/contact', async (req, res) => {
       }
     });
 
-    //TODO Fix sending mails
-    // setup email data with unicode symbols
     let mailOptions = {
       from: contact.name,
       to: process.env.MAILRECEIVER,
@@ -72,7 +77,6 @@ router.post('/contact', async (req, res) => {
       html: `${contact.body}`
     };
 
-    // send mail with defined transport object
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         return console.log(error);

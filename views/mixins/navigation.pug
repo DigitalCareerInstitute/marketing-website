@@ -15,6 +15,7 @@ mixin navigation
             a.dropdown-item(href='/admin/locations') Locations
             a.dropdown-item(href='/admin/stories') Stories
             a.dropdown-item(href='/admin/pages') Pages
+            a.dropdown-item(href='/admin/events') Events
 
       li.nav-item.dropdown
         a#navbarDropdownMenuLink.nav-link.dropdown-toggle.mr-4(class= currentPath.includes('/courses') ? "active" : "" data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
@@ -25,11 +26,11 @@ mixin navigation
       li.nav-item.dropdown
         a#navbarDropdownMenuLink.nav-link.dropdown-toggle.mr-4(class=currentPath == "/events" ? "active" : "" href='/events' data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
           | Events
+
         .dropdown-menu(aria-labelledby='navbarDropdownMenuLink')
-          a.dropdown-item(href='/events') Berlin
-          a.dropdown-item(href='/events') Düsseldorf
-          a.dropdown-item(href='/events') Hamburg
-          a.dropdown-item(href='/events') Köln
+          a.dropdown-item(class= currentPath === ("/events") ? "active" : "" href='/events') All locations 
+          each location in locations
+            a.dropdown-item(class= currentPath === ("/events/" + location.name) ? "active" : "" href='/events/'+ location.name)=location.name
       li.nav-item
         a.nav-link.mr-4(class=currentPath == "/stories" ? "active" : "" href='/stories') Stories
     

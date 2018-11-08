@@ -11,6 +11,7 @@ include mixins/landingpage/footer
 include mixins/storylist
 include mixins/contactformfaded
 include mixins/pagelist
+include mixins/eventlist
 include mixins/contactform
 include mixins/courses/oneyear
 include mixins/courses/coaching
@@ -53,7 +54,7 @@ html(lang='en')
     meta(name="theme-color", content="#ffffff")
   
 
-  body(data-spy='scroll', data-target='#myScrollspy', data-offset='1')
+  body(data-spy='scroll', data-target='#myScrollspy', data-offset='1', class=(currentPath.includes('admin') ? 'admin' : ''))
     //if message
       .alert.alert-dismissible.fade.show(role='alert', class=color, style="z-index: 1")
         strong= message

@@ -4,9 +4,21 @@ var Schema       = mongoose.Schema;
 var LocationSchema   = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
-  address: String,
+  street: {
+    type: String
+  },
+  zip: {
+    type: Number
+  },
+  latitude: {
+    type: Number
+  },
+  longitude: {
+    type: Number
+  },
   updatedAt: {
     type: Date,
     default: Date.now 

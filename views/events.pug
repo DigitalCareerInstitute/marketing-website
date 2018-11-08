@@ -2,11 +2,4 @@ extends layout.pug
 block content
   +navigation
 
-  a.btn.btn-danger(href="/events/fetchevents")="Fetch events from Eventbride"
-  a.btn.btn-outline-danger(href="/events/deleteevents")="Delete all"
-  ul.list-group
-    each event in events
-      li.list-group-item
-        a(href=event.url target='_blank')=event.name
-        =event.start
-        =event.text
+  +eventlist

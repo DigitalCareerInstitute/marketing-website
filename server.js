@@ -11,6 +11,7 @@ const MongoStore = require('connect-mongo')(session);
 const promisify = require('es6-promisify');
 const Course = require("./models/course");
 const Page = require("./models/page");
+const Location = require("./models/location");
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -74,11 +75,14 @@ app.use(async (req, res, next) => {
   let courses = await Course.find({})
     .sort("order")
     .exec();
+  let locations = await Location.find({})
+    .exec();
   let pages = await Page.find({})
     .sort("order")
     .exec();
   res.locals.user = req.user || null;
   res.locals.currentPath = req.path;
+  res.locals.locations = locations;
   res.locals.courses = courses;
   res.locals.pages = pages;
   next();
@@ -101,6 +105,7 @@ let categoryAdminRoutes = require("./routes/admin/categories");
 let storiesAdminRoutes = require("./routes/admin/stories");
 let pagesAdminRoutes = require("./routes/admin/pages");
 let locationsAdminRoutes = require("./routes/admin/locations");
+let eventsAdminRoutes = require("./routes/admin/events");
 let contactsAdminRoutes = require("./routes/admin/contacts");
 
 app.use("/", indexRoutes);
@@ -112,6 +117,7 @@ app.use("/courses", coursesRoutes);
 app.use("/admin/stories", storiesAdminRoutes);
 app.use("/admin/pages", pagesAdminRoutes);
 app.use("/admin/locations", locationsAdminRoutes);
+app.use("/admin/events", eventsAdminRoutes);
 app.use("/admin/categories", categoryAdminRoutes);
 app.use("/admin/contacts", contactsAdminRoutes);
 

@@ -1,0 +1,11 @@
+mixin eventlist(public)
+  each location, locationname in locationEvents
+    h2.mt-3=locationname
+    ul.list-group
+      each event in location
+        li.list-group-item
+          a(href=event.url target='_blank')=event.name
+          br
+          =event.start
+          br
+          =event.text
