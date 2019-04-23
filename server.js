@@ -1,6 +1,8 @@
 const { mongopath, getAsyncRedis } = require("./helpers/helper");
 const express = require("express");
 const app = express();
+const i18n = require("i18n");
+
 const path = require("path");
 const bodyParser = require("body-parser");
 const expressValidator = require("express-validator");
@@ -42,7 +44,11 @@ try {
 } catch (err) {
   console.log(`Please set a mongo path in your .env \n\n${err}`);
 }
-
+i18n.configure({
+  locales:['en', 'de'],
+  directory: __dirname + '/locales'
+});
+app.use(i18n.init);
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "notaverysecuresecret",

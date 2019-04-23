@@ -1,4 +1,3 @@
-
 const IndexController = require("../controllers/IndexController");
 
 const express = require("express");
