@@ -8,7 +8,9 @@ const PageSchema = new Schema({
   title: String,
   content: Object,
   order: Number,
-  menulocations: [{ type: Schema.ObjectId, ref: "Menulocation" }]
+  menulocations: [{ type: Schema.ObjectId, ref: "Menulocation" }],
+  language: { type: Schema.ObjectId, ref: "Language" },
+  languageVersion: { type: Schema.ObjectId, ref: "Page"}
 });
 
 PageSchema.plugin(URLSlugs("title"));

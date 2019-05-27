@@ -5,6 +5,7 @@ const fs = require("fs");
 const jimp = require("jimp");
 const Location = require("../../models/location");
 const courseFormConfig = require("../../formsConfig/courseFormConfig")();
+const AbstractController = require("./AbstractController");
 
 const Course = require("../../models/course");
 
@@ -298,4 +299,9 @@ module.exports.updateCourse = async function(req, res) {
   req.flash("success", `Successfully updated ${course.title}`);
 
   res.redirect("/admin/courses/edit/" + req.params.slug);
+};
+
+module.exports.setL18n = async (req, res) => {
+  console.log("AHHHHH");
+  AbstractController.cloneSite(req, res, Course)
 };

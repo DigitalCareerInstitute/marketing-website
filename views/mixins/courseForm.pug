@@ -6,6 +6,7 @@ mixin courseForm
       .btn-group
         if course
           a.btn.btn-outline-primary(href="/admin/courses")="Back"
+          a.btn.btn-outline-primary(href="/admin/courses/"+course.slug+"/l18n")="Create german version"
           a.btn.btn-outline-primary(target="_blank" href="/courses/"+course.slug)="Show"
 
         button.btn.btn-primary(type='submit')=course ? "Update" :"Create a new Course" 

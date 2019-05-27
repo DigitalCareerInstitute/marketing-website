@@ -524,3 +524,15 @@ exports.contacts = [
     updatedAt: new Date()
   }
 ];
+exports.languages = [
+  {
+    title: "en",
+    createdAt: new Date(date - 86400000).toISOString(),
+    updatedAt: new Date()
+  },
+  {
+    title: "de",
+    createdAt: new Date(date - 86400000).toISOString(),
+    updatedAt: new Date()
+  },
+];

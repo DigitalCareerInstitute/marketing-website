@@ -15,6 +15,8 @@ const Course = require("./models/course");
 const Page = require("./models/page");
 const Menulocation = require("./models/menulocation");
 const Location = require("./models/location");
+const Language = require("./models/language");
+const { languages } = require("./seeddata");
 const flash = require("connect-flash");
 const cron = require("node-cron");
 const EventsController = require("./controllers/admin/AdminEventsController");
@@ -25,6 +27,20 @@ const mongoose = require("mongoose");
 // connect to redis server and get an extended client with promisified
 // methods getAsync() and setAsync()
 let redisClient = null;
+
+(async()=> {
+  const en = Language.findOne({title: 'en'})
+  const de = Language.findOne({title: 'de'})
+  const res = await Promise.all([en, de])
+  if(!res[0]){
+    console.log("no english language created. Seeding EN lang into mongoose");
+    await Language.create(languages[0])
+  }
+  if(!res[1]){
+    console.log("no german language created. Seeding DE lang into mongoose");
+    await Language.create(languages[1])
+  }
+})()
 
 if (process.env.USE_REDIS !== undefined && process.env.USE_REDIS === "true") {
   console.log("Redis enabled");
@@ -46,6 +62,7 @@ try {
 }
 i18n.configure({
   locales:['en', 'de'],
+  queryParameter: 'lang',
   directory: __dirname + '/locales'
 });
 app.use(i18n.init);
@@ -112,16 +129,21 @@ app.use(async (req, res, next) => {
   }
 
   if (navData === null) {
+    console.log("RES", res.locale);
+    const query = res.locale === 'de' ? {title: 'de'} : {title: 'en'}
+    const language = await Language.findOne(query);
+    console.log("query", language);
     let courses = await Course.find({})
       .sort({ order: 1 })
       .exec();
     let locations = await Location.find({}).exec();
 
     let footerCat = await Menulocation.findOne({ name: "footer" });
-    let footerPages = await Page.find({ menulocations: { $in: [footerCat] } });
+    let footerPages = await Page.find({ menulocations: { $in: [footerCat] }, language: language._id });
 
     let headerCat = await Menulocation.findOne({ name: "header" });
-    let headerPages = await Page.find({ menulocations: { $in: [headerCat] } });
+    let headerPages = await Page.find({ menulocations: { $in: [headerCat] }, language: language._id });
+    console.log("headerPages", headerPages);
 
     navData = {
       courses,

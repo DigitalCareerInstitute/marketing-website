@@ -7,6 +7,8 @@ mixin pageForm
       .btn-group
         if editPath
           a.btn.btn-outline-primary(href="/admin/pages")="Back"
+          a.btn.btn-outline-primary(href="/admin/pages/"+page.slug+"/l18n")="Create german version"
+
           a.btn.btn-outline-primary(target="_blank" href="/pages/"+page.slug)="Show"
         button.btn.btn-primary(type='submit')=editPath ? "Update" :"Create a new Page" 
     .mb-3

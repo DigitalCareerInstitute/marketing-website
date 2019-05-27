@@ -1,6 +1,7 @@
 require("dotenv").config({ path: __dirname + "/../.env" });
 const Page = require("../../models/page");
 const Menulocation = require("../../models/menulocation");
+const AbstractController = require("./AbstractController");
 
 module.exports.getPages = async (req, res) => {
   try {
@@ -102,4 +103,8 @@ module.exports.updatePage = async (req, res) => {
   } catch (err) {
     console.log(err);
   }
+};
+module.exports.setL18n = async (req, res) => {
+  console.log("hits route");
+  AbstractController.cloneSite(req, res, Page)
 };

@@ -37,4 +37,5 @@ router.put(
   AdminCoursesController.resizeImages,
   AdminCoursesController.updateCourse
 );
+router.get("/:slug/l18n", ensureAuthenticated, redirectNonAdmin, AdminCoursesController.setL18n);
 module.exports = router;

@@ -22,6 +22,7 @@ const Location = require("./models/location");
 const Partner = require("./models/partner");
 const Page = require("./models/page");
 const Event = require("./models/event");
+const Language = require("./models/language");
 
 const EventsController = require("./controllers/admin/AdminEventsController");
 
@@ -37,7 +38,8 @@ const {
   partners,
   adminUser,
   contacts,
-  employees
+  employees,
+  languages
 } = require("./seeddata");
 const imageUploadDir = IMAGE_UPLOAD_DIR;
 
@@ -66,6 +68,7 @@ async function deleteData() {
   await Page.deleteMany();
   await User.deleteMany();
   await Event.deleteMany();
+  await Language.deleteMany();
   console.log("Data Deleted. To load sample data, run\n\n\t npm run seeds\n\n");
   process.exit();
 }
@@ -111,6 +114,7 @@ async function loadData() {
     await Employee.insertMany(employees);
     await Story.insertMany(stories);
     await Partner.insertMany(partners);
+    await Language.insertMany(languages);
 
     await User.create(adminUser);
     console.log(`You can now login as: `);

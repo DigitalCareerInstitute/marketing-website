@@ -13,4 +13,5 @@ router.post("/", ensureAuthenticated, redirectNonAdmin, AdminPagesController.cre
 
 router.delete("/delete/:slug", ensureAuthenticated, redirectNonAdmin, AdminPagesController.deletePage);
 router.put("/update/:slug", ensureAuthenticated, redirectNonAdmin, AdminPagesController.updatePage);
+router.get("/:slug/l18n", ensureAuthenticated, redirectNonAdmin, AdminPagesController.setL18n);
 module.exports = router;
