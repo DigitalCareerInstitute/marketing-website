@@ -8,6 +8,8 @@ const request = require("request");
 const { sendMail } = require("../helpers/helper");
 
 module.exports.landingpage = async (req, res) => {
+  console.log('req.params', req.params);
+  
   try {
     const stories = await Story.find({})
       .sort("order")

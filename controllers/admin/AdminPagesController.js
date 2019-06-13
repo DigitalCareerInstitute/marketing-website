@@ -10,6 +10,7 @@ module.exports.getPages = async (req, res) => {
       .populate("menulocations")
       .exec();
     let menulocations = await Menulocation.find({}).exec();
+    
 
     res.render("admin/pages", {
       menulocations,
@@ -22,7 +23,8 @@ module.exports.getPages = async (req, res) => {
 
 module.exports.getSinglePage = async (req, res) => {
   try {
-    const page = await Page.findOne({ slug: req.params.slug });
+    const page = await Page.findOne({ slug: req.params.slug })
+    
     res.render(`page`, {
       page
     });
@@ -32,7 +34,8 @@ module.exports.getSinglePage = async (req, res) => {
 };
 module.exports.editPage = async (req, res) => {
   try {
-    const page = await Page.findOne({ slug: req.params.slug });
+    const page = await Page.findOne({ slug: req.params.slug }).populate("languageVersion");
+    console.log('pages', page.languageVersion);
 
     let pages = await Page.find({})
       .sort("order")

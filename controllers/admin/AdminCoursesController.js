@@ -302,6 +302,5 @@ module.exports.updateCourse = async function(req, res) {
 };
 
 module.exports.setL18n = async (req, res) => {
-  console.log("AHHHHH");
   AbstractController.cloneSite(req, res, Course)
 };

@@ -61,6 +61,7 @@ try {
   console.log(`Please set a mongo path in your .env \n\n${err}`);
 }
 i18n.configure({
+  objectNotation: true,
   locales:['en', 'de'],
   queryParameter: 'lang',
   directory: __dirname + '/locales'
@@ -129,10 +130,8 @@ app.use(async (req, res, next) => {
   }
 
   if (navData === null) {
-    console.log("RES", res.locale);
     const query = res.locale === 'de' ? {title: 'de'} : {title: 'en'}
     const language = await Language.findOne(query);
-    console.log("query", language);
     let courses = await Course.find({})
       .sort({ order: 1 })
       .exec();
@@ -143,7 +142,6 @@ app.use(async (req, res, next) => {
 
     let headerCat = await Menulocation.findOne({ name: "header" });
     let headerPages = await Page.find({ menulocations: { $in: [headerCat] }, language: language._id });
-    console.log("headerPages", headerPages);
 
     navData = {
       courses,
@@ -152,7 +150,6 @@ app.use(async (req, res, next) => {
       footerPages
     };
 
-    console.log("saving data");
     try {
       await redisClient.setAsync("navData", JSON.stringify(navData));
     } catch (error) {
@@ -200,13 +197,22 @@ let eventsAdminRoutes = require("./routes/admin/events");
 let contactsAdminRoutes = require("./routes/admin/contacts");
 let usersAdminRoutes = require("./routes/admin/users");
 
-//app.get('/', function(req, res) {
-//let clang = req.query.lang;
-//console.log("", clang);
-////if (!!clang) {
-////res.redirect('/' + clang);
-////}
-//});
+// configure app
+app.get("/i18n/:locale", setLocale);
+function setLocale(req, res, next) {
+  req.session.locale = req.params.locale;
+
+  if (req.headers.referer) res.redirect(req.headers.referer);
+  else res.redirect("/");
+}
+app.use(function(req, res, next) {
+  if (req.session.locale) {
+    //check if user has changed i18n settings
+    res.setLocale(req.session.locale);
+  }
+  next();
+});
+
 app.use("/", indexRoutes);
 app.use("/users", usersRoutes);
 app.use("/stories", storiesRoutes);
@@ -228,7 +234,7 @@ app.use("/admin/contacts", contactsAdminRoutes);
 app.use("/admin/users", usersAdminRoutes);
 
 app.use("/admin*", contactsAdminRoutes);
-app.use(redirects);
+// app.use(redirects);
 
 app.set("views", path.join(__dirname, "views/"));
 app.set("view engine", "pug");

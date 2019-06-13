@@ -14,7 +14,8 @@
     "bootstrap": "^4.1.3",
     "connect-flash": "^0.1.1",
     "connect-mongo": "*",
-    "cookie-parser": "^1.4.3",
+    "cookie-parser": "^1.4.4",
+    "cookie-session": "^1.3.3",
     "css-loader": "^1.0.1",
     "dotenv": "^5.0.1",
     "es6-promisify": "^5.0.0",
@@ -63,7 +64,7 @@
   "scripts": {
     "start": "node ./index.js",
     "build": "webpack -p",
-    "dev": "concurrently \"redis-server\" \"webpack --mode development --watch\" \"nodemon index.js --ignore 'assets' --ignore --inspect 'public'\"  -n \"REDIS,WEBPACK,NODE\" --prefix name -c \"green.bold,red.bold,blue.bold\"",
+    "dev": "concurrently \"redis-server\" \"webpack --mode development --watch\" \"nodemon --inspect index.js --ignore 'assets' --ignore 'public'\"  -n \"REDIS,WEBPACK,NODE\" --prefix name -c \"green.bold,red.bold,blue.bold\"",
     "seed": "node seeds.js",
     "seed:delete": "node seeds.js --delete",
     "test": "NODE_ENV=test mocha test/ --timeout 10000 --exit"

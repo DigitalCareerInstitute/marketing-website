@@ -1,5 +1,25 @@
 {
+  "navigation": {
+    "Campuses": "Campus",
+    "Courses": "Kurse",
+    "All courses": "Alle Kurse",
+    "Events": "Veranstaltungen",
+    "All events": "Alle Veranstaltungen",
+    "Stories": "Geschichten",
+    "Give us a tour of your company": "Veranstalte eine company tour",
+    "Jobs": "Karriere",
+    "About us": "Über uns",
+    "Contact us": "Nimm Kontakt auf",
+    "Stories": "Stories",
+    "Get involved": "Mach mit",
+    "contact us": "contact us"
+  },
   "Hello": "Hallo",
   "Start_your": "Starte deine",
-  "DIGITAL_CAREER": "DIGITALE KARRIERE"
+  "Digital_career": "DIGITALE KARRIERE",
+  "Learn digital skills with us to get the most fulfilling jobs": "Lerne digitale skills und ergatter einen der meist erfüllenden Jobs",
+  "Browse Courses": "Kurse erkunden",
+  "Contact us": "Kontakt",
+  "Our courses": "Unsere Kurse",
+  "We offer many interesting educational trainings": "Wir bieten unterschiedliche Weiterbildungen an"
 }

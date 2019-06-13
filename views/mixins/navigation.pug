@@ -8,33 +8,46 @@ mixin navigation
       span.sr-only="Toggle menu"
     #collapsingNavbar3.navbar-collapse.collapse.w-100.mt-5.mt-md-0
       ul.nav.navbar-nav.ml-auto.w-100.justify-content-end#headernav
-        li.position-relative.nav-item.dropdown
-          a#navbarDropdownMenuLink.nav-link.dropdown-toggle.z-1.mx-2(class= currentPath.includes('/courses') && !currentPath.includes('admin') ? "active" : "" data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-            | COURSES
-          .dropdown-menu.border-radius-0.shadow-sm.z-0(aria-labelledby='navbarDropdownMenuLink')
-            a.dropdown-item.nav-link.px-2(class= currentPath === ("/courses") ? "active" : "" href='/courses') All courses
-            each course in courses
-              a.dropdown-item.nav-link.px-2(class= currentPath === ("/courses/" + course.slug) ? "active" : "" href='/courses/'+ course.slug)=course.headline
-        li.position-relative.nav-item.dropdown
-          a#navbarDropdownMenuLink.nav-link.dropdown-toggle.z-1.mx-2(class=currentPath.includes('/events') && !currentPath.includes('admin') ? "active" : "" href='/events' data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-            | EVENTS
-
-          .dropdown-menu.border-radius-0.shadow-sm.z-0(aria-labelledby='navbarDropdownMenuLink')
-            a.dropdown-item.nav-link.px-2(class= currentPath === ("/events") ? "active" : "" href='/events') All events
-            each location in locations
-              a.dropdown-item.nav-link.px-2(class= currentPath === ("/events/" + location.name) ? "active" : "" href='/events/'+ location.name)=location.name
+        //- if currentPath.includes("lang=en")
         li.position-relative.nav-item
-          a.nav-link.mx-2(class=currentPath == "/stories" ? "active" : "" href='/stories') STORIES
+          a.nav-link.mx-2.text-uppercase(class=currentPath == "/contact" ? "active" :
+          "" href="/i18n/de") Deutsch
+        //- else    
+        li.position-relative.nav-item
+          a.nav-link.mx-2.text-uppercase(class=currentPath == "/contact" ? "active" :
+          "" href="/i18n/en") English
+          
+        li.position-relative.nav-item
+          a.nav-link.mx-2.text-uppercase(class=currentPath == "/contact" ? "active" :
+          "" href='/contact')=__("navigation.Campuses")
         
         li.position-relative.nav-item.dropdown
-          a#navbarDropdownMenuLink.nav-link.dropdown-toggle.z-1.mx-2(data-toggle='dropdown', aria-haspopup='true', aria-expanded='false' class= currentPath.includes('/pages') && !currentPath.includes('admin') ? "active" : ""  href='/admin/contacts')
-            | GET INVOLVED
+          a#navbarDropdownMenuLink.nav-link.dropdown-toggle.text-uppercase.z-1.mx-2(class= currentPath.includes('/courses') && !currentPath.includes('admin') ? "active" : "" data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+            =__("navigation.Courses")
           .dropdown-menu.border-radius-0.shadow-sm.z-0(aria-labelledby='navbarDropdownMenuLink')
-            a.dropdown-item.px-2.nav-link(href='/about-us/' class=currentPath == "/about-us" ? "active" : "") About us
-            a.dropdown-item.px-2.nav-link(class=currentPath == "/tour" ? "active" : "" href='/tour') Give us a tour of your company
-            a.dropdown-item.px-2.nav-link(href='https://dci-jobs.personio.de/' target="_blank" class=currentPath == "/jobs" ? "active" : "") Jobs
+            a.dropdown-item.nav-link.px-2.text-uppercase(class= currentPath === ("/courses") ? "active" : "" href='/courses')=__("navigation.All courses")
+            each course in courses
+              a.dropdown-item.nav-link.px-2.text-uppercase(class= currentPath === ("/courses/" + course.slug) ? "active" : "" href='/courses/'+ course.slug)=course.headline
+        li.position-relative.nav-item.dropdown
+          a#navbarDropdownMenuLink.nav-link.dropdown-toggle.z-1.mx-2.text-uppercase(class=currentPath.includes('/events') && !currentPath.includes('admin') ? "active" : "" href='/events' data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+            =__("navigation.Events")
+
+          .dropdown-menu.border-radius-0.shadow-sm.z-0(aria-labelledby='navbarDropdownMenuLink')
+            a.dropdown-item.nav-link.px-2.text-uppercase(class= currentPath === ("/events") ? "active" : "" href='/events')=__("navigation.All events")
+            each location in locations
+              a.dropdown-item.nav-link.px-2.text-uppercase(class= currentPath === ("/events/" + location.name) ? "active" : "" href='/events/'+ location.name)=location.name
+        li.position-relative.nav-item
+          a.nav-link.mx-2.text-uppercase(class=currentPath == "/stories" ? "active" : "" href='/stories')=__("navigation.Stories")
+        
+        li.position-relative.nav-item.dropdown
+          a#navbarDropdownMenuLink.nav-link.dropdown-toggle.z-1.mx-2.text-uppercase(data-toggle='dropdown', aria-haspopup='true', aria-expanded='false' class= currentPath.includes('/pages') && !currentPath.includes('admin') ? "active" : ""  href='/admin/contacts')
+            =__("navigation.Get involved")
+          .dropdown-menu.border-radius-0.shadow-sm.z-0(aria-labelledby='navbarDropdownMenuLink')
+            a.dropdown-item.px-2.nav-link.text-uppercase(href='/about-us/' class=currentPath == "/about-us" ? "active" : "")=__("navigation.About us")
+            a.dropdown-item.px-2.nav-link.text-uppercase(class=currentPath == "/tour" ? "active" : "" href='/tour')=__("navigation.Give us a tour of your company")
+            a.dropdown-item.px-2.nav-link.text-uppercase(href='https://dci-jobs.personio.de/' class=currentPath == "/jobs" ? "active" : "")=__("navigation.Jobs")
             each page in headerPages
-              a.dropdown-item.nav-link.px-2(class= currentPath === ("/pages/" + page.slug) ? "active" : "" href='/pages/'+ page.slug)=page.title
+              a.dropdown-item.nav-link.px-2.text-uppercase(class= currentPath === ("/pages/" + page.slug) ? "active" : "" href='/pages/'+ page.slug)=page.title
       
               
         li.position-relative.nav-item
@@ -43,4 +56,4 @@ mixin navigation
         
 
         li.position-relative.nav-item
-          a.nav-link.mx-2(data-toggle='modal', data-target='#contactFormModal' ) CONTACT US
+          a.nav-link.mx-2.text-uppercase(data-toggle='modal', data-target='#contactFormModal')=__("navigation.Contact us")

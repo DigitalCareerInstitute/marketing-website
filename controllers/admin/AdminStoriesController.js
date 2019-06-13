@@ -7,6 +7,7 @@ const multer = require('multer');
 const jimp = require('jimp');
 const uuid = require('uuid');
 const fs = require('fs');
+const AbstractController = require("./AbstractController");
 
 // to catch the error if 'IMAGE_UPLOAD_DIR' path not exist in .env file
 if(!process.env.IMAGE_UPLOAD_DIR) {
@@ -181,3 +182,7 @@ exports.updateProfile = async (request, response) => {
 
   response.redirect('/admin/stories/edit' + story.slug)
 }
+
+module.exports.setL18n = async (req, res) => {
+  AbstractController.cloneSite(req, res, Story)
+};
