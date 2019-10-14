@@ -21,8 +21,8 @@ router.get("/tour", IndexController.tour);
 
 router.post("/newsletter-signup", IndexController.newsletter);
 
-router.get('/robots.txt', function (req, res) {
-  res.type('text/plain');
+router.get("/robots.txt", function(req, res) {
+  res.type("text/plain");
   res.send("User-agent: *");
 });
 

@@ -19,7 +19,7 @@ mixin footer
               li
                 a(href='https://dci-jobs.personio.de/') Jobs
               li
-                a(data-toggle='modal', href='#' data-target='#contactFormModal') Contact
+                a(data-toggle='modal',data-target='#contactFormModal') Contact
               each page in footerPages
                 li
                   a(href='/pages/'+ page.slug)

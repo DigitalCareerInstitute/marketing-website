@@ -107,7 +107,7 @@ app.use(async (req, res, next) => {
 
   if (navData === null) {
     let courses = await Course.find({})
-      .sort({"order": 1})
+      .sort({ order: 1 })
       .exec();
     let locations = await Location.find({}).exec();
 
@@ -172,11 +172,11 @@ let eventsAdminRoutes = require("./routes/admin/events");
 let contactsAdminRoutes = require("./routes/admin/contacts");
 
 //app.get('/', function(req, res) {
-  //let clang = req.query.lang;
-  //console.log("", clang);
-  ////if (!!clang) {
-    ////res.redirect('/' + clang);
-  ////}
+//let clang = req.query.lang;
+//console.log("", clang);
+////if (!!clang) {
+////res.redirect('/' + clang);
+////}
 //});
 app.use("/", indexRoutes);
 app.use("/users", usersRoutes);
@@ -206,7 +206,7 @@ async function worker() {
     // const jobsResponse = await JobsController.fetchJobs();
     // console.log(jobsResponse)
     const response = await EventsController.fetchevents();
-    console.log(response)
+    console.log(response);
 
     console.log("👍 Done! Successfully Fetching data\n");
   } catch (e) {
@@ -215,9 +215,10 @@ async function worker() {
     process.exit();
   }
 }
+
 // scheduling cron job:
 if (process.env.CRONINTERVAL) {
-  console.log(`Cron scheduled for ${process.env.CRONINTERVAL}`)
+  console.log(`Cron scheduled for ${process.env.CRONINTERVAL}`);
   cron.schedule(
     process.env.CRONINTERVAL,
     () => {
@@ -232,5 +233,6 @@ if (process.env.CRONINTERVAL) {
 } else {
   console.log(`No cron interval set in the .env. No cron started.`);
 }
+
 worker();
 module.exports = app;

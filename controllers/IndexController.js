@@ -59,6 +59,7 @@ module.exports.contactLocations = async (req, res) => {
 };
 module.exports.contact = async (req, res, next) => {
   const { name, email, body, phone, locations, TermsofService } = req.body;
+
   if (req.body.age) {
     console.log("Bot stepped into honeypot!");
     req.flash(
@@ -76,9 +77,11 @@ module.exports.contact = async (req, res, next) => {
     return;
   }
   const contact = new Contact();
+  const track = req.body.track || "https://digitalcareerinstitute.org";
   contact.name = req.body.name;
   contact.email = req.body.email;
   contact.phone = req.body.phone;
+  contact.track = track;
   contact.body = req.body.body;
   contact.createdAt = new Date();
   contact.isCompany = req.body.companytour ? true : false;
@@ -87,7 +90,12 @@ module.exports.contact = async (req, res, next) => {
     res.redirect(req.headers.referer);
   }
   const location = await Location.findById(req.body.locations);
+
   const mailTemplate = `Contact from: <table>
+    <tr>
+      <td>Message send from: </td>
+      <a href=${track}>${track}</a>
+   </tr>
     <tr>
       <td>Name: </td>
       <td>${req.body.name}</td>
@@ -129,7 +137,7 @@ module.exports.contact = async (req, res, next) => {
       `Thanks for your message. We will reply to you as soon as possible.`
     );
     console.log("Message sent: %s", info.messageId);
-    res.redirect(req.headers.referer);
+    res.redirect(req.headers.referer.replace("/contact", ""));
     next();
   });
 };

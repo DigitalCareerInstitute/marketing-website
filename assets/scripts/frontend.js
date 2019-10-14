@@ -8,6 +8,7 @@ import "bootstrap/js/dist/collapse";
 import "bootstrap/js/dist/alert";
 
 require("../css/style.scss");
+
 const toggleNL = (remove = false) => {
   document.getElementById("nlbtn").disabled = remove ? "" : "disabled";
   document.getElementById("nlbtn").innerHTML = remove ? "Subscribe" : "Loading";
@@ -53,9 +54,9 @@ const toggleNL = (remove = false) => {
 
 let counted = false;
 const countUp = () => {
-  const counter = document.querySelector(".section-counter")
+  const counter = document.querySelector(".section-counter");
 
-  if (counter &&elementInViewport2(counter) && !counted) {
+  if (counter && elementInViewport2(counter) && !counted) {
     counted = true;
     $(".counter-count").each(function() {
       $(this)
@@ -107,7 +108,6 @@ const throttle = (func, limit) => {
   };
 };
 
-
 var floatings = [...document.querySelectorAll(".floatings")];
 function showFloatings() {
   let timeout = 0;
@@ -144,6 +144,15 @@ window.onscroll = throttle(function() {
   countUp();
 }, 10);
 
+$("#contactFormModal").on("shown.bs.modal", function(e) {
+  window.document.querySelector("#track").value = window.location.href;
+  window.history.replaceState(window.location.pathname, "/", `/contact`);
+});
+
+$("#contactFormModal").on("hidden.bs.modal", function(e) {
+  window.document.querySelector("#track").value = "";
+  window.history.replaceState({}, "/", window.history.state);
+});
 //
 // let typedCursor = new Typed('.subtitle', {
 //   strings: ["Learn digital skills with us to get the most fulfilling jobs."],

@@ -4,5 +4,8 @@ mixin partners
       h2.display-1.text-center.text-uppercase Our Partners
       h3.mb-5.text-center.text-muted Meet our partners
       each partner in partners
-        a(href=partner.link target="_blank")
-          img.partners-logo.w-100.mw-150.mh-150.object-fit-cover(alt=partner.title, title=partner.title, src="/images/"+partner.partnerlogo)
+        if partner.link
+          a(href=partner.link target="_blank")
+            img.partners-logo.w-100.mw-150.mh-150.object-fit-cover(alt=partner.title, title=partner.title, src="/images/"+partner.partnerlogo)
+        else
+           img.partners-logo.w-100.mw-150.mh-150.object-fit-cover(alt=partner.title, title=partner.title, src="/images/"+partner.partnerlogo)

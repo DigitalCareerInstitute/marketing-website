@@ -9,6 +9,7 @@ block content
             each contact in contacts
               li.list-group-item.mb-3.hover-shadow.bg-white
                 h2.mr-3=contact.name
+                a.d-block(href=contact.track)=contact.track
                 small.text-muted=contact.createdAt
                 p.mr-3=contact.body
                 tel.mr-3=contact.phone
