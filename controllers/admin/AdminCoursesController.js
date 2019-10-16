@@ -4,16 +4,18 @@ const uuid = require("uuid");
 const fs = require("fs");
 const jimp = require("jimp");
 const Location = require("../../models/location");
+const courseFormConfig = require("../../formsConfig/courseFormConfig")();
 
 const Course = require("../../models/course");
 
 module.exports.getCourses = async function(req, res) {
   let courses = await Course.find({})
-    .sort({"order": 1})
+    .sort({ order: 1 })
     .exec();
 
   res.render("admin/adminCourses", {
-    courses
+    courses,
+    courseFormConfig
   });
 };
 
@@ -44,6 +46,7 @@ module.exports.editCourse = async function(req, res) {
 
   res.render("admin/editCourse", {
     course,
+    courseFormConfig,
     locations: all
   });
 };
@@ -106,19 +109,19 @@ module.exports.createCourse = async function(req, res) {
   ];
 
   // save the course and check for errors
-  course.save( async function(err) {
+  course.save(async function(err) {
     if (err) {
       console.log("error", err);
-      
+
       req.flash("danger", `Error ${err}`);
       let courses = await Course.find({})
-        .sort({"order": 1})
+        .sort({ order: 1 })
         .exec();
       res.render("admin/adminCourses", {
         courses,
         course
       });
-      return
+      return;
     }
     req.flash("success", `Successfully created ${course.title}`);
     res.redirect("/admin/courses");
@@ -176,9 +179,9 @@ exports.resizeImages = async (request, response, next) => {
   }
   for await (const singleFile of Object.values(request.files)) {
     const extension = singleFile[0].mimetype.split("/")[1];
-    request.body[singleFile[0].fieldname] = `${
-      singleFile[0].filename
-    }.${extension}`;
+    request.body[
+      singleFile[0].fieldname
+    ] = `${singleFile[0].filename}.${extension}`;
     try {
       const image = await jimp.read(singleFile[0].path);
       await image.cover(500, 500);
