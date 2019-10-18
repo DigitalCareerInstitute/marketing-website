@@ -57,16 +57,25 @@ exports.employees = [
     content: "Lorem ipsum dolor sit amed"
   }
 ];
+exports.pagesgerman = [
+  {
+    title: "Devugees",
+    slug: "devugees-de",
+    content: `Das Digital Career Institute operiert ueberall`,
+    order: 0
+  },
+]
 exports.pages = [
   {
     title: "Devugees",
-    content: `The Digital Career Institute operates the Devugees training program for refugees who are interested in technical qualifications for the German job market. We are convinced that Devugees will help integrate refugees more effectively into German society. In our opinion, education is the most important key to a successful life anywhere.
-
-`,
+    slug: "devugees",
+    content: `The Digital Career Institute operates the Devugees training program for refugees who are interested in technical qualifications for the German job market. We are convinced that Devugees will help integrate refugees more effectively into German society. In our opinion, education is the most important key to a successful life anywhere.`,
     order: 0
   },
+
   {
     title: "Jobcenter/AA",
+    slug: "jobcenter-aa",
     content: {
       ops: [
         { insert: "DCI Digital Career Institute gGmbH" },
@@ -134,6 +143,7 @@ exports.pages = [
   },
   {
     title: "Support us",
+    slug: "support-us",
     content: {
       ops: [
         { insert: "At Digital Career Institute you learn the most relevant technology skills of today from Web Development, Digital Marketing, Product Management to Data.\n\nWe train and provide the necessary hardware and digital learning aids as well as a relevant mentoring and buddy system needed to get the digital skills of today’s age.\n" },
@@ -143,6 +153,7 @@ exports.pages = [
   },
   {
     title: "Become a buddy",
+    slug: "become-a-buddy",
     content: {
       ops: [
         {
@@ -180,6 +191,7 @@ exports.pages = [
   },
   {
     title: "Teach at DCI",
+    slug: "teach-at-dci",
     content: {
       ops: [
         { insert: "Become an Instructor" },

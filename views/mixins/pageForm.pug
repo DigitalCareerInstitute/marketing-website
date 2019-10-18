@@ -7,7 +7,8 @@ mixin pageForm
       .btn-group
         if editPath
           a.btn.btn-outline-primary(href="/admin/pages")="Back"
-          a.btn.btn-outline-primary(href="/admin/pages/"+page.slug+"/l18n")="Create german version"
+          if page && !page.languageVersion
+            a.btn.btn-outline-primary(href="/admin/pages/"+page.slug+"/l18n")="Create german version"
 
           a.btn.btn-outline-primary(target="_blank" href="/pages/"+page.slug)="Show"
         button.btn.btn-primary(type='submit')=editPath ? "Update" :"Create a new Page" 
@@ -24,7 +25,7 @@ mixin pageForm
         | Order
         button.btn.btn-secondary.badge.ml-2(type='button', data-container='body', data-toggle='popover',  data-trigger="hover",  data-placement='top', data-content='Defines the order the pages are displayed. 0,1,2,3,4')
           | ?
-      input#inputOrder.form-control(name='order', type='number', placeholder='Order', required='', autofocus='', value=editPath ? page.order : "")
+      input#inputOrder.form-control(name='order', type='number', placeholder='Order', autofocus='', value=editPath ? page.order : "")
 
     .my-3
       label(for="menulocations") Page Location
@@ -36,6 +37,6 @@ mixin pageForm
         .custom-control.custom-checkbox
           input.custom-control-input(name="menulocations" type='checkbox' id=menulocation.name value=menulocation._id  checked=(menulocation.selected))
           label.custom-control-label(for=menulocation.name)=menulocation.name
-    if page
-      a.btn.btn-outline-primary(href="/admin/pages/edit/"+page.languageVersion.slug)="go to translated version"
+    if page && page.languageVersion
+      a.btn.btn-outline-primary(href="/admin/pages/edit/"+page.languageVersion.slug)="go to " + page.language+ page.language.title + " version"
   

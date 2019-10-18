@@ -8,19 +8,12 @@ mixin navigation
       span.sr-only="Toggle menu"
     #collapsingNavbar3.navbar-collapse.collapse.w-100.mt-5.mt-md-0
       ul.nav.navbar-nav.ml-auto.w-100.justify-content-end#headernav
-        //- if currentPath.includes("lang=en")
-        li.position-relative.nav-item
-          a.nav-link.mx-2.text-uppercase(class=currentPath == "/contact" ? "active" :
-          "" href="/i18n/de") Deutsch
-        //- else    
-        li.position-relative.nav-item
-          a.nav-link.mx-2.text-uppercase(class=currentPath == "/contact" ? "active" :
-          "" href="/i18n/en") English
-          
-        li.position-relative.nav-item
-          a.nav-link.mx-2.text-uppercase(class=currentPath == "/contact" ? "active" :
-          "" href='/contact')=__("navigation.Campuses")
-        
+        if locale === "en"
+          li.position-relative.nav-item
+            a.nav-link.mx-2.text-uppercase(href="/i18n/de") Deutsch
+        else    
+          li.position-relative.nav-item
+            a.nav-link.mx-2.text-uppercase(href="/i18n/en") English
         li.position-relative.nav-item.dropdown
           a#navbarDropdownMenuLink.nav-link.dropdown-toggle.text-uppercase.z-1.mx-2(class= currentPath.includes('/courses') && !currentPath.includes('admin') ? "active" : "" data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
             =__("navigation.Courses")

@@ -8,6 +8,8 @@ module.exports.getPages = async (req, res) => {
     let pages = await Page.find({})
       .sort("order")
       .populate("menulocations")
+      .populate("language")
+      .populate("languageVersion")
       .exec();
     let menulocations = await Menulocation.find({}).exec();
     
@@ -35,11 +37,11 @@ module.exports.getSinglePage = async (req, res) => {
 module.exports.editPage = async (req, res) => {
   try {
     const page = await Page.findOne({ slug: req.params.slug }).populate("languageVersion");
-    console.log('pages', page.languageVersion);
 
     let pages = await Page.find({})
       .sort("order")
       .populate("menulocations")
+      .populate("language")
       .exec();
     let menulocations = await Menulocation.find({}).exec();
     let allmenulocations = await Menulocation.find({}).exec();
@@ -108,6 +110,5 @@ module.exports.updatePage = async (req, res) => {
   }
 };
 module.exports.setL18n = async (req, res) => {
-  console.log("hits route");
   AbstractController.cloneSite(req, res, Page)
 };

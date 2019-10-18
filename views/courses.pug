@@ -6,14 +6,13 @@ block content
         source(src='/media/video.mp4', type='video/mp4')
 
     .jumbotron-courses-container.text-white.container.px-md-5
-      h1.display-1.mt-5.mb-3.text-white Courses
-      h2.text-white Learn hands-on with technology right from the start.
-      p.lead.mb-5 
-        | We have designed an immersive and intense curriculum to get you working fast and learning the skills and powerful tools needed for your digital career.
+      h1.display-1.mt-5.mb-3.text-white=__('navigation.Courses')
+      h2.text-white=__("Learn hands-on with technology right from the start.")
+      p.lead.mb-5=__("We have designed an immersive and intense curriculum to get you working fast and learning the skills and powerful tools needed for your digital career.")
 
-        | Our courses are all about upgrading your skills with flexible formats and self-propelled home learning.
+      =__("Our courses are all about upgrading your skills with flexible formats and self-propelled home learning.")
 
-        | The program requires passion, dedication, and grit­ in order to succeed.
+      =__("The program requires passion, dedication, and grit­ in order to succeed.")
 
 
     
@@ -31,5 +30,4 @@ block content
                   
                   h4.service-title= course.headline
                   p=course.title
-    
-
+      

@@ -8,8 +8,8 @@ block content
     +quote
     section#stories.my-5
       .container
-        h2.display-1.text-center.text-uppercase Stories
-        h3.mb-5.text-center.text-muted Meet our happy students
+        h2.display-1.text-center.text-uppercase=__("Stories")
+        h3.mb-5.text-center.text-muted=__("Meet our happy students")
         .row
           +storylist
     if events.length > 0
@@ -20,8 +20,8 @@ block content
       .container.py-5
         .px-lg-5
           .px-lg-5
-            h2.display-1.text-center.text-uppercase Contact us
-            p.mb-5.text-center.text-muted Let’s connect! Our admissions team will call you soon to chat about our courses and your goals
+            h2.display-1.text-center.text-uppercase=__("Contact us")
+            p.mb-5.text-center.text-muted=__("Let’s connect! Our admissions team will call you soon to chat about our courses and your goals")
             .px-md-5
               .px-md-5
                 .px-sm-5

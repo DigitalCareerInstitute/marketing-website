@@ -32,6 +32,7 @@ const {
   menulocations,
   stories,
   pages,
+  pagesgerman,
   courses,
   users,
   events,
@@ -114,7 +115,7 @@ async function loadData() {
     await Employee.insertMany(employees);
     await Story.insertMany(stories);
     await Partner.insertMany(partners);
-    await Language.insertMany(languages);
+    const createdLanguages = await Language.insertMany(languages);
 
     await User.create(adminUser);
     console.log(`You can now login as: `);
@@ -137,6 +138,14 @@ async function loadData() {
     );
 
     await Page.insertMany(associatedMenulocations);
+    await Page.insertMany(pagesgerman);
+    const devugees = await Page.find({title: "Devugees"})
+    devugees[0].languageVersion = devugees[1]._id;
+    devugees[0].language = createdLanguages[0]._id;
+    devugees[1].languageVersion = devugees[0]._id;
+    devugees[1].language = createdLanguages[1]._id;
+    await devugees[0].save()
+    await devugees[1].save()
     await Contact.insertMany(associatedLocations);
     await Employee.insertMany(associatedEmployees);
 

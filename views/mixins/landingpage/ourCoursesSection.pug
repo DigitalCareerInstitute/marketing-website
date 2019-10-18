@@ -1,7 +1,7 @@
 mixin ourCoursesSection
   section#ourcourses.py-5
     .container.pt-5
-      h2.display-1.text-center.text-uppercase Our courses
+      h2.display-1.text-center.text-uppercase=__("Our courses")
       h3.mb-5.text-center.text-muted=__("We offer many interesting educational trainings")
       
       .row.mx-md-5.justify-content-center
@@ -17,4 +17,4 @@ mixin ourCoursesSection
                 p.text-muted=course.title
 
       .text-center
-        a.btn.btn-lg.btn-gradient-secondary(href='/courses/', role='button', aria-pressed='true') All Courses
+        a.btn.btn-lg.btn-gradient-secondary(href='/courses/', role='button', aria-pressed='true')=__("All") + " " +__("Courses")

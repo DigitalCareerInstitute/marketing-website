@@ -125,12 +125,12 @@ app.use(async (req, res, next) => {
       getNavData = await redisClient.getAsync("navData");
       navData = JSON.parse(getNavData);
     } catch (error) {
-      console.error("Redis ERROR: Could not get navigation data: " + error);
+      // console.error("Redis ERROR: Could not get navigation data: " + error);
     }
   }
 
   if (navData === null) {
-    const query = res.locale === 'de' ? {title: 'de'} : {title: 'en'}
+    const query = req.session.locale === 'de' ? {title: 'de'} : {title: 'en'}
     const language = await Language.findOne(query);
     let courses = await Course.find({})
       .sort({ order: 1 })
@@ -153,7 +153,7 @@ app.use(async (req, res, next) => {
     try {
       await redisClient.setAsync("navData", JSON.stringify(navData));
     } catch (error) {
-      console.error("Redis ERROR: Could not save navigation data: " + error);
+      // console.error("Redis ERROR: Could not save navigation data: " + error);
     }
   } else {
     console.log("using cached data");
@@ -175,6 +175,7 @@ app.use((req, res, next) => {
   next();
 });
 
+let i18nRoutes = require("./routes/i18n");
 let indexRoutes = require("./routes/index");
 let usersRoutes = require("./routes/users");
 let storiesRoutes = require("./routes/stories");
@@ -197,22 +198,8 @@ let eventsAdminRoutes = require("./routes/admin/events");
 let contactsAdminRoutes = require("./routes/admin/contacts");
 let usersAdminRoutes = require("./routes/admin/users");
 
-// configure app
-app.get("/i18n/:locale", setLocale);
-function setLocale(req, res, next) {
-  req.session.locale = req.params.locale;
 
-  if (req.headers.referer) res.redirect(req.headers.referer);
-  else res.redirect("/");
-}
-app.use(function(req, res, next) {
-  if (req.session.locale) {
-    //check if user has changed i18n settings
-    res.setLocale(req.session.locale);
-  }
-  next();
-});
-
+app.use(i18nRoutes);
 app.use("/", indexRoutes);
 app.use("/users", usersRoutes);
 app.use("/stories", storiesRoutes);

@@ -17,18 +17,18 @@ block content
                 if location.phone
                   div
                     strong
-                      ="Phone: "
+                      =__("Phone")+":"
                     tel= location.phone
                 if location.street
                   div
                     strong
-                      ="Street: "
+                      =__("Street")+":"
                     tel= location.street
                 if location.zip
                   div
                     strong
-                      ="Zip: "
-                    tel= location.zip
+                      =__("Zip")+":"
+                    = location.zip
 
     .bg-light
       .container.py-5
@@ -36,7 +36,7 @@ block content
 
           .row
             .col-md-8.offset-md-2
-              h2.display-1.text-center.text-uppercase Contact us
-              p.mb-5.text-center.text-muted Let’s connect! Our admissions team will call you soon to chat about our courses and your goals
+              h2.display-1.text-center.text-uppercase=__('navigation.Contact us')
+              p.mb-5.text-center.text-muted=__('Let’s connect! Our admissions team will call you soon to chat about our courses and your goals')
               +contactform
               
