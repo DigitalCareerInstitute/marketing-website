@@ -13,7 +13,7 @@ const archivementConfig = [1, 2, 3, 4, 5].map(item => {
       type: "file",
       name: `archivement_icon_${item}`
     },
-    textFeild: {
+    textField: {
       type: "text",
       name: `archivement_description_${item}`,
       placeholder: `archivement description ${item}` || ""
@@ -29,14 +29,14 @@ const featuresConfig = [1, 2, 3, 4, 5].map(item => {
       for: `features${item}`,
       label: `Features icon ${item}`
     },
-    textFeildTitle: {
+    textFieldTitle: {
       type: "text",
       name: `features_title_${item}`,
       placeholder: `features title ${item}` || "",
       for: `features_title_${item}`,
       label: `Features title ${item}`
     },
-    textFeildSubtitle: {
+    textFieldSubtitle: {
       type: "text",
       name: `features_subtitle_${item}`,
       placeholder: `features subtitle ${item}` || "",

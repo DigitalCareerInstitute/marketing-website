@@ -46,7 +46,7 @@ mixin courseForm
            img.mw-150.mh-150(src="/images/"+course.archivements[i].icon)
           input#exampleFormControlFile1.form-control-file(type=archivementGroup.fileField.type name=archivementGroup.fileField.name)
   
-          input(type=archivementGroup.textFeild.type , name=archivementGroup.textFeild.name,  value=course && course.archivements[i] ? course.archivements[i].description : '', placeholder=archivementGroup.textFeild.placeholder )
+          input(type=archivementGroup.textField.type , name=archivementGroup.textField.name,  value=course && course.archivements[i] ? course.archivements[i].description : '', placeholder=archivementGroup.textField.placeholder )
         each featuresGroup, i in courseFormConfig.featuresConfig
          .form-group
           label.d-block(for=featuresGroup.fileField.for)=featuresGroup.fileField.label
@@ -54,11 +54,11 @@ mixin courseForm
             img.mw-150.mh-150(src="/images/"+course.features[i].icon)
           input#exampleFormControlFile1.form-control-file(type=featuresGroup.fileField.type name=featuresGroup.fileField.name)
 
-          label(for=featuresGroup.textFeildTitle.for)=featuresGroup.textFeildTitle.lable
-          input(type=featuresGroup.textFeildTitle.type, name=featuresGroup.textFeildTitle.name,  value=course && course.features[i] ? course.features[i].title : '', placeholder=featuresGroup.textFeildTitle.placeholder )
+          label(for=featuresGroup.textFieldTitle.for)=featuresGroup.textFieldTitle.lable
+          input(type=featuresGroup.textFieldTitle.type, name=featuresGroup.textFieldTitle.name,  value=course && course.features[i] ? course.features[i].title : '', placeholder=featuresGroup.textFieldTitle.placeholder )
 
-          label(for=featuresGroup.textFeildSubtitle.for)=featuresGroup.textFeildSubtitle.label
-          input(type=featuresGroup.textFeildSubtitle.type, name=featuresGroup.textFeildSubtitle.name,  value=course && course.features[i] ? course.features[i].subtitle : '', placeholder=featuresGroup.textFeildSubtitle.placeholder )
+          label(for=featuresGroup.textFieldSubtitle.for)=featuresGroup.textFieldSubtitle.label
+          input(type=featuresGroup.textFieldSubtitle.type, name=featuresGroup.textFieldSubtitle.name,  value=course && course.features[i] ? course.features[i].subtitle : '', placeholder=featuresGroup.textFieldSubtitle.placeholder )
 
       .col-md-6
         each timelineGroup, i in courseFormConfig.timelineConfig
