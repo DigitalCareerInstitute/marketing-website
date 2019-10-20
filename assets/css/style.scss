@@ -53,8 +53,6 @@ nav.container:after {
   opacity: 0.5;
 }
 
-
-
 /******************************************
 JUMBOTRON SECTION
  *******************************************/
@@ -125,7 +123,7 @@ STATS COUNTER
 
 #stats {
   .sidepanel {
-    transition: transform .3s ease;
+    transition: transform 0.3s ease;
   }
   &:hover {
     .sidepanel {
@@ -651,6 +649,19 @@ input[type="week"] {
   position: relative;
 }
 
+/******************************************
+   SUPER ADMIN/ USERS SECTION
+*******************************************/
+.usersListContainer {
+  border-bottom: 1px solid;
+  .usersList {
+    border-top: 1px solid;
+    .userInfo {
+      width: 100%;
+    }
+  }
+}
+
 /********************************************************
   MEDIA QUERY BREAKPOINT | SINGLE PAGE COURSES !WORK HERE
 ********************************************************/
@@ -808,7 +819,7 @@ div[class*=" #{$class-slug}"] {
   .floatings {
     transform: translateY(100px);
     opacity: 0;
-    transition: transform .3s ease, opacity .3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease;
   }
   .floatings.floated {
     opacity: 1;

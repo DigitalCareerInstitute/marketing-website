@@ -1,5 +1,5 @@
-var mongoose = require('mongoose');
-var bcrypt = require('bcryptjs');
+var mongoose = require("mongoose");
+var bcrypt = require("bcryptjs");
 
 // User Schema
 var UserSchema = mongoose.Schema({
@@ -20,12 +20,16 @@ var UserSchema = mongoose.Schema({
     type: String,
     default: false
   },
+  superAdmin: {
+    type: String,
+    default: false
+  },
   verifiedAt: {
     type: Date
   }
 });
 
-var User = (module.exports = mongoose.model('User', UserSchema));
+var User = (module.exports = mongoose.model("User", UserSchema));
 
 module.exports.createUser = (newUser, callback) => {
   bcrypt.genSalt(10, (err, salt) => {
@@ -40,7 +44,7 @@ module.exports.getUserByEmail = (email, callback) => {
   User.findOne(query, callback);
 };
 
-module.exports.getUserById = function (id, callback) {
+module.exports.getUserById = function(id, callback) {
   User.findById(id, callback);
 };
 

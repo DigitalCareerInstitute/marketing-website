@@ -30,6 +30,14 @@ module.exports.redirectNonAdmin = (req, res, next) => {
   }
 };
 
+module.exports.redirectNonSuperAdmin = (req, res, next) => {
+  if (req.user.superAdmin === "true") {
+    return next();
+  } else {
+    return res.redirect("/admin/stories");
+  }
+};
+
 passport.use(
   new LocalStrategy(
     {

@@ -1,26 +1,24 @@
 const passport = require("passport");
-const { check, validationResult } = require('express-validator');
+const { check, validationResult } = require("express-validator");
 const uuid = require("uuid");
 
 const User = require("../models/user");
 const { sendMail, getRequestUrl } = require("../helpers/helper");
 
 module.exports.renderLogin = (req, res) => {
-  if(req.user){
+  if (req.user) {
     res.redirect("/admin");
   }
   res.render("login");
 };
 module.exports.renderRegister = (req, res) => {
-  if(req.user){
+  if (req.user) {
     res.redirect("/admin");
   }
   res.render("register");
 };
-sendVerificationMail = async (res, req, userToken ) => {
-  const verificationLink = `${getRequestUrl(
-    req
-  )}/users/verify/${userToken}`;
+sendVerificationMail = async (res, req, userToken) => {
+  const verificationLink = `${getRequestUrl(req)}/users/verify/${userToken}`;
   const mailOptions = {
     from: "verification@digitalcareerinstitute.org",
     to: req.body.email,
@@ -29,8 +27,7 @@ sendVerificationMail = async (res, req, userToken ) => {
     html: `By clicking on the following link, you verify your account <a href="${verificationLink}">${verificationLink}</a>`
   };
   return await sendMail(res, req, mailOptions);
-
-}
+};
 module.exports.register = async (req, res) => {
   const email = req.body.email;
   const username = req.body.username;
@@ -45,9 +42,15 @@ module.exports.register = async (req, res) => {
   // check("password2", "Passwords do not match").equals(req.body.password);
 
   const errors = validationResult(req);
-  console.log('errors', errors);
+  console.log("errors", errors);
   if (!errors.isEmpty()) {
-    req.flash("danger", errors.array().map(i => i.msg).join(", "));
+    req.flash(
+      "danger",
+      errors
+        .array()
+        .map(i => i.msg)
+        .join(", ")
+    );
     res.render("register");
   } else {
     const user = await User.findOne({ email: req.body.email });
@@ -66,7 +69,7 @@ module.exports.register = async (req, res) => {
       User.createUser(newUser, async (err, user) => {
         if (err) throw err;
         try {
-          const response = await sendVerificationMail(res, req, userToken )
+          const response = await sendVerificationMail(res, req, userToken);
           req.flash(
             "success",
             `Email ${email} registered. Please check your mails for verification.`

@@ -170,6 +170,7 @@ let employeesAdminRoutes = require("./routes/admin/employees");
 let locationsAdminRoutes = require("./routes/admin/locations");
 let eventsAdminRoutes = require("./routes/admin/events");
 let contactsAdminRoutes = require("./routes/admin/contacts");
+let usersAdminRoutes = require("./routes/admin/users");
 
 //app.get('/', function(req, res) {
 //let clang = req.query.lang;
@@ -196,6 +197,8 @@ app.use("/admin/locations", locationsAdminRoutes);
 app.use("/admin/events", eventsAdminRoutes);
 app.use("/admin/menulocations", menulocationAdminRoutes);
 app.use("/admin/contacts", contactsAdminRoutes);
+app.use("/admin/users", usersAdminRoutes);
+
 app.use("/admin*", contactsAdminRoutes);
 app.use(redirects);
 

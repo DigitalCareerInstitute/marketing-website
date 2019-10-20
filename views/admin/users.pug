@@ -1,0 +1,15 @@
+extends ../layout.pug
+block content
+
+  ul.list-group.usersListContainer
+    each user in users
+     form(method='GET', action='/users/verify/'+user.token)
+      li.list-group-item.d-flex.align-items-center.usersList
+       span.mr-5.userInfo= user.username
+       span.mr-5.userInfo= user.email
+       span.mr-5.userInfo= `${user.verifiedAt ? user.verifiedAt : ' Not verified yet'}`
+       div
+        if user.verifiedAt
+         span Activated
+        else
+         button.btn.btn-success(type='submit') Activate
