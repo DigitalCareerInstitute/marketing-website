@@ -18,6 +18,9 @@ var CourseSchema = new Schema({
   title: {
     type: String
   },
+  curriculumPdf: {
+    type: String
+  },
   order: {
     type: Number,
     unique: true

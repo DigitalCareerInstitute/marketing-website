@@ -7,6 +7,8 @@ mixin singleCourse
         h1.display-1.mt-5.mb-3.text-white=course.headline
         p.lead.mb-5=course.subheading
         button.btn.btn-lg.btn-gradient-secondary.mt-3.mb-5(type='button' data-toggle='modal', data-target='#contactFormModal') Apply
+      if course.curriculumPdf
+        a.btn.btn-lg.btn-gradient-secondary.mt-3.mb-5(href='/images/'+ course.curriculumPdf target='_blank' ) Download Curriculum 
 
     .container.container-fluid-courses.bg-white.position-relative
       .row.row-courses

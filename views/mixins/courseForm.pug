@@ -12,6 +12,15 @@ mixin courseForm
     .row
       .col-md-6
         .form-group
+        
+          label.d-block.d-block(for='icon') Course Curriculum PDF
+          if course && course.curriculumPdf
+            input#curriculumPdf.hidePlaceholder.form-control-file(type='file' name='curriculumPdf')
+            span=course.curriculumPdf
+          else
+            input#curriculumPdf.form-control-file(type='file' name='curriculumPdf')
+
+        .mb-3
           label.d-block.d-block(for='icon') Course Title Icon
           if course && course.icon
             img.mw-150.mh-150.w-100.mw-150.mh-150.object-fit-cover(src="/images/"+course.icon)

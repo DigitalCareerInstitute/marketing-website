@@ -59,6 +59,7 @@ module.exports.createCourse = async function(req, res) {
   course.order = req.body.order;
   course.locations = req.body.locations;
   course.icon = req.body.icon;
+
   course.archivements = [1, 2, 3, 4, 5].map(item => {
     return {
       icon: req.body[`archivement_icon_${item}`],
@@ -81,6 +82,57 @@ module.exports.createCourse = async function(req, res) {
       title: req.body[`features_title_${item}`]
     };
   });
+
+  course.curriculumPdf = req.body.curriculumPdf;
+  course.archivements = [
+    {
+      icon: req.body.archivement_icon_1,
+      description: req.body.archivement_description_1
+    },
+    {
+      icon: req.body.archivement_icon_2,
+      description: req.body.archivement_description_2
+    },
+    {
+      icon: req.body.archivement_icon_3,
+      description: req.body.archivement_description_3
+    }
+  ];
+  course.timeline = [
+    {
+      title: req.body.timeline_title_1,
+      subtitle: req.body.timeline_subtitle_1,
+      time: req.body.timeline_time_1
+    },
+    {
+      title: req.body.timeline_title_2,
+      subtitle: req.body.timeline_subtitle_2,
+      time: req.body.timeline_time_2
+    },
+    {
+      title: req.body.timeline_title_3,
+      subtitle: req.body.timeline_subtitle_3,
+      time: req.body.timeline_time_3
+    }
+  ];
+  course.features = [
+    {
+      icon: req.body.features_icon_1,
+      subtitle: req.body.features_subtitle_1,
+      title: req.body.features_title_1
+    },
+    {
+      icon: req.body.features_icon_2,
+      subtitle: req.body.features_subtitle_2,
+      title: req.body.features_title_2
+    },
+    {
+      icon: req.body.features_icon_3,
+      subtitle: req.body.features_subtitle_3,
+      title: req.body.features_title_3
+    }
+  ];
+
 
   // save the course and check for errors
   course.save(async function(err) {
@@ -128,13 +180,17 @@ module.exports.uploadImages = multer({
     fileSize: 10000000 // 10 MB
   },
   fileFilter(req, file, next) {
-    if (file.mimetype.startsWith("image/")) {
+    if (
+      file.mimetype.startsWith("image/") ||
+      file.mimetype === "application/pdf"
+    ) {
       next(null, true);
     } else {
       next({ message: "That filetype is not allowed!" }, false);
     }
   }
 }).fields([
+  { name: "curriculumPdf", maxCount: 1 },
   { name: "icon", maxCount: 1 },
   { name: "archivement_icon_1", maxCount: 1 },
   { name: "archivement_icon_2", maxCount: 1 },
@@ -161,14 +217,25 @@ exports.resizeImages = async (request, response, next) => {
       singleFile[0].fieldname
     ] = `${singleFile[0].filename}.${extension}`;
     try {
-      const image = await jimp.read(singleFile[0].path);
-      await image.cover(500, 500);
-      await image.write(
-        `${process.env.IMAGE_UPLOAD_DIR}/${
-          request.body[singleFile[0].fieldname]
-        }`
-      );
-      fs.unlinkSync(singleFile[0].path);
+      if (singleFile[0].mimetype === "application/pdf") {
+        const pdfFile = fs.readFileSync(singleFile[0].path);
+        fs.writeFileSync(
+          `${process.env.IMAGE_UPLOAD_DIR}/${
+            request.body[singleFile[0].fieldname]
+          }`,
+          pdfFile
+        );
+      }
+      if (singleFile[0].mimetype.startsWith("image/")) {
+        const image = await jimp.read(singleFile[0].path);
+        await image.cover(500, 500);
+        await image.write(
+          `${process.env.IMAGE_UPLOAD_DIR}/${
+            request.body[singleFile[0].fieldname]
+          }`
+        );
+        fs.unlinkSync(singleFile[0].path);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -186,6 +253,10 @@ module.exports.updateCourse = async function(req, res) {
   course.subheading = req.body.subheading;
   course.order = req.body.order;
   course.locations = req.body.locations;
+
+  course.curriculumPdf = req.body.curriculumPdf;
+
+
   course.icon = req.files.icon ? req.body.icon : course.icon;
 
   function verbose(inputs) {

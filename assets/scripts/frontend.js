@@ -153,6 +153,35 @@ $("#contactFormModal").on("hidden.bs.modal", function(e) {
   window.document.querySelector("#track").value = "";
   window.history.replaceState({}, "/", window.history.state);
 });
+
+const getFileElements = document.querySelectorAll("[type='file']");
+getFileElements.forEach(el => {
+  el.addEventListener("change", () => {
+    console.log("getFileElements MAP   ==>", el.files[0]);
+    const Filetype = el.files[0].type;
+    let alert = document.querySelector("#invalidFile");
+    if (
+      Filetype !== "application/pdf" &&
+      Filetype !== "image/jpeg" &&
+      Filetype !== "image/png" &&
+      Filetype !== "image/jpg" &&
+      Filetype !== "image/svg+xml"
+    ) {
+      el.value = "";
+      alert ? alert.remove() : null;
+      let newItem = document.createElement("div");
+      newItem.innerHTML = `<div id="invalidFile" class="alert alert-danger"                       role="alert">
+                             This field not accept ${Filetype}
+                            </div>`;
+      function insertAfter(el, referenceNode) {
+        referenceNode.parentNode.insertBefore(el, referenceNode);
+      }
+      insertAfter(newItem, el);
+    }
+    alert ? alert.remove() : null;
+  });
+});
+
 //
 // let typedCursor = new Typed('.subtitle', {
 //   strings: ["Learn digital skills with us to get the most fulfilling jobs."],
