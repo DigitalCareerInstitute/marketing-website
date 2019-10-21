@@ -656,7 +656,10 @@ input[type="week"] {
   border-bottom: 1px solid;
   .usersList {
     border-top: 1px solid;
-    .userInfo {
+    .userInfoHalfWidth {
+      width: 50%;
+    }
+    .userInfoFullWidth {
       width: 100%;
     }
   }

@@ -8,6 +8,9 @@ mixin menuFooter
     span.navbar-brand.p-0= "Logged in as "+user.username
     ul.nav.navbar-nav.ml-auto.w-100.justify-content-end
       li.nav-item
+      if user && user.superAdmin === "true"
+        li.nav-item
+          a.nav-link(href='/admin/users') Users
       if user && user.admin === "true"
         li.nav-item
           a.nav-link(href='/admin/contacts') Contacts

@@ -2,14 +2,29 @@ extends ../layout.pug
 block content
 
   ul.list-group.usersListContainer
+    li.list-group-item.d-flex.align-items-center.usersList
+     span.mr-5.userInfoHalfWidth Name
+     span.mr-5.userInfoHalfWidth Email
+     span.mr-5.userInfoFullWidth Verification
+     span.mr-5 Role
+     span.mr-4 Status
+     
     each user in users
-     form(method='GET', action='/users/verify/'+user.token)
+     form(method='GET', action= user.verifiedAt ? '/admin/users/upgrade_user/' + user._id :'/users/verify/'+user.token)
       li.list-group-item.d-flex.align-items-center.usersList
-       span.mr-5.userInfo= user.username
-       span.mr-5.userInfo= user.email
-       span.mr-5.userInfo= `${user.verifiedAt ? user.verifiedAt : ' Not verified yet'}`
+       span.mr-5.userInfoHalfWidth= user.username
+       span.mr-5.userInfoHalfWidth= user.email
+       span.mr-5.userInfoFullWidth= `${user.verifiedAt ? user.verifiedAt : ' Not verified yet'}`
+       if user.superAdmin == 'true'
+        span.mr-5 Super Admin
+       else if user.admin == 'true' && user.superAdmin != 'true'
+        span.mr-5 Admin
+       else
+        span.mr-5 User
        div
         if user.verifiedAt
          span Activated
+          if user.admin != 'true' && user.superAdmin != 'true'
+           button.btn.btn-warning.btn-sm(type="submit") Upgrade
         else
          button.btn.btn-success(type='submit') Activate

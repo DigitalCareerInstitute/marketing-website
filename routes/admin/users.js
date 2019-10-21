@@ -14,4 +14,11 @@ router.get(
   AdminUsersController.getUsers
 );
 
+router.get(
+  "/upgrade_user/:id",
+  ensureAuthenticated,
+  redirectNonSuperAdmin,
+  AdminUsersController.upgradeUser
+);
+
 module.exports = router;
