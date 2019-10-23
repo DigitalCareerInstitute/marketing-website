@@ -14,6 +14,8 @@ var StorySchema = new Schema({
   avatar: String,
   companylogo: String,
   userId: String,
+  language: { type: Schema.ObjectId, ref: "Language" },
+  languageVersion: { type: Schema.ObjectId, ref: "Story"}
 });
 StorySchema.virtual("toHTML").get(function () {
   try {

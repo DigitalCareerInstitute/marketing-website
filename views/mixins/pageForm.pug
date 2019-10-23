@@ -38,5 +38,4 @@ mixin pageForm
           input.custom-control-input(name="menulocations" type='checkbox' id=menulocation.name value=menulocation._id  checked=(menulocation.selected))
           label.custom-control-label(for=menulocation.name)=menulocation.name
     if page && page.languageVersion
-      a.btn.btn-outline-primary(href="/admin/pages/edit/"+page.languageVersion.slug)="go to " + page.language+ page.language.title + " version"
-  
+      a.btn.btn-outline-primary(href="/admin/pages/edit/"+page.languageVersion.slug)="Go to " + page.language.title + " version"

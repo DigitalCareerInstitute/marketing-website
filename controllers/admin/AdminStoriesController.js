@@ -21,6 +21,8 @@ module.exports.getStories = async function (req, res) {
   
   let stories = await Story.find(query)
     .sort("order")
+    .populate("language")
+    .populate("languageVersion")
     .exec();
 
   res.render("admin/stories", {
@@ -29,23 +31,15 @@ module.exports.getStories = async function (req, res) {
   });
 }
 
-
-module.exports.getSingleStory = async (req, res) => {
-  try {
-    const story = await Story.findOne({ "slug": req.params.slug })
-    res.render(`story`, {
-      story
-    });
-  } catch (err) {
-    console.log(err);
-  }
-}
 module.exports.editStory = async function (req, res) {
   const query = isAdmin(req) ? {userId: req.user._id, slug: req.params.slug} : {slug: req.params.slug}
   let stories = await Story.find({})
     .sort("order")
     .exec();
-  const story = await Story.findOne(query)
+  const story = await Story
+    .findOne(query)
+    .populate("language")
+    .populate("languageVersion")
   
   const shiftStoryBack = stories.length + 1
 

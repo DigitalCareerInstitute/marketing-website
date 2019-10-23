@@ -89,7 +89,7 @@ exports.getAsyncRedis = () => {
     });
 
     redisClient.on("error", function(error) {
-      console.error("Redis ERROR: " + error);
+      // console.error("Redis ERROR: " + error);
       process.exit();
     });
 

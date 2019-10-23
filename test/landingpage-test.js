@@ -1,4 +1,5 @@
 //const server = require('../server.js')
+require("dotenv").config({ path: __dirname + "/../.env" });
 var expect = require("chai").expect;
 var chai = require("chai"),
   chaiHttp = require("chai-http");
@@ -34,6 +35,18 @@ describe("Basic DOM tests", function() {
       .end(function(err, res) {
         if (err) return done(err);
         res.text.includes("Digital Career Institute");
+        res.text.includes("Start your");
+        done();
+      });
+  });
+  it("German landingpage page content", function(done) {
+    request(server)
+      .get("/de/")
+      .expect(200)
+      .expect("Content-Type", /html/)
+      .end(function(err, res) {
+        if (err) return done(err);
+        res.text.includes("Starte deine");
         done();
       });
   });

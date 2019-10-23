@@ -2,7 +2,6 @@ const Language = require("../../models/language");
 module.exports.cloneSite = async(req, res, Model) => {
   try {
     const model = await Model.findOne({ slug: req.params.slug });
-    console.log("", model);
     const language = await Language.findOne({ title: 'en' });
     const languageDe = await Language.findOne({ title: 'de' });
 

@@ -1,0 +1,6 @@
+mixin buttonGroup(model, path)
+  form.d-flex.flex-wrap(method='POST', action='/admin/stories/delete/'+model.slug +'?_method=DELETE')
+
+    a.btn.btn-sm.btn-outline-primary.mr-2(target="_blank" href="/stories/"+model.slug) Show
+    a.btn.btn-sm.btn-outline-primary.mr-2(href="/admin/stories/edit/"+model.slug) Edit
+    button.btn.btn-sm.btn-outline-danger(type='submit') Delete

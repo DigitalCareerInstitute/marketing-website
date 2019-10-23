@@ -9,18 +9,9 @@ mixin pagelist(public)
               = "Order: "
               =page.order
           span.mr-2.mb-2
-            if page.language && page.languageVersion
-              =page.language.title
-              = " translation: "
-              a.mr-2(href="/admin/pages/edit/"+page.languageVersion.slug)=page.languageVersion.title
-              
+            +displayLanguage(page, `pages`)
             
           each menulocation in page.menulocations
             span.badge.badge-primary.mb-2.mr-2=menulocation.name
         if user && user.admin === "true"
-          form.d-flex.justify-content-between(method='POST', action='/admin/pages/delete/'+page.slug +'?_method=DELETE')
-            a.btn.btn-outline-primary.mr-2(href="/pages/"+page.slug) Show
-
-            .d-flex.align-items-center
-              a.btn.btn-outline-primary.mr-2(href="/admin/pages/edit/"+page.slug) Edit
-              button.btn.btn-outline-danger(type='submit') Delete
+          +buttonGroup(page, `pages`)

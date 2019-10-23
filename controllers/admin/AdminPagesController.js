@@ -36,12 +36,13 @@ module.exports.getSinglePage = async (req, res) => {
 };
 module.exports.editPage = async (req, res) => {
   try {
-    const page = await Page.findOne({ slug: req.params.slug }).populate("languageVersion");
+    const page = await Page
+      .findOne({ slug: req.params.slug })
+      .populate("language")
+      .populate("languageVersion");
 
     let pages = await Page.find({})
       .sort("order")
-      .populate("menulocations")
-      .populate("language")
       .exec();
     let menulocations = await Menulocation.find({}).exec();
     let allmenulocations = await Menulocation.find({}).exec();

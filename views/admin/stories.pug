@@ -20,14 +20,10 @@ block content
                     h3.font-weight-bold=story.subtitle          
                     code=story.workPosition
                     p.text-left.text-muted=story.excerpt
-              
+                +displayLanguage(story, `stories`)
+                +buttonGroup(story, `stories`)
 
-                .d-flex.align-items-center
-                  form.d-flex.justify-content-between(method='POST', action='/admin/stories/delete/'+story.slug +'?_method=DELETE')
-
-                    a.btn.btn-outline-primary.mr-2(target="_blank" href="/stories/"+story.slug) Show
-                    a.btn.btn-outline-primary.mr-2(href="/admin/stories/edit/"+story.slug) Edit
-                    button.btn.btn-outline-danger(type='submit') Delete
+                
 
       .col-md-4
         +storyForm

@@ -1,10 +1,10 @@
 "use strict";
 var expect = require("chai").expect;
 var request = require("supertest");
-var { url } = require("../helper.js");
+var { url } = require("../helpers/helper.js");
 var mongoose = require("mongoose");
-mongoose.connect(process.env.MONGOURL);
-const db = mongoose.connection;
+// mongoose.connect(process.env.MONGOURL);
+// const db = mongoose.connection;
 const Story = require("../models/story");
 var server = require("../server");
 
@@ -38,10 +38,8 @@ describe("Stories", function() {
 });
 describe("Database Tests", function() {
   before(function(done) {
-    mongoose.connect("mongodb://localhost/testDatabase");
-
-    db.on("error", console.error.bind(console, "connection error"));
-    db.once("open", function() {
+    mongoose.connection.on("error", console.error.bind(console, "connection error"));
+    mongoose.connection.once("open", function() {
       console.log("We are connected to test database!");
       done();
     });

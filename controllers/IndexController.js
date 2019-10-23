@@ -4,15 +4,20 @@ const Course = require("../models/course");
 const Event = require("../models/event");
 const Location = require("../models/location");
 const Partner = require("../models/partner");
+const Language = require("../models/language");
 const request = require("request");
 const { sendMail } = require("../helpers/helper");
 
 module.exports.landingpage = async (req, res) => {
   try {
-    const stories = await Story.find({})
-      .sort("order")
-      .limit(3)
-      .exec({});
+    const currentLanguage = await Language.findOne(!!req.session.locale ? { title: req.session.locale } : { title: 'en' });
+    const query = { language: !req.session.locale ? { $in: [currentLanguage._id, null] } : currentLanguage._id }
+    const stories = await Story
+    .find(query)
+    .sort("order")
+    .limit(3)
+    .exec();
+
     const locations = await Location.find({});
     const partners = await Partner.find({})
       .sort("order")
