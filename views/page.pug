@@ -2,11 +2,11 @@ extends layout.pug
 block content
   
   .container.py-5
-    h1.display-1.d-block=page.title
-    p.lead.pSize !{page.toHTML}
+    h1.display-1.d-block=model.title
+    p.lead.pSize !{model.toHTML}
 
   
 
     if user && user.admin === "true"
       div.mt-3
-      a.btn.btn-outline-primary(href='/admin/pages/edit/'+page.slug) Edit page
+      a.btn.btn-outline-primary(href='/admin/pages/edit/'+model.slug) Edit page

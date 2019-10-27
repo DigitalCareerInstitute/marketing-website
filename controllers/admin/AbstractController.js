@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Language = require("../../models/language");
 module.exports.cloneSite = async(req, res, Model) => {
   try {
@@ -5,13 +6,15 @@ module.exports.cloneSite = async(req, res, Model) => {
     const language = await Language.findOne({ title: 'en' });
     const languageDe = await Language.findOne({ title: 'de' });
 
-    var modelClone = new Model();
-    modelClone.title = `${ model.title } clone`;
+    var modelClone = new Model(model);
+    modelClone._id = mongoose.Types.ObjectId();
+    modelClone.isNew = true; 
+    modelClone.title = `${ model.title } de`;
     modelClone.languageVersion = model._id;
     model.languageVersion = modelClone._id;
     model.language = language._id;
     modelClone.language = languageDe._id;
-
+    
     await model.save();
     await modelClone.save();
     req.flash("success", `Successfully created ${modelClone._id}`);

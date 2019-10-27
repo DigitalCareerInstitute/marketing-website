@@ -5,17 +5,17 @@ block content
 
       .row
         .col-md-8.offset-md-2
-          +storyImages(story)
-          h2=story.title
+          +storyImages(model)
+          h2=model.title
           blockquote.blockquote
-            p.text-muted=story.excerpt
+            p.text-muted=model.excerpt
             //-footer.blockquote-footer
               //-| Someone famous in 
               //-cite(title='Source Title') Source Title
-          p.text-justify="Current position: "+story.workPosition     
+          p.text-justify="Current position: "+model.workPosition     
           .mt-4.content
-            p.text-justify !{story.toHTML} 
+            p.text-justify !{model.toHTML} 
           a(href='/stories') +Back
           if user && user.admin === "true"
             div.mt-3
-              a.btn.btn-outline-info(href='/admin/stories/edit/'+story.slug) Edit story
+              a.btn.btn-outline-info(href='/admin/stories/edit/'+model.slug) Edit story

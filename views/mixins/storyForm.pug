@@ -54,5 +54,8 @@ mixin storyForm
         a.btn.btn-outline-primary(target="_blank" href="/stories/"+story.slug)="Show"
       button.btn.btn-primary(type='submit')=editPath ? "Update" :"Create a new Story" 
   if story && story.languageVersion
-    a.btn.btn-outline-primary(href="/admin/stories/edit/"+story.languageVersion.slug)="Go to " + story.languageVersion.title + " version"
+    div 
+      = "Current Language: "
+      strong= + story.language.title
+    a.btn.btn-outline-primary(href="/admin/stories/edit/"+story.languageVersion.slug)="Go to translated version"
   
