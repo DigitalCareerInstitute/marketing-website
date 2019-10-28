@@ -221,7 +221,10 @@ app.use("/admin/contacts", contactsAdminRoutes);
 app.use("/admin/users", usersAdminRoutes);
 
 app.use("/admin*", contactsAdminRoutes);
-// app.use(redirects);
+app.use(redirects);
+app.get('*', function(req, res){
+  res.redirect('/')
+})
 
 app.set("views", path.join(__dirname, "views/"));
 app.set("view engine", "pug");
