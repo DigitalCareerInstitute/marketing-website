@@ -6,6 +6,6 @@ const router = express.Router();
 
 //COURSES ROUTING
 router.get("/", CoursesController.getCourses);
-router.get("/:course", CoursesController.getSingleCourse);
+router.get("/:slug", CoursesController.getSingleCourse);
 
 module.exports = router;

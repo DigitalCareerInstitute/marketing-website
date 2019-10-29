@@ -1,0 +1,18 @@
+mixin adminButtonGroup(model, path)
+  - var editPath = currentPath.includes('/edit')
+  .mb-3
+    .btn-group
+      if editPath
+        a.btn.btn-outline-primary(href="/admin/"+path)="Back"
+        a.btn.btn-outline-primary(target="_blank" href="/"+path+"/"+model.slug)="Show"
+        if model && !model.languageVersion
+          a.btn.btn-outline-primary(href="/admin/"+path+"/"+model.slug+"/l18n")="Create german version"
+
+      button.btn.btn-primary.ml-2(type='submit')=editPath ? "Update" :"New" 
+
+    if model && model.languageVersion
+      div
+        = "Language: "
+        strong=model.language.title
+        = " - "
+        a(href="/admin/"+path+"/edit/"+model.languageVersion.slug)="Go to translation"

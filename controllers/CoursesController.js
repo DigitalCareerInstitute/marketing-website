@@ -1,27 +1,23 @@
 const Course = require("../models/course");
+const Language = require("../models/language");
+const { renderLanguageVersion } = require("./AbstractController");
+
 module.exports.getCourses = async (req, res) => {
   try {
-    res.render("courses", {});
+    const currentLanguage = await Language.findOne(!!req.session.locale ? { title: req.session.locale } : { title: 'en' });
+    const query = { language: !req.session.locale ? { $in: [currentLanguage._id, null] } : currentLanguage._id }
+    const courses = await Course
+      .find(query)
+      .exec();
+    res.render("courses");
   } catch (err) {
     console.log(err);
   }
 };
 
 module.exports.getSingleCourse = async (req, res) => {
-  try {
-    const course = await Course
-    .findOne({ slug: req.params.course })
-    .populate(
-      "locations"
-    ).exec();
-    if(course){
-      res.render(`course`, {
-        course
-      });
-    } else {
-      res.redirect("/course")
-    }
-  } catch (err) {
-    console.log(err);
-  }
+  const course = await Course.findOne({ slug: req.params.slug })
+    .populate('language')
+    .populate('languageVersion')
+  renderLanguageVersion(req, res, course, 'course', 'courses')
 };

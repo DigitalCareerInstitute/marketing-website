@@ -4,14 +4,7 @@ mixin storyForm
     
     h2
       span.mr-3=editPath ? "Edit story" :"Create a new Story"
-      .btn-group
-        if editPath
-          a.btn.btn-outline-primary(href="/admin/stories")="Back"
-          if story && !story.languageVersion
-            a.btn.btn-outline-primary(href="/admin/stories/"+story.slug+"/l18n")="Create german version"
-          a.btn.btn-outline-primary(target="_blank" href="/stories/"+story.slug)="Show"
-        button.btn.btn-primary(type='submit')=editPath ? "Update" :"Create a new Story" 
-    
+    +adminButtonGroup(story, 'stories')   
     .mb-3
       label(for='title') Alumniname
       input#inputTitle.form-control(name='title', type='text', placeholder='Alumniname', value=editPath ? story.title :"" required='', autofocus='')
@@ -53,9 +46,3 @@ mixin storyForm
         a.btn.btn-outline-primary(href="/admin/stories")="Back"
         a.btn.btn-outline-primary(target="_blank" href="/stories/"+story.slug)="Show"
       button.btn.btn-primary(type='submit')=editPath ? "Update" :"Create a new Story" 
-  if story && story.languageVersion
-    div 
-      = "Current Language: "
-      strong= + story.language.title
-    a.btn.btn-outline-primary(href="/admin/stories/edit/"+story.languageVersion.slug)="Go to translated version"
-  

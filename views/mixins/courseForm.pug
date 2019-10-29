@@ -3,13 +3,7 @@ mixin courseForm
     
     h2
       =course ? "Edit course" :"Create a new course"
-      .btn-group
-        if course
-          a.btn.btn-outline-primary(href="/admin/courses")="Back"
-          a.btn.btn-outline-primary(href="/admin/courses/"+course.slug+"/l18n")="Create german version"
-          a.btn.btn-outline-primary(target="_blank" href="/courses/"+course.slug)="Show"
-
-        button.btn.btn-primary(type='submit')=course ? "Update" :"Create a new Course" 
+    +adminButtonGroup(course, 'courses')   
     .row
       .col-md-6
         .form-group
@@ -89,9 +83,3 @@ mixin courseForm
           .custom-control.custom-checkbox
             input.custom-control-input(name="locations" type='checkbox' id=location.name value=location._id  checked=(location.selected))
             label.custom-control-label(for=location.name)=location.name
-
-        .btn-group
-          if course
-            a.btn.btn-outline-primary(href="/admin/courses")="Back"
-            a.btn.btn-outline-primary(target="_blank" href="/courses/"+course.slug)="Show"
-          button.btn.btn-primary(type='submit')=course ? "Update" :"Create a new Course" 

@@ -2,16 +2,8 @@ mixin pageForm
   - var editPath = currentPath.includes('admin/pages/edit')
   form.mb-5(method='POST', action=editPath ? '/admin/pages/update/'+page.slug+'?_method=PUT' : '/admin/pages?alert=create')
 
-    h2
-      =editPath ? "Edit Page " :"Create a new Page"
-      .btn-group
-        if editPath
-          a.btn.btn-outline-primary(href="/admin/pages")="Back"
-          if page && !page.languageVersion
-            a.btn.btn-outline-primary(href="/admin/pages/"+page.slug+"/l18n")="Create german version"
-
-          a.btn.btn-outline-primary(target="_blank" href="/pages/"+page.slug)="Show"
-        button.btn.btn-primary(type='submit')=editPath ? "Update" :"Create a new Page" 
+    h2=editPath ? "Edit Page " :"Create a new Page"
+    +adminButtonGroup(page, 'pages')
     .mb-3
       label(for='title') Title
       input#inputName.form-control(name='title', type='text', placeholder='Title', required='', autofocus='', value=editPath ? page.title : "")
@@ -32,13 +24,7 @@ mixin pageForm
       button.btn.btn-secondary.badge.ml-2(type='button', data-container='body', data-toggle='popover',  data-trigger="hover",  data-placement='top', data-content='Defines the Menulocation where the pages are displayed. Headerpages appear in the Header and on the landingpages "Get Involved" section. Footerpages just in the footer. If no location is defined, the page is "hidden" but accessible per direct url.')
         | ?
 
-      
       each menulocation in menulocations
         .custom-control.custom-checkbox
           input.custom-control-input(name="menulocations" type='checkbox' id=menulocation.name value=menulocation._id  checked=(menulocation.selected))
           label.custom-control-label(for=menulocation.name)=menulocation.name
-    if page && page.languageVersion
-      div 
-        = "Current Language: "
-        strong=page.language.title
-      a.btn.btn-outline-primary(href="/admin/pages/edit/"+page.languageVersion.slug)="Go to translated version"

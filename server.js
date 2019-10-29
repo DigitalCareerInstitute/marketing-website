@@ -28,17 +28,21 @@ const mongoose = require("mongoose");
 // methods getAsync() and setAsync()
 let redisClient = null;
 
-(async()=> {
-  const en = Language.findOne({title: 'en'})
-  const de = Language.findOne({title: 'de'})
+(async () => {
+  const en = Language.findOne({ title: 'en' })
+  const de = Language.findOne({ title: 'de' })
   const res = await Promise.all([en, de])
-  if(!res[0]){
+  if (!res[0]) {
     console.log("no english language created. Seeding EN lang into mongoose");
     await Language.create(languages[0])
   }
-  if(!res[1]){
+  if (!res[1]) {
     console.log("no german language created. Seeding DE lang into mongoose");
     await Language.create(languages[1])
+  }
+
+  if (Object.keys(await Course.collection.getIndexes()).includes('order_1')) {
+    await Course.collection.dropIndex("order_1");
   }
 })()
 
@@ -56,13 +60,14 @@ if (process.env.USE_REDIS !== undefined && process.env.USE_REDIS === "true") {
 
 mongoose.set("useCreateIndex", true);
 try {
-  mongoose.connect(mongopath, { useNewUrlParser: true });
+  mongoose.connect(mongopath, { useNewUrlParser: true }).then(res => {
+  });
 } catch (err) {
   console.log(`Please set a mongo path in your .env \n\n${err}`);
 }
 i18n.configure({
   objectNotation: true,
-  locales:['en', 'de'],
+  locales: ['en', 'de'],
   queryParameter: 'lang',
   directory: __dirname + '/locales'
 });
@@ -88,7 +93,7 @@ app.use("/images", express.static(path.join(__dirname, "uploads/images")));
 
 app.use(flash());
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   (res.locals.messages = {
     danger: req.flash("danger"),
     warning: req.flash("warning"),
@@ -130,18 +135,20 @@ app.use(async (req, res, next) => {
   }
 
   if (navData === null) {
-    const query = req.session.locale === 'de' ? {title: 'de'} : {title: 'en'}
-    const language = await Language.findOne(query);
-    let courses = await Course.find({})
+    const currentLanguage = await Language.findOne(!!req.session.locale ? { title: req.session.locale } : { title: 'en' });
+
+    const query = { language: !req.session.locale ? { $in: [currentLanguage._id, null] } : currentLanguage._id }
+    const courses = await Course
+      .find(query)
       .sort({ order: 1 })
       .exec();
     let locations = await Location.find({}).exec();
 
     let footerCat = await Menulocation.findOne({ name: "footer" });
-    let footerPages = await Page.find({ menulocations: { $in: [footerCat] }, language: language._id });
+    let footerPages = await Page.find({ menulocations: { $in: [footerCat] }, language: currentLanguage._id });
 
     let headerCat = await Menulocation.findOne({ name: "header" });
-    let headerPages = await Page.find({ menulocations: { $in: [headerCat] }, language: language._id });
+    let headerPages = await Page.find({ menulocations: { $in: [headerCat] }, language: currentLanguage._id });
 
     navData = {
       courses,
@@ -222,7 +229,7 @@ app.use("/admin/users", usersAdminRoutes);
 
 app.use("/admin*", contactsAdminRoutes);
 app.use(redirects);
-app.get('*', function(req, res){
+app.get('*', function (req, res) {
   res.redirect('/')
 })
 

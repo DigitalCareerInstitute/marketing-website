@@ -22,8 +22,7 @@ var CourseSchema = new Schema({
     type: String
   },
   order: {
-    type: Number,
-    unique: true
+    type: Number
   },
   subtitle: {
     type: String
@@ -48,7 +47,9 @@ var CourseSchema = new Schema({
       subtitle: String,
       time: String
     }
-  ]
+  ],
+  language: { type: Schema.ObjectId, ref: "Language" },
+  languageVersion: { type: Schema.ObjectId, ref: "Page"}
 });
 
 CourseSchema.plugin(URLSlugs("headline"));

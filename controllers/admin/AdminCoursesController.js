@@ -11,7 +11,9 @@ const Course = require("../../models/course");
 
 module.exports.getCourses = async function(req, res) {
   let courses = await Course.find({})
-    .sort({ order: 1 })
+    .sort({"order": 1})
+    .populate("language")
+    .populate("languageVersion")
     .exec();
 
   res.render("admin/adminCourses", {
@@ -27,29 +29,34 @@ module.exports.getSingleCourse = function(req, res) {
     });
   });
 };
-module.exports.editCourse = async function(req, res) {
-  const course = await Course.findOne({ slug: req.params.slug });
-  const courses = await Course.find({})
-    .sort("order")
-    .exec();
-  let alllocations = await Location.find({}).exec();
-  all = alllocations.map(loc => {
-    let match = course.locations
-      .map(pcat => pcat.toString())
-      .includes(loc._id.toString());
+module.exports.editCourse = async function (req, res) {
+  try {
+    const course = await Course.findOne({ slug: req.params.slug });
+    const courses = await Course.find({})
+      .sort("order")
+      .exec();
+    let alllocations = await Location.find({}).exec();
+    all = alllocations.map(loc => {
+      let match = course.locations
+        .map(pcat => pcat.toString())
+        .includes(loc._id.toString());
 
-    if (match) {
-      return Object.assign({ selected: true }, loc._doc);
-    } else {
-      return loc._doc;
-    }
-  });
+      if (match) {
+        return Object.assign({ selected: true }, loc._doc);
+      } else {
+        return loc._doc;
+      }
+    });
 
-  res.render("admin/editCourse", {
-    course,
-    courseFormConfig,
-    locations: all
-  });
+    res.render("admin/editCourse", {
+      course,
+      courseFormConfig,
+      locations: all
+    });
+  } catch (error) {
+    req.flash("danger", `Error ${error}`);
+    res.redirect("/admin/courses");
+  }
 };
 module.exports.createCourse = async function(req, res) {
   var course = await new Course();

@@ -9,7 +9,8 @@ module.exports.cloneSite = async(req, res, Model) => {
     var modelClone = new Model(model);
     modelClone._id = mongoose.Types.ObjectId();
     modelClone.isNew = true; 
-    modelClone.title = `${ model.title } de`;
+    modelClone.title = `${ model.title } de`;    
+    modelClone.slug = `${ model.slug }-de`;
     modelClone.languageVersion = model._id;
     model.languageVersion = modelClone._id;
     model.language = language._id;
