@@ -1,12 +1,12 @@
 mixin newsletter
   .footer-connect.py-5.bg-primary
     .container.py-5
-      h2#nlheadline.display-2.mb-5.text-white.text-center Subscribe to our newsletter
+      h2#nlheadline.display-2.mb-5.text-white.text-center=__("Subscribe to our newsletter")
       .row
         .footer-subscribe.d-flex.justify-content-center.col-md-8.offset-md-2
           .w-100.px-sm-5
             form#mc-embedded-subscribe-form(name='mc-embedded-subscribe-form', method='post', action='/newsletter-signup')
-              label.sr-only(for='newsletter_email') Location
-              input#newsletter_email.subs_input(type='email', required, placeholder='Email address', name='email')
+              label.sr-only(for='newsletter_email')=__("Location")
+              input#newsletter_email.subs_input(type='email', required, placeholder=__("Email"), name='email')
               button#nlbtn.btn.btn-light(type="submit")
-                span Subscribe
+                span=__("Subscribe")

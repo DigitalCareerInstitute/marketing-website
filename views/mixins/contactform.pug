@@ -2,49 +2,33 @@ mixin contactform
   form#contactForm.mt-3(method="POST" action="/contact")
     .row
       .col-md-6.mb-3
-        label.sr-only(for='name') Name
+        label.sr-only(for='name')=__("Name")
         input#name.form-control(name="name" type='text', placeholder='Name', value='', required)
-        .invalid-feedback
-          | Valid first name is required.
         input#track.form-control(name="track" type="hidden" )
       .col-md-6.mb-3
-        label.sr-only(for='email') Email
+        label.sr-only(for='email')=__("Email")
         span.text-muted
         input#email.form-control(name="email" type='email', placeholder='email@example.com' required)
-        .invalid-feedback
-          | Please enter a valid email address for shipping updates.
-
       .col-md-12
         .form-group
-          label.sr-only(for='body') Message
-          textarea.mb-3#body.form-control(name="body" placeholder='Please, write your message here...', value='', required)
-          .invalid-feedback
-            | Valid last name is required.
+          label.sr-only(for='body')=__("Message")
+          textarea.mb-3#body.form-control(name="body" placeholder=__("Please, write your message here..."), value='', required)
         .form-group
-          label.sr-only(for='phone') Phone
+          label.sr-only(for='phone')=__("Phone")
           input#phone.form-control(name="phone" type='text', placeholder='+49 151 123 456 78' required)
-          .invalid-feedback
-            | Please enter a valid phone for shipping updates.
-        
           input#age.agefield.form-control(name="age" type='text', placeholder='25')
         label.sr-only(for='location') Location
         select.mb-3.custom-select.text-muted(required='', name="locations")
-          option( selected disabled value="") Select your location here...
+          option( selected disabled value="")=__("Select your location here...")
           each location in locations
             option(value=(location._id))=location.name
-        
-    
         p.dataPrivacyLink
           label.checkbox.TermsofService.text-muted
-            | I have read and agree to the
-            input(type='checkbox', name='TermsofService[]', value='I have read and agree to the', required)
+            =__("I have read and agree to the")
+            input(type='checkbox', name='TermsofService[]', value=__("I have read and agree to the"), required)
             span.checkmark
-          a.ml-1(data-toggle='modal', data-target='#dataPrivacy')
-            | Data
-            | Privacy
+          a.ml-1(data-toggle='modal', data-target='#dataPrivacy')=__("Data Privacy")
         if companytour
           input(type="hidden" name='companytour' value=true)            
         .text-center
-          button.btn.btn-lg.btn-gradient-secondary.m-auto(type="submit") SEND   
-
-
+          button.btn.btn-lg.btn-gradient-secondary.m-auto(type="submit")=__("SEND") 

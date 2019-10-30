@@ -69,7 +69,7 @@ module.exports.fetchevents = async (req, res) => {
                 text: event.description.text,
                 start: event.start.local,
                 url: event.url,
-                imageurl: event.logo.original.url
+                imageurl: !!event.logo ? event.logo.original.url : "/media/bg1.jpg"
               });
               await newevent.save();
             }

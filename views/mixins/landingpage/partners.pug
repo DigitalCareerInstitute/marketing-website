@@ -1,8 +1,8 @@
 mixin partners
   section.py-5.section-services
     .container.py-5.text-center
-      h2.display-1.text-center.text-uppercase Our Partners
-      h3.mb-5.text-center.text-muted Meet our partners
+      h2.display-1.text-center.text-uppercase=__("Our Partners")
+      h3.mb-5.text-center.text-muted=__("Meet our partners")
       each partner in partners
         if partner.link
           a(href=partner.link target="_blank")

@@ -9,7 +9,7 @@ mixin footer
             .footers-logo
               p.font-weight-bold DCI Digital Career Institute
             .footers-info.mt-3
-              p =__("The Digital Career Institute was born as an initiative to integrate refugees into digital jobs. Today it is committed to train anyone who wants to pursue a tech career.")
+              p=__("The Digital Career Institute was born as an initiative to integrate refugees into digital jobs. Today it is committed to train anyone who wants to pursue a tech career.")
 
           .col-xs-12.col-sm-6.col-md-2.footers-two
             p.font-weight-bold Company 
@@ -29,10 +29,10 @@ mixin footer
                       small.text-monospace= " (Edit)"
                     
           .col-xs-12.col-sm-6.col-md-2.footers-three
-            p.font-weight-bold Courses 
+            p.font-weight-boldl=__("Courses") 
             ul.list-unstyled
               li
-                a(href='/courses') All courses
+                a(href='/courses')=__("All courses")
               each course in courses
                 li
                   a(href='/courses/'+ course.slug)=course.headline

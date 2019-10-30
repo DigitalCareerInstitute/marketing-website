@@ -23,6 +23,7 @@ const EventsController = require("./controllers/admin/AdminEventsController");
 // const JobsController = require("./controllers/admin/AdminJobsController");
 const EmployeesController = require("./controllers/admin/AdminEmployeesController");
 const mongoose = require("mongoose");
+const { getAvailableTranslations } = require("./controllers/AbstractController");
 
 // connect to redis server and get an extended client with promisified
 // methods getAsync() and setAsync()
@@ -135,9 +136,7 @@ app.use(async (req, res, next) => {
   }
 
   if (navData === null) {
-    const currentLanguage = await Language.findOne(!!req.session.locale ? { title: req.session.locale } : { title: 'en' });
-
-    const query = { language: !req.session.locale ? { $in: [currentLanguage._id, null] } : currentLanguage._id }
+    const query = await getAvailableTranslations(req, res)
     const courses = await Course
       .find(query)
       .sort({ order: 1 })
@@ -145,10 +144,10 @@ app.use(async (req, res, next) => {
     let locations = await Location.find({}).exec();
 
     let footerCat = await Menulocation.findOne({ name: "footer" });
-    let footerPages = await Page.find({ menulocations: { $in: [footerCat] }, language: currentLanguage._id });
+    let footerPages = await Page.find(Object.assign(query, { menulocations: { $in: [footerCat] } }));
 
     let headerCat = await Menulocation.findOne({ name: "header" });
-    let headerPages = await Page.find({ menulocations: { $in: [headerCat] }, language: currentLanguage._id });
+    let headerPages = await Page.find(Object.assign(query, { menulocations: { $in: [headerCat] } }));
 
     navData = {
       courses,

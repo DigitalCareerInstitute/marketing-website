@@ -1,12 +1,12 @@
 mixin upcomingEvents
   section#events.bg-light.py-5
     .container
-      h2.display-1.text-center.text-uppercase Upcoming events
-      h3.mb-5.text-center.text-muted Meet us in person in several locations in Germany
+      h2.display-1.text-center.text-uppercase=__("Upcoming events")
+      h3.mb-5.text-center.text-muted=__("Meet us in person in several locations in Germany") 
       .row.mx-md-5
         each event in events
           .col-sm-6
             +singleEvent(event)
 
     .text-center
-      a.btn.btn-lg.btn-gradient-secondary.mx-5(href='/events/') All Events
+      a.btn.btn-lg.btn-gradient-secondary.mx-5(href='/events/')=__("All Events")
