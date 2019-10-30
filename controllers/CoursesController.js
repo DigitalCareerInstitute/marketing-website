@@ -4,8 +4,7 @@ const { renderLanguageVersion, getAvailableTranslations } = require("./AbstractC
 
 module.exports.getCourses = async (req, res) => {
   try {
-    const currentLanguage = await Language.findOne(!!req.session.locale ? { title: req.session.locale } : { title: 'en' });
-    const query = await getAvailableTranslations();
+    const query = await getAvailableTranslations(req, res);
     const courses = await Course
       .find(query)
       .exec();

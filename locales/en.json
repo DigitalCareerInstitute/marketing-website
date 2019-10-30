@@ -33,5 +33,32 @@
 	"Courses": "Courses",
 	"The Digital Career Institute was born as an initiative to integrate refugees into digital jobs. Today it is committed to train anyone who wants to pursue a tech career.": "The Digital Career Institute was born as an initiative to integrate refugees into digital jobs. Today it is committed to train anyone who wants to pursue a tech career.",
 	"Meet our happy students": "Meet our happy students",
-	"Learn digital skills with us to get the most fulfilling jobs": "Learn digital skills with us to get the most fulfilling jobs"
+	"Learn digital skills with us to get the most fulfilling jobs": "Learn digital skills with us to get the most fulfilling jobs",
+	"All courses": "All courses",
+	"Name": "Name",
+	"Email": "Email",
+	"Message": "Message",
+	"Please, write your message here...": "Please, write your message here...",
+	"Select your location here...": "Select your location here...",
+	"I have read and agree to the": "I have read and agree to the",
+	"Data Privacy": "Data Privacy",
+	"SEND": "SEND",
+	"Students": "Students",
+	"Courses started": "Courses started",
+	"Company tours": "Company tours",
+	"Locations": "Locations",
+	"Show all Stories": "Show all Stories",
+	"Upcoming events": "Upcoming events",
+	"Meet us in person in several locations in Germany": "Meet us in person in several locations in Germany",
+	"All Events": "All Events",
+	"Our Partners": "Our Partners",
+	"Meet our partners": "Meet our partners",
+	"Subscribe to our newsletter": "Subscribe to our newsletter",
+	"Location": "Location",
+	"Subscribe": "Subscribe",
+	"footer": {
+		"Company": "footer.Company",
+		"Community": "footer.Community"
+	},
+	"Events": "Events"
 }

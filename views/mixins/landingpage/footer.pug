@@ -12,14 +12,14 @@ mixin footer
               p=__("The Digital Career Institute was born as an initiative to integrate refugees into digital jobs. Today it is committed to train anyone who wants to pursue a tech career.")
 
           .col-xs-12.col-sm-6.col-md-2.footers-two
-            p.font-weight-bold Company 
+            p.font-weight-bold=__("footer.Company")
             ul.list-unstyled
               li
-                a(href='/about-us/') About us
+                a(href='/about-us/')=__("navigation.About us")
               li
                 a(href='https://dci-jobs.personio.de/') Jobs
               li
-                a(data-toggle='modal',data-target='#contactFormModal') Contact
+                a(data-toggle='modal',data-target='#contactFormModal')=__("Contact") 
               each page in footerPages
                 li
                   a(href='/pages/'+ page.slug)
@@ -29,7 +29,7 @@ mixin footer
                       small.text-monospace= " (Edit)"
                     
           .col-xs-12.col-sm-6.col-md-2.footers-three
-            p.font-weight-boldl=__("Courses") 
+            p.font-weight-bold=__("Courses") 
             ul.list-unstyled
               li
                 a(href='/courses')=__("All courses")
@@ -40,7 +40,7 @@ mixin footer
                     a(href='/admin/courses/edit/'+ course.slug)
                       small.text-monospace= " (Edit)"
           .col-xs-12.col-sm-6.col-md-2.footers-four
-            p.font-weight-bold Community 
+            p.font-weight-bold=__("footer.Community") 
             ul.list-unstyled
               li
                 a(target="_blank" href="https://www.facebook.com/digitalcareerinstitute") Facebook
@@ -52,10 +52,10 @@ mixin footer
                 a(target="_blank" href="https://www.youtube.com/channel/UCSM_3ldxjcclGTcXaJRBYTw") YouTube
           
           .col-xs-12.col-sm-6.col-md-2.footers-five
-            p.font-weight-bold Events 
+            p.font-weight-bold=__("Events") 
             ul.list-unstyled
               li
-                a(href='/events') All Events
+                a(href='/events')=__("All Events")
               each location in locations
                 li
                   a(href='/events/'+ location.name)=location.name

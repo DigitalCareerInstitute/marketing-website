@@ -61,7 +61,7 @@
 	"Meet our partners": "Triff unsere Partner",
 	"How To Apply": "Wie bewerbe ich mich",
 	"Courses Started": "Gestartete Kurse",
-	"All Events": "Alle Veranstaltungne",
+	"All Events": "Alle Veranstaltungen",
 	"Select your location here...": "Wo bist du?",
 	"Show all Stories": "Zeige alle Geschichten",
 	"I have read and agree to the": "Gelesen und akzeptiert:",
@@ -73,9 +73,18 @@
 	"Email": "Email",
 	"Location": "Standort",
 	"Subscribe to our newsletter": "Melde dich für unseren Newsletter an",
-	"Our campuses": "Unsere",
+	"Our campuses": "Unsere Standorte",
 	"Our Team": "Unser Team",
 	"Our team consists of entrepreneurs, employees and freelancers of the Berlin Start-up scene. What we all have in common is our willingness to help, our professional networks and the opportunity to connect the tech scene with people who had to flee their homeland.": "Unser Team besteht aus bla blablblablabl",
 	"Or anyone who would like to start a career in tech regardless of their background.": "Oder allen die blablabalbalbla",
-	"Subscribe": "Anmelden"
+	"Subscribe": "Anmelden",
+	"All events in our locations": "Alle Veranstaltung in unseren Standorten",
+	"Hackthons, Infoevents and Jobfairs": "Hackathonsk Infoveranstaltungen und Karrieremesssen",
+	"footer": {
+		"Company": "Institut",
+		"Community": "Socialmedia"
+	},
+	"All courses": "Alle Kurse",
+	"Events": "Events",
+	"Contact": "Contact"
 }
