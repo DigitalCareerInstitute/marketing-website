@@ -197,6 +197,7 @@ app.use("/admin/locations", locationsAdminRoutes);
 app.use("/admin/events", eventsAdminRoutes);
 app.use("/admin/menulocations", menulocationAdminRoutes);
 app.use("/admin/contacts", contactsAdminRoutes);
+
 app.use("/admin/users", usersAdminRoutes);
 
 app.use("/admin*", contactsAdminRoutes);
