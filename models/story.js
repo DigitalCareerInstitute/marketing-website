@@ -4,7 +4,7 @@ var mongoose = require("mongoose"),
 
 var StorySchema = new Schema({
   title: String,
-  alumniName: String,
+  subtitle: String,
   workPosition: String,
   excerpt: String,
   content: String,

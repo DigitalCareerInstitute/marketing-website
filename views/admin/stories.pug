@@ -13,11 +13,11 @@ block content
                 a(href="/stories/"+story.slug)
                   .row.position-relative
                     .col-12.align-items-center
-                      img.object-fit-cover.img-fluid.rounded-circle.square(alt=story.alumniName src="/media/pixel.gif" style="background-image: url('/images/"+story.avatar+"')")
+                      img.object-fit-cover.img-fluid.rounded-circle.square(alt=story.subtitle src="/media/pixel.gif" style="background-image: url('/images/"+story.avatar+"')")
                     .col-5.position-absolute.align-items-center.bottom.right
-                      img.object-fit-cover.img-fluid.rounded-circle.square(alt=story.alumniName src="/media/pixel.gif" style="background-image: url('/images/"+story.companylogo+"')")
+                      img.object-fit-cover.img-fluid.rounded-circle.square(alt=story.subtitle src="/media/pixel.gif" style="background-image: url('/images/"+story.companylogo+"')")
                   div
-                    h3.font-weight-bold=story.alumniName          
+                    h3.font-weight-bold=story.subtitle          
                     code=story.workPosition
                     p.text-left.text-muted=story.excerpt
               
