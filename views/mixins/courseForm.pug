@@ -47,6 +47,13 @@ mixin courseForm
           button.btn.btn-secondary.badge.ml-2(type='button', data-container='body', data-toggle='popover',  data-trigger="hover",  data-placement='top', data-content='Defines the order the courses are displayed. 0,1,2,3,4')
             | ?
           input#inputOrder.form-control(name='order', type='number', placeholder='Order', autofocus='', value=course ? course.order : "")
+        .mb-3
+          label(for='massnahme') Massnahmenummer
+          input#massnahme.form-control(name='massnahmenummer', type='text', placeholder='massnahmenummer', value=course &&course.massnahmeNumber ? course.massnahmeNumber :"")
+        .mb-3
+          label(for='massnahme') Massnahme details
+          textarea#massnahme.form-control(name='massnahmedetails', placeholder='massnahmedetails')=course &&course.massnahmeDetails ? course.massnahmeDetails :""
+            
 
         each archivementGroup, i in courseFormConfig.archivementConfig
          .form-group
