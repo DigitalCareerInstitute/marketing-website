@@ -35,7 +35,8 @@ mixin storyForm
 
     .mb-3
       label(for='content') Content
-      textarea#inputContent.form-control(name='content' placeholder='Content', required='')=editPath ? story.content :""
+      #editor(value=editPath ? story.content : "")
+      textarea#inputContent.d-none(name='content', type='password', placeholder='Content', required='', )=editPath ? JSON.stringify(story.content) : ""
     .mb-3
       label(for='order') 
         | Order

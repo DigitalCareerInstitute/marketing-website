@@ -96,7 +96,7 @@ module.exports.updateStory = async function (req, res) {
   story.slug = req.body.slug;
   story.workPosition = req.body.workPosition;
   story.excerpt = req.body.excerpt;
-  story.content = req.body.content;
+  story.content = JSON.parse(req.body.content);
   story.order = req.body.order;
 
   story.avatar = req.files.avatar ? req.body.avatar : story.avatar;
