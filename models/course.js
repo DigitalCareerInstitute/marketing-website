@@ -21,6 +21,10 @@ var CourseSchema = new Schema({
   curriculumPdf: {
     type: String
   },
+  successStory: {
+    type: String,
+    trim: true
+  },
   order: {
     type: Number,
     unique: true

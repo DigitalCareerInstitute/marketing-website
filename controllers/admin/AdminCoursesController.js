@@ -22,7 +22,8 @@ module.exports.getCourses = async function(req, res) {
 module.exports.getSingleCourse = function(req, res) {
   Course.findOne({ slug: req.params.slug }, function(err, course) {
     res.render("course", {
-      course
+      course,
+      courseFormConfig
     });
   });
 };
@@ -59,7 +60,7 @@ module.exports.createCourse = async function(req, res) {
   course.order = req.body.order;
   course.locations = req.body.locations;
   course.icon = req.body.icon;
-
+  course.successStory = req.body.successStory;
   course.archivements = [1, 2, 3, 4, 5].map(item => {
     return {
       icon: req.body[`archivement_icon_${item}`],
@@ -132,7 +133,6 @@ module.exports.createCourse = async function(req, res) {
       title: req.body.features_title_3
     }
   ];
-
 
   // save the course and check for errors
   course.save(async function(err) {
@@ -253,9 +253,8 @@ module.exports.updateCourse = async function(req, res) {
   course.subheading = req.body.subheading;
   course.order = req.body.order;
   course.locations = req.body.locations;
-
+  course.successStory = req.body.successStory;
   course.curriculumPdf = req.body.curriculumPdf;
-
 
   course.icon = req.files.icon ? req.body.icon : course.icon;
 
