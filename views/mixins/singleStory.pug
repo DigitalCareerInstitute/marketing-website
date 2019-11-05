@@ -3,7 +3,7 @@ mixin singleStory(story, showFullContent)
     a(href="/stories/"+story.slug)
       +storyImages(story)
       div
-        h3.font-weight-bold=story.alumniName          
+        h3.font-weight-bold=story.title
         code=story.workPosition
         p.text-left.text-muted=story.excerpt
   

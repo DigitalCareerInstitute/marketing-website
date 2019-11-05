@@ -86,6 +86,7 @@ module.exports.createCourse = async function(req, res) {
   });
 
   course.curriculumPdf = req.body.curriculumPdf;
+
   course.archivements = [
     {
       icon: req.body.archivement_icon_1,
@@ -134,6 +135,7 @@ module.exports.createCourse = async function(req, res) {
       title: req.body.features_title_3
     }
   ];
+
 
   // save the course and check for errors
   course.save(async function(err) {
@@ -267,6 +269,12 @@ module.exports.updateCourse = async function(req, res) {
     if (items.length == itemsAmount) {
       items.map((_, i) => {
         titles.map(title => {
+          if (!course[model][i]) {
+            course[model][i] = {
+              icon: "",
+              description: ""
+            }
+          }
           course[model][i][title.dbChild] = req[
             model == "archivements" && title.dbChild == "icon"
               ? "files"

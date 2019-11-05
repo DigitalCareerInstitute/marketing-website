@@ -6,16 +6,15 @@ block content
       .row
         .col-md-8.offset-md-2
           +storyImages(story)
-          h2=story.alumniName
+          h2=story.title
           blockquote.blockquote
             p.text-muted=story.excerpt
             //-footer.blockquote-footer
               //-| Someone famous in 
               //-cite(title='Source Title') Source Title
           p.text-justify="Current position: "+story.workPosition     
-          .mt-4
-            p.text-justify=story.content
-          
+          .mt-4.content
+            p.text-justify !{story.toHTML} 
           a(href='/stories') +Back
           if user && user.admin === "true"
             div.mt-3

@@ -16,7 +16,9 @@ PageSchema.plugin(URLSlugs("title"));
 PageSchema.virtual("toHTML").get(function() {
   try {
     const content = this.content.ops;
-    
+    if (!content) {
+      throw "is no quill data yet"
+    } 
     const converter = new QuillDeltaToHtmlConverter(content);
     return converter.convert();
   } catch (e) {

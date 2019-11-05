@@ -7,16 +7,23 @@ mixin storyForm
       .btn-group
         if editPath
           a.btn.btn-outline-primary(href="/admin/stories")="Back"
-          a.btn.btn-outline-primary(target="_blank" href="/storys/"+story.slug)="Show"
+          a.btn.btn-outline-primary(target="_blank" href="/stories/"+story.slug)="Show"
         button.btn.btn-primary(type='submit')=editPath ? "Update" :"Create a new Story" 
     
     .mb-3
       label(for='title') Title
       input#inputTitle.form-control(name='title', type='text', placeholder='Title', value=editPath ? story.title :"" required='', autofocus='')
 
+    if !editpath && story && story.slug
+      .mb-3
+        label(for='slug') 
+          | Slug
+          button.btn.btn-secondary.badge.ml-2(type='button', data-container='body', data-toggle='popover',  data-trigger="hover",  data-placement='top', data-content='Changing this has negative effects on SEO if it not fresh created. To regenerate the slug, clear the fields and update the record.')
+            | ?
+        input#inputTitle.form-control(name='slug', type='text', placeholder='Slug', value=story.slug) 
     .mb-3
-      label(for='alumniName') Title
-      input#inputAlumniName.form-control(name='alumniName', type='text', placeholder='Alumni Name', value=editPath ? story.alumniName :"" required='', autofocus='')
+      label(for='subtitle') Subtitle
+      input#subtitle.form-control(name='subtitle', type='text', placeholder='Subtitle', value=editPath ? story.subtitle :"" required='', autofocus='')
 
     .mb-3
       label(for='workPosition') Work Position
@@ -28,7 +35,8 @@ mixin storyForm
 
     .mb-3
       label(for='content') Content
-      textarea#inputContent.form-control(name='content' placeholder='Content', required='')=editPath ? story.content :""
+      #editor(value=editPath ? story.content : "")
+      textarea#inputContent.d-none(name='content', type='password', placeholder='Content', required='', )=editPath ? JSON.stringify(story.content) : ""
     .mb-3
       label(for='order') 
         | Order

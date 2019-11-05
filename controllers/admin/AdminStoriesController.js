@@ -57,7 +57,7 @@ module.exports.createStory = async (req, res) => {
   var story = new Story(); // create a new instance of the story model
   //TODO this could be refactored
   story.title = req.body.title; // set the stories title (comes from the request)
-  story.alumniName = req.body.alumniName; // set the stories alumni name (comes from the request)
+  story.subtitle = req.body.subtitle; // set the stories subtitle (comes from the request)
   story.workPosition = req.body.workPosition; // set the stories work position (comes from the request)
   story.excerpt = req.body.excerpt; // set the stories excerpt (comes from the request)
   story.content = req.body.content; // set the stories content (comes from the request)
@@ -92,10 +92,11 @@ module.exports.updateStory = async function (req, res) {
   let story = await Story.findOne(query).exec()
   
   story.title = req.body.title;
-  story.alumniName = req.body.alumniName;
+  story.subtitle = req.body.subtitle;
+  story.slug = req.body.slug;
   story.workPosition = req.body.workPosition;
   story.excerpt = req.body.excerpt;
-  story.content = req.body.content;
+  story.content = JSON.parse(req.body.content);
   story.order = req.body.order;
 
   story.avatar = req.files.avatar ? req.body.avatar : story.avatar;
@@ -104,7 +105,7 @@ module.exports.updateStory = async function (req, res) {
   try {
     await story.save();
     req.flash("success", `Successfully updated ${story.title}`);
-    res.redirect("/admin/stories/edit/" + req.params.slug);
+    res.redirect("/admin/stories/edit/" + story.slug);
   } catch (error) {
     console.log('error', error);
   }

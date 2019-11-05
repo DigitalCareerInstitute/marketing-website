@@ -382,7 +382,12 @@ UPCOMING EVENTS
   background-repeat: no-repeat;
   filter: grayscale(100%);
 }
-
+.story-item .content blockquote {
+  @extend .blockquote;
+  border-left: 5px solid var(--secondary);
+  padding-left: 15px;
+  color: var(--secondary);
+}
 /******************************************
     CONTACT FORM SECTION
 *******************************************/

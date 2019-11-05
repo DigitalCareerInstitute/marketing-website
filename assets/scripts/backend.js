@@ -42,6 +42,11 @@ if (editorContainer) {
     about.value = JSON.stringify(editor.getContents());
   });
   if (about && about.value) {
-    editor.setContents(JSON.parse(about.value).ops, "api");
+    const ops = JSON.parse(about.value).ops
+    if(ops){
+      editor.setContents(ops, "api");
+    } else {
+      editor.setText(about.value.toString().replace(/\\|"/gi, ''), "api");
+    }
   }
 }
