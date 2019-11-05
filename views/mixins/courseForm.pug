@@ -45,7 +45,10 @@ mixin courseForm
 
         .mb-3
           label(for='successStory') Success story
-          input#successStory.form-control(name='successStory', type='text', placeholder='successStory', value=course ? course.successStory :"")
+          select#successStory.form-control(for='successStory' name='successStory')
+            option(value= course && course.successStory ? course.successStory : '-- select --', selected= true) -- Select --
+            each story in storys
+             option(value=story.slug)=story.alumniName
           
         .mb-3
           label(for='order') 

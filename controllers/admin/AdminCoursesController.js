@@ -7,15 +7,20 @@ const Location = require("../../models/location");
 const courseFormConfig = require("../../formsConfig/courseFormConfig")();
 
 const Course = require("../../models/course");
+const Story = require("../../models/story");
 
 module.exports.getCourses = async function(req, res) {
   let courses = await Course.find({})
     .sort({ order: 1 })
     .exec();
+  const storys = await Story.find()
+    .select("alumniName slug")
+    .exec();
 
   res.render("admin/adminCourses", {
     courses,
-    courseFormConfig
+    courseFormConfig,
+    storys
   });
 };
 
@@ -29,6 +34,9 @@ module.exports.getSingleCourse = function(req, res) {
 };
 module.exports.editCourse = async function(req, res) {
   const course = await Course.findOne({ slug: req.params.slug });
+  const storys = await Story.find()
+    .select("alumniName slug")
+    .exec();
   const courses = await Course.find({})
     .sort("order")
     .exec();
@@ -47,11 +55,15 @@ module.exports.editCourse = async function(req, res) {
 
   res.render("admin/editCourse", {
     course,
+    storys,
     courseFormConfig,
     locations: all
   });
 };
 module.exports.createCourse = async function(req, res) {
+  const storys = await Story.find()
+    .select("alumniName slug")
+    .exec();
   var course = await new Course();
   course.headline = req.body.headline;
   course.title = req.body.title;
@@ -145,7 +157,9 @@ module.exports.createCourse = async function(req, res) {
         .exec();
       res.render("admin/adminCourses", {
         courses,
-        course
+        storys,
+        course,
+        courseFormConfig
       });
       return;
     }

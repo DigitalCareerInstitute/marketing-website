@@ -86,7 +86,7 @@ mixin singleCourse
            if course.successStory
             section.my-5
              h2 A success story
-             a.lead(href=course.successStory target='_blank') Lets transform your future into one of our success stories
+             iframe.successStoryIframe(src= '/stories/'+ course.successStory  height='700' scrolling='auto')
           
           #section5.my-5.courseSection
             .container
