@@ -22,9 +22,4 @@ mixin courselist(public)
                   span.badge.badge-secondary.text-justify=course.order
               h4.text-muted=course.title
               p.text-muted=course.subtitle
-              form.d-flex.justify-content-between(method='POST', action='/admin/courses/delete/'+course.slug +'?_method=DELETE')
-                  .d-flex.align-items-center
-                    a.btn.btn-outline-primary.mr-2(href="/courses/"+course.slug) Show
-                    if user && user.admin === "true"
-                      a.btn.btn-outline-primary.mr-2(href="/admin/courses/edit/"+course.slug) Edit
-                      button.btn.btn-outline-danger(type='submit') Delete
+              +buttonGroup(course, `courses`)

@@ -31,7 +31,11 @@ module.exports.getSingleCourse = function(req, res) {
 };
 module.exports.editCourse = async function (req, res) {
   try {
-    const course = await Course.findOne({ slug: req.params.slug });
+    const course = await Course.findOne({ slug: req.params.slug })
+      .populate("language")
+      .populate("location")
+      .populate("languageVersion")
+      .exec();
     const courses = await Course.find({})
       .sort("order")
       .exec();
@@ -112,17 +116,16 @@ module.exports.createCourse = async function(req, res) {
     res.redirect("/admin/courses");
   });
 };
-module.exports.deleteCourse = function(req, res) {
-  Course.remove(
-    {
-      slug: req.params.slug
-    },
-    function(err, course) {
+module.exports.deleteCourse = function (req, res, next) {
+  Course.findOne({ slug: req.params.slug })
+    .populate('language')
+    .populate('languageVersion')
+    .exec((err, doc) => {
       if (err) res.send(err);
-      req.flash("success", `Successfully deleted ${course.name}`);
+      doc.remove(next);
+      req.flash("success", `Successfully deleted ${doc.name}`);
       res.redirect("/admin/courses");
-    }
-  );
+    })
 };
 // Storage settings for project images
 const storage = multer.diskStorage({

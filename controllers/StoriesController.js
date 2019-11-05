@@ -19,5 +19,6 @@ module.exports.getSingleStory = async (req, res) => {
   const story = await Story.findOne({ slug: req.params.slug })
     .populate('language')
     .populate('languageVersion')
+    .exec();
   renderLanguageVersion(req, res, story, 'story', 'stories')
 }

@@ -31,4 +31,11 @@ StorySchema.virtual("toHTML").get(function () {
   }
 });
 StorySchema.plugin(URLSlugs('title'));
+StorySchema.pre("remove", function (next) {
+  if(!!this.languageVersion){
+    this.languageVersion.update({ $unset: { language: 1, languageVersion: 1 } }, next);
+  } else {
+    next();
+  }
+});
 module.exports = mongoose.model("Story", StorySchema);

@@ -61,7 +61,7 @@ if (process.env.USE_REDIS !== undefined && process.env.USE_REDIS === "true") {
 
 mongoose.set("useCreateIndex", true);
 try {
-  mongoose.connect(mongopath, { useNewUrlParser: true }).then(res => {
+  mongoose.connect(mongopath, { useNewUrlParser: true, useUnifiedTopology: true }).then(res => {
   });
 } catch (err) {
   console.log(`Please set a mongo path in your .env \n\n${err}`);
@@ -167,8 +167,10 @@ app.use(async (req, res, next) => {
 
   const { courses, locations, headerPages, footerPages } = navData;
 
+  
   res.locals.user = req.user || null;
-  res.locals.currentPath = req.path;
+  const rawPath = req.path.replace(`${req.session.locale}/`, '')
+  res.locals.currentPath = rawPath;
   res.locals.locations = locations;
   res.locals.courses = courses;
   res.locals.headerPages = headerPages;

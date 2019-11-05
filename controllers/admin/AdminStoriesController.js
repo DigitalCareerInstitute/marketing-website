@@ -70,12 +70,18 @@ module.exports.createStory = async (req, res) => {
     res.redirect("/admin/stories");
   });
 }
-module.exports.deleteStory = async (req, res) => {
+module.exports.deleteStory = async (req, res, next) => {
   try {
-    const query = isAdmin(req) ? {userId: req.user._id, slug: req.params.slug} : {slug: req.params.slug}
-    const story = await Story.remove(query)
-    req.flash("success", `Successfully deleted ${story.title}`);
-    res.redirect("/admin/stories");
+    const query = isAdmin(req) ? { userId: req.user._id, slug: req.params.slug } : { slug: req.params.slug }
+    Story.findOne(query)
+      .populate('language')
+      .populate('languageVersion')
+      .exec((err, doc) => {
+        if (err) res.send(err);
+        doc.remove(next);
+        req.flash("success", `Successfully deleted ${doc.title}`);
+        res.redirect("/admin/stories");
+      })
   } catch (err) {
     console.log(err);
   }

@@ -12,7 +12,7 @@ module.exports.getPages = async (req, res) => {
       .populate("languageVersion")
       .exec();
     let menulocations = await Menulocation.find({}).exec();
-    
+
 
     res.render("admin/pages", {
       menulocations,
@@ -26,7 +26,7 @@ module.exports.getPages = async (req, res) => {
 module.exports.getSinglePage = async (req, res) => {
   try {
     const page = await Page.findOne({ slug: req.params.slug })
-    
+
     res.render(`page`, {
       page
     });
@@ -85,11 +85,17 @@ module.exports.createPage = async (req, res) => {
     console.log(err);
   }
 };
-module.exports.deletePage = async (req, res) => {
+module.exports.deletePage = async (req, res, next) => {
   try {
-    const page = await Page.remove({ slug: req.params.slug });
-    req.flash("success", `Successfully deleted ${page.title}`);
-    res.redirect("/admin/pages");
+    Page.findOne({ slug: req.params.slug })
+      .populate('language')
+      .populate('languageVersion')
+      .exec((err, doc) => {
+        if (err) res.send(err);
+        doc.remove(next);
+        req.flash("success", `Successfully deleted ${doc.title}`);
+        res.redirect("/admin/pages");
+      })
   } catch (err) {
     console.log(err);
   }

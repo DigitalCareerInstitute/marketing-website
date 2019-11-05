@@ -33,7 +33,7 @@ mixin navigation
           a.nav-link.mx-2.text-uppercase(class=currentPath == "/stories" ? "active" : "" href='/stories')=__("navigation.Stories")
         
         li.position-relative.nav-item.dropdown
-          a#navbarDropdownMenuLink.nav-link.dropdown-toggle.z-1.mx-2.text-uppercase(data-toggle='dropdown', aria-haspopup='true', aria-expanded='false' class= currentPath.includes('/pages') && !currentPath.includes('admin') ? "active" : ""  href='/admin/contacts')
+          a#navbarDropdownMenuLink.nav-link.dropdown-toggle.z-1.mx-2.text-uppercase(data-toggle='dropdown', aria-haspopup='true', aria-expanded='false' class= currentPath.includes('/pages') || currentPath.includes("/about-us") && !currentPath.includes('admin') ? "active" : ""  href='/admin/contacts')
             =__("navigation.Get involved")
           .dropdown-menu.border-radius-0.shadow-sm.z-0(aria-labelledby='navbarDropdownMenuLink')
             a.dropdown-item.px-2.nav-link.text-uppercase(href='/about-us/' class=currentPath == "/about-us" ? "active" : "")=__("navigation.About us")
