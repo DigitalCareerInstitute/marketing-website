@@ -136,14 +136,7 @@ exports.pages = [
     title: "Support us",
     content: {
       ops: [
-        { insert: "Hey " },
-        {
-          attributes: {
-            link: "http://localhost:7000/admin/pages/edit/jobcenter-aa"
-          },
-          insert: "du"
-        },
-        { insert: "\n" }
+        { insert: "At Digital Career Institute you learn the most relevant technology skills of today from Web Development, Digital Marketing, Product Management to Data.\n\nWe train and provide the necessary hardware and digital learning aids as well as a relevant mentoring and buddy system needed to get the digital skills of today’s age.\n" },
       ]
     },
     order: 2
@@ -225,7 +218,7 @@ exports.pages = [
 exports.stories = [
   {
     title: "Voluptatem sunt similique non ",
-    alumniName: "Daniela",
+    subtitle: "Daniela",
     workPosition: "Ikea, Full-Stack Developer",
     excerpt:
       "Daniela is one of our best students and an important part of the student community here at DCI campus.",
@@ -237,7 +230,7 @@ exports.stories = [
   },
   {
     title: "Volsggdsg sytyt sgfdhgfhgjg ",
-    alumniName: "Jürgen",
+    subtitle: "Jürgen",
     workPosition: "Zalando, Full-Stack Developer",
     excerpt:
       "Jürgen recently landed a job as a Junior Front-End Engineer at streaming provider Loots here in Berlin.",
@@ -250,7 +243,7 @@ exports.stories = [
   {
     title:
       "Qui mollt itia sit animi quisquam et nostrud consequatur Facilis dignissimo",
-    alumniName: "Manny",
+    subtitle: "Manny",
     workPosition: "Amazon, Front-end Developer",
     excerpt:
       "Manny recently landed a job as a Junior Full-Stack Engineer at streaming provider Loots here in Berlin.",
