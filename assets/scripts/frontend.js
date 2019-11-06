@@ -217,7 +217,7 @@ $("#downloadCSV").on("click", function(e) {
         name: lead.name,
         email: lead.email,
         phone: lead.phone,
-        locations: lead.locations[0].name
+        locations: lead.locations && lead.locations[0] ? lead.locations[0].name ? ""
       }));
       let csvRow = objectToCsv(leads);
       downloadCsv(csvRow);
