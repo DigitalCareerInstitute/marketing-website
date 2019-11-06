@@ -87,56 +87,6 @@ module.exports.createCourse = async function(req, res) {
 
   course.curriculumPdf = req.body.curriculumPdf;
 
-  course.archivements = [
-    {
-      icon: req.body.archivement_icon_1,
-      description: req.body.archivement_description_1
-    },
-    {
-      icon: req.body.archivement_icon_2,
-      description: req.body.archivement_description_2
-    },
-    {
-      icon: req.body.archivement_icon_3,
-      description: req.body.archivement_description_3
-    }
-  ];
-  course.timeline = [
-    {
-      title: req.body.timeline_title_1,
-      subtitle: req.body.timeline_subtitle_1,
-      time: req.body.timeline_time_1
-    },
-    {
-      title: req.body.timeline_title_2,
-      subtitle: req.body.timeline_subtitle_2,
-      time: req.body.timeline_time_2
-    },
-    {
-      title: req.body.timeline_title_3,
-      subtitle: req.body.timeline_subtitle_3,
-      time: req.body.timeline_time_3
-    }
-  ];
-  course.features = [
-    {
-      icon: req.body.features_icon_1,
-      subtitle: req.body.features_subtitle_1,
-      title: req.body.features_title_1
-    },
-    {
-      icon: req.body.features_icon_2,
-      subtitle: req.body.features_subtitle_2,
-      title: req.body.features_title_2
-    },
-    {
-      icon: req.body.features_icon_3,
-      subtitle: req.body.features_subtitle_3,
-      title: req.body.features_title_3
-    }
-  ];
-
-
   // save the course and check for errors
   course.save(async function(err) {
     if (err) {
@@ -258,7 +208,7 @@ module.exports.updateCourse = async function(req, res) {
   course.massnahmeNumber = req.body.massnahmenummer;
   course.massnahmeDetails = req.body.massnahmedetails;
   course.curriculumPdf = req.body.curriculumPdf;
-
+ course.icon = req.files.icon ? req.body.icon : course.icon;
   function verbose(inputs) {
     let items = [];
     let { itemsAmount, model, titles } = inputs;
