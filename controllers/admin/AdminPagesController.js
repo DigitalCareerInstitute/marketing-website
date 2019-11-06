@@ -107,6 +107,7 @@ module.exports.updatePage = async (req, res) => {
     page.title = req.body.title;
     page.content = JSON.parse(req.body.content);
     page.order = req.body.order;
+    page.slug = req.body.slug;
     page.menulocations = req.body.menulocations;
     await page.save();
 

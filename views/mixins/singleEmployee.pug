@@ -13,8 +13,10 @@ mixin singleEmployee(employee)
       .mb-3
         each loc in employee.locations
           span.badge.badge-primary.mr-3= loc.name
-      if user && user.admin === "true"
-        form.d-flex.justify-content-between(method='POST', action='/admin/employees/delete/'+employee._id +'?_method=DELETE')
+      if user && user.admin === "true" && currentPath.includes('admin')
+
+        +displayLanguage(employee, `employees`, `name`)
+        form.d-flex.justify-content-between(method='POST', action='/admin/employees/delete/'+employee.slug +'?_method=DELETE')
           .d-flex.align-items-center
-            a.btn.btn-outline-primary.mr-2(href="/admin/employees/edit/"+employee._id) Edit
+            a.btn.btn-outline-primary.mr-2(href="/admin/employees/edit/"+employee.slug) Edit
             button.btn.btn-outline-danger(type='submit') Delete

@@ -1,6 +1,6 @@
-mixin displayLanguage(model, path)
+mixin displayLanguage(model, path, identifier = title)
   if model.language && model.languageVersion
     = "Translation: "
     a.mr-2(href="/admin/" + path + "/edit/"+model.languageVersion.slug)
       span.text-uppercase.font-weight-bold= model.language.title + " "
-      =model.languageVersion.title
+      =model.languageVersion.identifier

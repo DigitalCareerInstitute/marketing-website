@@ -22,13 +22,13 @@ router.post(
   AdminEmployeesController.createEmployee
 );
 router.get(
-  "/edit/:id",
+  "/edit/:slug",
   ensureAuthenticated,
   redirectNonAdmin,
   AdminEmployeesController.editEmployee
 );
 router.put(
-  "/update/:id",
+  "/update/:slug",
   ensureAuthenticated,
   redirectNonAdmin,
   AdminEmployeesController.uploadImages,
@@ -37,10 +37,11 @@ router.put(
 );
 
 router.delete(
-  "/delete/:id",
+  "/delete/:slug",
   ensureAuthenticated,
   redirectNonAdmin,
   AdminEmployeesController.deleteEmployee
 );
 
+router.get("/:slug/l18n", ensureAuthenticated, redirectNonAdmin, AdminEmployeesController.setL18n);
 module.exports = router;

@@ -216,6 +216,7 @@ module.exports.updateCourse = async function(req, res) {
   course.order = req.body.order;
   course.locations = req.body.locations;
 
+  course.slug = req.body.slug;
   course.curriculumPdf = req.body.curriculumPdf;
 
 
@@ -308,7 +309,7 @@ module.exports.updateCourse = async function(req, res) {
 
   req.flash("success", `Successfully updated ${course.title}`);
 
-  res.redirect("/admin/courses/edit/" + req.params.slug);
+  res.redirect("/admin/courses/edit/" + course.slug);
 };
 
 module.exports.setL18n = async (req, res) => {

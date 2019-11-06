@@ -14,7 +14,13 @@ mixin courseForm
             span=course.curriculumPdf
           else
             input#curriculumPdf.form-control-file(type='file' name='curriculumPdf')
-
+        if !editpath && course && course.slug
+          .mb-3
+            label(for='slug') 
+              | Slug
+              button.btn.btn-secondary.badge.ml-2(type='button', data-container='body', data-toggle='popover',  data-trigger="hover",  data-placement='top', data-content='Changing this has negative effects on SEO if it not fresh created. To regenerate the slug, clear the fields and update the record.')
+                | ?
+            input#inputTitle.form-control(name='slug', type='text', placeholder='Slug', value=course.slug) 
         .mb-3
           label.d-block.d-block(for='icon') Course Title Icon
           if course && course.icon

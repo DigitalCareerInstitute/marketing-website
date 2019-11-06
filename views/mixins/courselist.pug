@@ -11,15 +11,12 @@ mixin courselist(public)
                 span No image uploaded
             .col-md-9
               h2
-                if course.language
-                  strong.text-uppercase=course.language.title+" - "
-                +displayLanguage(course, `courses`)
-
                 = course.headline
               if course.order
                 .text-muted
-                  span="Order: "
-                  span.badge.badge-secondary.text-justify=course.order
+                  +displayLanguage(course, `courses`)
+                  span.ml-2="Order: "
+                  span=course.order
               h4.text-muted=course.title
               p.text-muted=course.subtitle
               +buttonGroup(course, `courses`)

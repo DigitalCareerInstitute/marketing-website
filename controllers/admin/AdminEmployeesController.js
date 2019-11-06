@@ -5,10 +5,13 @@ const jimp = require("jimp");
 const Employee = require("../../models/employee");
 const Location = require("../../models/location");
 const uuid = require("uuid");
+const AbstractController = require("./AbstractController");
 
 module.exports.getEmployees = async function(req, res) {
   try {
     let employees = await Employee.find({})
+      .populate('language')
+      .populate('languageVersion')
       .populate("locations")
       .sort("-createdAt")
       .exec();
@@ -21,18 +24,24 @@ module.exports.getEmployees = async function(req, res) {
   }
 };
 
-module.exports.deleteEmployee = async function(req, res) {
-  
-  const employee = await Employee.deleteOne({
-    _id: req.params.id
-  })
-  
-  req.flash("success", `Successfully deleted Employee`);
-  res.redirect("/admin/employees");
+module.exports.deleteEmployee = async function (req, res, next) {
+  Employee.findOne({ slug: req.params.slug})
+    .populate('language')
+    .populate('languageVersion')
+    .exec((err, doc) => {
+      if (err) res.send(err);
+      doc.remove(next);
+      req.flash("success", `Successfully deleted ${doc.name}`);
+      res.redirect("/admin/employees");
+    })
 };
 
 module.exports.editEmployee = async function(req, res) {
-  const employee = await Employee.findById(req.params.id);
+  const employee = await Employee
+  .findOne({ slug: req.params.slug})
+  .populate('language')
+  .populate('languageVersion')
+  .exec()
 
   let alllocations = await Location.find({}).exec();
   all = alllocations.map(loc => {
@@ -54,7 +63,7 @@ module.exports.editEmployee = async function(req, res) {
 };
 
 module.exports.updateEmployee = async (req, res) => {
-  const employee = await Employee.findById(req.params.id)
+  const employee = await Employee.findOne({ slug: req.params.slug})
   employee.name = req.body.name;
   employee.position = req.body.position;
   employee.content = req.body.content;
@@ -63,7 +72,7 @@ module.exports.updateEmployee = async (req, res) => {
   employee.avatar = req.files.avatar ? req.body.avatar : employee.avatar;
   await employee.save()
   req.flash("success", `Successfully updated ${employee.name}`);
-  res.redirect("/admin/employees/edit/" + employee._id);
+  res.redirect("/admin/employees/edit/" + employee.slug);
 };
 
 module.exports.createEmployee = async function(req, res) {
@@ -127,4 +136,7 @@ exports.resizeImages = async (request, response, next) => {
     }
   }
   next();
+};
+module.exports.setL18n = async (req, res) => {
+  AbstractController.cloneSite(req, res, Employee)
 };

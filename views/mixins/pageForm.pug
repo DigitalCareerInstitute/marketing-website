@@ -8,6 +8,13 @@ mixin pageForm
       label(for='title') Title
       input#inputName.form-control(name='title', type='text', placeholder='Title', required='', autofocus='', value=editPath ? page.title : "")
     
+    if !editpath && page && page.slug
+      .mb-3
+        label(for='slug') 
+          | Slug
+          button.btn.btn-secondary.badge.ml-2(type='button', data-container='body', data-toggle='popover',  data-trigger="hover",  data-placement='top', data-content='Changing this has negative effects on SEO if it not fresh created. To regenerate the slug, clear the fields and update the record.')
+            | ?
+        input#inputTitle.form-control(name='slug', type='text', placeholder='Slug', value=page.slug) 
     .mb-3
       label(for='content') Content
       #editor(value=editPath ? page.content : "")

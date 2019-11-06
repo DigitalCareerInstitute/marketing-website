@@ -5,7 +5,7 @@ require("dotenv").config({
 const fs = require("fs");
 const path = require("path");
 
-const Story = require("./models/story");
+const Employee = require("./models/employee");
 
 const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGOURL, {
@@ -16,14 +16,9 @@ mongoose.connect(process.env.MONGOURL, {
 mongoose.Promise = global.Promise;
 (async () => {
   try {
-    const storiesToRename = await Story.find({ "subtitle": { $exists: true } })
-    if (storiesToRename.length === 0) {
-      await mongoose.connection.collection('stories').updateMany({ "title": { $exists: true } }, { $rename: { "title": "subtitle" } }, false);
-      await mongoose.connection.collection('stories').updateMany({ "alumniName": { $exists: true } }, { $rename: { "alumniName": "title" } }, false);
-      console.log("Migration successful");
-    } else {
-      console.log("No matching records");
-    }
+    const res = await Employee.find({})
+    await Promise.all(res.map(async res => await res.save()))
+    console.log("Migration successful");
   } catch (error) {
     console.log('error', error);
   }
