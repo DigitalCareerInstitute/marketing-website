@@ -51,7 +51,7 @@ mixin courseForm
           label(for='massnahme') Massnahmenummer
           input#massnahme.form-control(name='massnahmenummer', type='text', placeholder='massnahmenummer', value=course &&course.massnahmeNumber ? course.massnahmeNumber :"")
         .mb-3
-          label(for='massnahme') Massnahme details
+          label(for='massnahmedetails') Massnahme details
           textarea#massnahme.form-control(name='massnahmedetails', placeholder='massnahmedetails')=course &&course.massnahmeDetails ? course.massnahmeDetails :""
             
 
