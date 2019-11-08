@@ -22,8 +22,7 @@ var CourseSchema = new Schema({
     type: String
   },
   successStory: {
-    type: String,
-    trim: true
+    type: Schema.ObjectId, ref: "Story",
   },
   order: {
     type: Number,

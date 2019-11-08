@@ -13,13 +13,15 @@ module.exports.getSingleCourse = async (req, res) => {
     .findOne({ slug: req.params.course })
     .populate(
       "locations"
+    ).populate(
+      "successStory"
     ).exec();
     if(course){
       res.render(`course`, {
         course
       });
     } else {
-      res.redirect("/course")
+      res.redirect("/courses")
     }
   } catch (err) {
     console.log(err);

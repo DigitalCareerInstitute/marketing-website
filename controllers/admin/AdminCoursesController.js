@@ -14,7 +14,7 @@ module.exports.getCourses = async function(req, res) {
     .sort({ order: 1 })
     .exec();
   const storys = await Story.find()
-    .select("alumniName slug")
+    .select("title slug")
     .exec();
 
   res.render("admin/adminCourses", {
@@ -24,18 +24,18 @@ module.exports.getCourses = async function(req, res) {
   });
 };
 
-module.exports.getSingleCourse = function(req, res) {
-  Course.findOne({ slug: req.params.slug }, function(err, course) {
+module.exports.getSingleCourse = function (req, res) {
+  Course.findOne({ slug: req.params.slug }, function (err, course) {
     res.render("course", {
       course,
       courseFormConfig
     });
   });
 };
-module.exports.editCourse = async function(req, res) {
-  const course = await Course.findOne({ slug: req.params.slug });
+module.exports.editCourse = async function (req, res) {
+  const course = await Course.findOne({ slug: req.params.slug }).populate("successStory");
   const storys = await Story.find()
-    .select("alumniName slug")
+    .select("title slug")
     .exec();
   const courses = await Course.find({})
     .sort("order")
@@ -60,9 +60,9 @@ module.exports.editCourse = async function(req, res) {
     locations: all
   });
 };
-module.exports.createCourse = async function(req, res) {
+module.exports.createCourse = async function (req, res) {
   const storys = await Story.find()
-    .select("alumniName slug")
+    .select("title slug")
     .exec();
   var course = await new Course();
   course.headline = req.body.headline;
@@ -99,7 +99,7 @@ module.exports.createCourse = async function(req, res) {
   course.curriculumPdf = req.body.curriculumPdf;
 
   // save the course and check for errors
-  course.save(async function(err) {
+  course.save(async function (err) {
     if (err) {
       console.log("error", err);
 
@@ -119,12 +119,12 @@ module.exports.createCourse = async function(req, res) {
     res.redirect("/admin/courses");
   });
 };
-module.exports.deleteCourse = function(req, res) {
+module.exports.deleteCourse = function (req, res) {
   Course.remove(
     {
       slug: req.params.slug
     },
-    function(err, course) {
+    function (err, course) {
       if (err) res.send(err);
       req.flash("success", `Successfully deleted ${course.name}`);
       res.redirect("/admin/courses");
@@ -133,10 +133,10 @@ module.exports.deleteCourse = function(req, res) {
 };
 // Storage settings for project images
 const storage = multer.diskStorage({
-  destination: function(request, file, next) {
+  destination: function (request, file, next) {
     next(null, "./temp");
   },
-  filename: function(request, file, next) {
+  filename: function (request, file, next) {
     next(null, uuid(4));
   }
 });
@@ -209,7 +209,7 @@ exports.resizeImages = async (request, response, next) => {
   next();
 };
 
-module.exports.updateCourse = async function(req, res) {
+module.exports.updateCourse = async function (req, res) {
   let course = await Course.findOne({ slug: req.params.slug });
 
   //TODO thats fucking verbose
@@ -219,7 +219,7 @@ module.exports.updateCourse = async function(req, res) {
   course.subheading = req.body.subheading;
   course.order = req.body.order;
   course.locations = req.body.locations;
-  course.successStory = req.body.successStory;
+  course.successStory = !!req.body.successStory ? req.body.successStory : undefined;
   course.curriculumPdf = req.body.curriculumPdf;
 
   course.icon = req.files.icon ? req.body.icon : course.icon;
