@@ -31,8 +31,7 @@ mixin singleCourse
               a.scrollbutton.nav-link.nav-link-spy.mb-2(href='#section5') How to Apply
             button.btn.btn-gradient-secondary.btn-spy(type='button' data-toggle='modal', data-target='#contactFormModal' ) Apply Now
 
-
-        .col-12.col-xl-9
+        .col-12.col-xl-9.py-3
           #section1.mb-5
             h2.mt-3.mb-3.text-left=model.title
             p.lead.text-left=model.subtitle  
@@ -70,20 +69,20 @@ mixin singleCourse
                     h3.ml-5.pt-2.text-left=object.title 
                     p.ml-5.text-left=object.subtitle
                       
-          section.my-5
-            div.my-5
+          section.my-5.row.bg-light.p-5
+            div.my-2
               h2=__("More than just classwork")
               p.lead=__("Beyond building the hard skills in class, you need to get involved in the local tech scene and market yourself. We’re here to help you succeed with career development support and opportunities to get into the community.")
               
-            div.my-5
+            div.my-2
               h2=__("Career workshops")
               p.lead=__("preparing an industry-specific resume to creating an online presence, you’ll pick up the skills to stand out.")
             
-            div.my-5
+            div.my-2
               h2=__("Guest speakers")
               p.lead=__("additional specialised sessions from top professionals and get tips from DCI alumni.")
             
-            div.my-5
+            div.my-2
 
               h2=__("Company Tours")
               p.lead=__("Take a tour of a local startup and see what the work environment is all about.")
@@ -92,13 +91,13 @@ mixin singleCourse
               p.lead Take a tour of a local startup and see what the work environment is all about.
 
           #section4.my-5
-           if course.successStory
+           if model.successStory
             section.my-5
               .row.bg-light.pt-4.hover-shadow.bg-light.w-10
                 .col-12
                   h2.text-center Read about a senior DCI graduate
                 .col-6.offset-3
-                  +singleStory(course.successStory)
+                  +singleStory(model.successStory)
 
           
           #section5.my-5.courseSection
@@ -118,12 +117,18 @@ mixin singleCourse
                       p.courseApply-stepTitle Reserve your spot
 
                   button.btn.btn-lg.btn-gradient-secondary.mt-3.mb-5(type='button' data-toggle='modal', data-target='#contactFormModal') Apply
-            section.my-5
+            section.my-5.pr-md-5
               if model.locations.length > 0
                 .mb-5
                   h3 This course is available in: 
                   each location in model.locations
                     span.badge.badge-primary.mr-2=location.name
+                  if model.massnahmeNumber
+                    h4.mt-4.text-dark
+                      = "Massnahmenummer: "
+                      code.text-dark=model.massnahmeNumber
+                  if model.massnahmeDetails
+                    p.mt-4.text-dark=model.massnahmeDetails
               h2 Come see our campus!
               p.lead Have questions? Want to see the student life for yourself? Book a one-on-one visit with our admissions team and we’ll show you around.
               p Vulkanstraße 1

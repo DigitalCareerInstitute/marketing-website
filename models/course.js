@@ -18,6 +18,12 @@ var CourseSchema = new Schema({
   title: {
     type: String
   },
+  massnahmeDetails: {
+    type: String
+  },
+  massnahmeNumber: {
+    type: String
+  },
   curriculumPdf: {
     type: String
   },

@@ -49,7 +49,7 @@ mixin courseForm
           select#successStory.form-control(for='successStory' name='successStory')
             option(value="") -- Select --
             each story in storys
-             option(value=story._id, selected=!!course.successStory && course.successStory._id.toString() === story._id.toString() ?  "selected" :  false )=story.title
+             option(value=story._id, selected=!!course && !!course.successStory && course.successStory._id.toString() === story._id.toString() ?  "selected" :  false )=story.title
           
         .mb-3
           label(for='order') 
@@ -57,6 +57,13 @@ mixin courseForm
           button.btn.btn-secondary.badge.ml-2(type='button', data-container='body', data-toggle='popover',  data-trigger="hover",  data-placement='top', data-content='Defines the order the courses are displayed. 0,1,2,3,4')
             | ?
           input#inputOrder.form-control(name='order', type='number', placeholder='Order', autofocus='', value=course ? course.order : "")
+        .mb-3
+          label(for='massnahme') Massnahmenummer
+          input#massnahme.form-control(name='massnahmenummer', type='text', placeholder='massnahmenummer', value=course &&course.massnahmeNumber ? course.massnahmeNumber :"")
+        .mb-3
+          label(for='massnahmedetails') Massnahme details
+          textarea#massnahme.form-control(name='massnahmedetails', placeholder='massnahmedetails')=course &&course.massnahmeDetails ? course.massnahmeDetails :""
+            
 
         each archivementGroup, i in courseFormConfig.archivementConfig
          .form-group
@@ -98,3 +105,9 @@ mixin courseForm
           .custom-control.custom-checkbox
             input.custom-control-input(name="locations" type='checkbox' id=location.name value=location._id  checked=(location.selected))
             label.custom-control-label(for=location.name)=location.name
+
+        .btn-group
+          if course
+            a.btn.btn-outline-primary(href="/admin/courses")="Back"
+            a.btn.btn-outline-primary(target="_blank" href="/courses/"+course.slug)="Show"
+          button.btn.btn-primary(type='submit')=course ? "Update" :"Create a new Course" 

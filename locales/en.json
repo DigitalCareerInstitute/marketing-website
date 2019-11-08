@@ -60,5 +60,10 @@
 		"Company": "footer.Company",
 		"Community": "footer.Community"
 	},
-	"Events": "Events"
+	"Events": "Events",
+	"Contact": "Contact",
+	"Our campuses": "Our campuses",
+	"Our Team": "Our Team",
+	"Our team consists of entrepreneurs, employees and freelancers of the Berlin Start-up scene. What we all have in common is our willingness to help, our professional networks and the opportunity to connect the tech scene with people who had to flee their homeland.": "Our team consists of entrepreneurs, employees and freelancers of the Berlin Start-up scene. What we all have in common is our willingness to help, our professional networks and the opportunity to connect the tech scene with people who had to flee their homeland.",
+	"Or anyone who would like to start a career in tech regardless of their background.": "Or anyone who would like to start a career in tech regardless of their background."
 }
