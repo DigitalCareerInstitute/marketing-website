@@ -8,6 +8,7 @@ const courseFormConfig = require("../../formsConfig/courseFormConfig")();
 const AbstractController = require("./AbstractController");
 
 const Course = require("../../models/course");
+const Story = require("../../models/story");
 
 module.exports.getCourses = async function(req, res) {
   let courses = await Course.find({})
@@ -15,21 +16,27 @@ module.exports.getCourses = async function(req, res) {
     .populate("language")
     .populate("languageVersion")
     .exec();
+  const storys = await Story.find()
+    .select("title slug")
+    .exec();
 
   res.render("admin/adminCourses", {
     courses,
-    courseFormConfig
+    courseFormConfig,
+    storys
   });
 };
 
-module.exports.getSingleCourse = function(req, res) {
-  Course.findOne({ slug: req.params.slug }, function(err, course) {
+module.exports.getSingleCourse = function (req, res) {
+  Course.findOne({ slug: req.params.slug }, function (err, course) {
     res.render("course", {
-      course
+      course,
+      courseFormConfig
     });
   });
 };
 module.exports.editCourse = async function (req, res) {
+
   try {
     const course = await Course.findOne({ slug: req.params.slug })
       .populate("language")
@@ -45,12 +52,27 @@ module.exports.editCourse = async function (req, res) {
         .map(pcat => pcat.toString())
         .includes(loc._id.toString());
 
+  const course = await Course.findOne({ slug: req.params.slug }).populate("successStory");
+  const storys = await Story.find()
+    .select("title slug")
+    .exec();
+  const courses = await Course.find({})
+    .sort("order")
+    .exec();
+  let alllocations = await Location.find({}).exec();
+  all = alllocations.map(loc => {
+    let match = course.locations
+      .map(pcat => pcat.toString())
+      .includes(loc._id.toString());
+
+
       if (match) {
         return Object.assign({ selected: true }, loc._doc);
       } else {
         return loc._doc;
       }
     });
+
 
     res.render("admin/editCourse", {
       course,
@@ -61,8 +83,19 @@ module.exports.editCourse = async function (req, res) {
     req.flash("danger", `Error ${error}`);
     res.redirect("/admin/courses");
   }
+
+  res.render("admin/editCourse", {
+    course,
+    storys,
+    courseFormConfig,
+    locations: all
+  });
+
 };
-module.exports.createCourse = async function(req, res) {
+module.exports.createCourse = async function (req, res) {
+  const storys = await Story.find()
+    .select("title slug")
+    .exec();
   var course = await new Course();
   course.headline = req.body.headline;
   course.title = req.body.title;
@@ -71,7 +104,7 @@ module.exports.createCourse = async function(req, res) {
   course.order = req.body.order;
   course.locations = req.body.locations;
   course.icon = req.body.icon;
-
+  course.successStory = req.body.successStory;
   course.archivements = [1, 2, 3, 4, 5].map(item => {
     return {
       icon: req.body[`archivement_icon_${item}`],
@@ -98,7 +131,7 @@ module.exports.createCourse = async function(req, res) {
   course.curriculumPdf = req.body.curriculumPdf;
 
   // save the course and check for errors
-  course.save(async function(err) {
+  course.save(async function (err) {
     if (err) {
       console.log("error", err);
 
@@ -108,7 +141,9 @@ module.exports.createCourse = async function(req, res) {
         .exec();
       res.render("admin/adminCourses", {
         courses,
-        course
+        storys,
+        course,
+        courseFormConfig
       });
       return;
     }
@@ -116,11 +151,20 @@ module.exports.createCourse = async function(req, res) {
     res.redirect("/admin/courses");
   });
 };
+
 module.exports.deleteCourse = function (req, res, next) {
   Course.findOne({ slug: req.params.slug })
     .populate('language')
     .populate('languageVersion')
     .exec((err, doc) => {
+
+module.exports.deleteCourse = function (req, res) {
+  Course.remove(
+    {
+      slug: req.params.slug
+    },
+    function (err, course) {
+
       if (err) res.send(err);
       doc.remove(next);
       req.flash("success", `Successfully deleted ${doc.name}`);
@@ -129,10 +173,10 @@ module.exports.deleteCourse = function (req, res, next) {
 };
 // Storage settings for project images
 const storage = multer.diskStorage({
-  destination: function(request, file, next) {
+  destination: function (request, file, next) {
     next(null, "./temp");
   },
-  filename: function(request, file, next) {
+  filename: function (request, file, next) {
     next(null, uuid(4));
   }
 });
@@ -205,7 +249,7 @@ exports.resizeImages = async (request, response, next) => {
   next();
 };
 
-module.exports.updateCourse = async function(req, res) {
+module.exports.updateCourse = async function (req, res) {
   let course = await Course.findOne({ slug: req.params.slug });
 
   //TODO thats fucking verbose
@@ -216,9 +260,12 @@ module.exports.updateCourse = async function(req, res) {
   course.order = req.body.order;
   course.locations = req.body.locations;
 
-  course.slug = req.body.slug;
-  course.curriculumPdf = req.body.curriculumPdf;
 
+  course.slug = req.body.slug;
+
+  course.successStory = !!req.body.successStory ? req.body.successStory : undefined;
+
+  course.curriculumPdf = req.body.curriculumPdf;
 
   course.icon = req.files.icon ? req.body.icon : course.icon;
 
@@ -236,7 +283,7 @@ module.exports.updateCourse = async function(req, res) {
             course[model][i] = {
               icon: "",
               description: ""
-            }
+            };
           }
           course[model][i][title.dbChild] = req[
             model == "archivements" && title.dbChild == "icon"

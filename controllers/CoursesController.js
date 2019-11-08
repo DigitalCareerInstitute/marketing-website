@@ -20,4 +20,23 @@ module.exports.getSingleCourse = async (req, res) => {
     .populate('languageVersion')
     .exec();
   renderLanguageVersion(req, res, course, 'course', 'courses')
+
+  try {
+    const course = await Course
+    .findOne({ slug: req.params.course })
+    .populate(
+      "locations"
+    ).populate(
+      "successStory"
+    ).exec();
+    if(course){
+      res.render(`course`, {
+        course
+      });
+    } else {
+      res.redirect("/courses")
+    }
+  } catch (err) {
+    console.log(err);
+  }
 };

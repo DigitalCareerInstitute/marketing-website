@@ -182,6 +182,49 @@ getFileElements.forEach(el => {
   });
 });
 
+function objectToCsv(data) {
+  const csvRows = [];
+  const headers = Object.keys(data[0]);
+  csvRows.push(headers.join(","));
+  for (const row of data) {
+    const values = headers.map(header => {
+      const escaped = !!row[header] ? "" + row[header].replace(/"/g, '\\"') : "";
+      return `"${escaped}"`;
+    });
+    csvRows.push(values.join(","));
+  }
+  return csvRows.join("\n");
+}
+
+function downloadCsv(data) {
+  const blob = new Blob([data], { type: "text/csv" });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.setAttribute("id", "csv");
+  a.setAttribute("hidden", "");
+  a.setAttribute("href", url);
+  a.setAttribute("download", "CSVDownloadOfLeads.csv");
+  document.body.appendChild(a);
+  a.click();
+  a.removeChild(a);
+}
+
+$("#downloadCSV").on("click", function(e) {
+  fetch(window.location.href + "/api-json")
+    .then(resp => resp.json())
+    .then(data => {
+      let leads = data.map(lead => ({
+        name: lead.name,
+        email: lead.email,
+        phone: lead.phone,
+        locations: lead.locations && lead.locations[0] ? lead.locations[0].name : ""
+      }));
+      let csvRow = objectToCsv(leads);
+      downloadCsv(csvRow);
+    })
+    .catch(error => console.log("error ===>", error));
+});
+
 //
 // let typedCursor = new Typed('.subtitle', {
 //   strings: ["Learn digital skills with us to get the most fulfilling jobs."],
