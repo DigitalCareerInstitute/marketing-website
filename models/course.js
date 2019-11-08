@@ -27,6 +27,9 @@ var CourseSchema = new Schema({
   curriculumPdf: {
     type: String
   },
+  successStory: {
+    type: Schema.ObjectId, ref: "Story",
+  },
   order: {
     type: Number,
     unique: true

@@ -25,6 +25,7 @@ mixin courseForm
           if course && course.icon
             img.mw-150.mh-150.w-100.mw-150.mh-150.object-fit-cover(src="/images/"+course.icon)
           input#exampleFormControlFile1.form-control-file(type='file' name='icon')
+          
 
         .mb-3
           label(for='headline') Headline
@@ -41,6 +42,14 @@ mixin courseForm
         .mb-3
           label(for='subtitle') Subtitle
           input#subtitle.form-control(name='subtitle', type='text', placeholder='subtitle', value=course ? course.subtitle :"" required='', autofocus='')
+
+        .mb-3
+          label(for='successStory') Success story
+          select#successStory.form-control(for='successStory' name='successStory')
+            option(value="") -- Select --
+            each story in storys
+             option(value=story._id, selected=!!course.successStory && course.successStory._id.toString() === story._id.toString() ?  "selected" :  false )=story.title
+          
         .mb-3
           label(for='order') 
             | Order

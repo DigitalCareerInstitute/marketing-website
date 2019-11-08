@@ -7,27 +7,36 @@ const Location = require("../../models/location");
 const courseFormConfig = require("../../formsConfig/courseFormConfig")();
 
 const Course = require("../../models/course");
+const Story = require("../../models/story");
 
 module.exports.getCourses = async function(req, res) {
   let courses = await Course.find({})
     .sort({ order: 1 })
     .exec();
+  const storys = await Story.find()
+    .select("title slug")
+    .exec();
 
   res.render("admin/adminCourses", {
     courses,
-    courseFormConfig
+    courseFormConfig,
+    storys
   });
 };
 
-module.exports.getSingleCourse = function(req, res) {
-  Course.findOne({ slug: req.params.slug }, function(err, course) {
+module.exports.getSingleCourse = function (req, res) {
+  Course.findOne({ slug: req.params.slug }, function (err, course) {
     res.render("course", {
-      course
+      course,
+      courseFormConfig
     });
   });
 };
-module.exports.editCourse = async function(req, res) {
-  const course = await Course.findOne({ slug: req.params.slug });
+module.exports.editCourse = async function (req, res) {
+  const course = await Course.findOne({ slug: req.params.slug }).populate("successStory");
+  const storys = await Story.find()
+    .select("title slug")
+    .exec();
   const courses = await Course.find({})
     .sort("order")
     .exec();
@@ -46,11 +55,15 @@ module.exports.editCourse = async function(req, res) {
 
   res.render("admin/editCourse", {
     course,
+    storys,
     courseFormConfig,
     locations: all
   });
 };
-module.exports.createCourse = async function(req, res) {
+module.exports.createCourse = async function (req, res) {
+  const storys = await Story.find()
+    .select("title slug")
+    .exec();
   var course = await new Course();
   course.headline = req.body.headline;
   course.title = req.body.title;
@@ -61,6 +74,9 @@ module.exports.createCourse = async function(req, res) {
   course.icon = req.body.icon;
   course.massnahmeNumber = req.body.massnahmenummer;
   course.massnahmeDetails = req.body.massnahmedetails;
+
+
+  course.successStory = req.body.successStory;
 
   course.archivements = [1, 2, 3, 4, 5].map(item => {
     return {
@@ -88,7 +104,7 @@ module.exports.createCourse = async function(req, res) {
   course.curriculumPdf = req.body.curriculumPdf;
 
   // save the course and check for errors
-  course.save(async function(err) {
+  course.save(async function (err) {
     if (err) {
       console.log("error", err);
 
@@ -98,7 +114,9 @@ module.exports.createCourse = async function(req, res) {
         .exec();
       res.render("admin/adminCourses", {
         courses,
-        course
+        storys,
+        course,
+        courseFormConfig
       });
       return;
     }
@@ -106,12 +124,12 @@ module.exports.createCourse = async function(req, res) {
     res.redirect("/admin/courses");
   });
 };
-module.exports.deleteCourse = function(req, res) {
+module.exports.deleteCourse = function (req, res) {
   Course.remove(
     {
       slug: req.params.slug
     },
-    function(err, course) {
+    function (err, course) {
       if (err) res.send(err);
       req.flash("success", `Successfully deleted ${course.name}`);
       res.redirect("/admin/courses");
@@ -120,10 +138,10 @@ module.exports.deleteCourse = function(req, res) {
 };
 // Storage settings for project images
 const storage = multer.diskStorage({
-  destination: function(request, file, next) {
+  destination: function (request, file, next) {
     next(null, "./temp");
   },
-  filename: function(request, file, next) {
+  filename: function (request, file, next) {
     next(null, uuid(4));
   }
 });
@@ -196,7 +214,7 @@ exports.resizeImages = async (request, response, next) => {
   next();
 };
 
-module.exports.updateCourse = async function(req, res) {
+module.exports.updateCourse = async function (req, res) {
   let course = await Course.findOne({ slug: req.params.slug });
   course.icon = req.body.icon ? req.body.icon : course.icon;
   course.headline = req.body.headline;
@@ -204,11 +222,16 @@ module.exports.updateCourse = async function(req, res) {
   course.subheading = req.body.subheading;
   course.order = req.body.order;
   course.locations = req.body.locations;
-
   course.massnahmeNumber = req.body.massnahmenummer;
   course.massnahmeDetails = req.body.massnahmedetails;
   course.curriculumPdf = req.body.curriculumPdf;
  course.icon = req.files.icon ? req.body.icon : course.icon;
+
+  course.successStory = !!req.body.successStory ? req.body.successStory : undefined;
+  course.curriculumPdf = req.body.curriculumPdf;
+
+  course.icon = req.files.icon ? req.body.icon : course.icon;
+
   function verbose(inputs) {
     let items = [];
     let { itemsAmount, model, titles } = inputs;
@@ -223,7 +246,7 @@ module.exports.updateCourse = async function(req, res) {
             course[model][i] = {
               icon: "",
               description: ""
-            }
+            };
           }
           course[model][i][title.dbChild] = req[
             model == "archivements" && title.dbChild == "icon"

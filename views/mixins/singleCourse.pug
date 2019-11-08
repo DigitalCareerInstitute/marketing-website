@@ -22,7 +22,9 @@ mixin singleCourse
             li.nav-item
               a.scrollbutton.nav-link.nav-link-spy.mb-2(href='#section3') Day at DCI
             li.nav-item
-              a.scrollbutton.nav-link.nav-link-spy.mb-2(href='#section4') How to Apply
+              a.scrollbutton.nav-link.nav-link-spy.mb-2(href='#section4') A success story
+            li.nav-item
+              a.scrollbutton.nav-link.nav-link-spy.mb-2(href='#section5') How to Apply
             button.btn.btn-gradient-secondary.btn-spy(type='button' data-toggle='modal', data-target='#contactFormModal' ) Apply Now
 
         .col-12.col-xl-9
@@ -79,8 +81,17 @@ mixin singleCourse
             div.my-5
               h2 Company Tours
               p.lead Take a tour of a local startup and see what the work environment is all about.
+
+          #section4.my-5
+           if course.successStory
+            section.my-5
+              .row.bg-light.pt-4.hover-shadow.bg-light.w-10
+                .col-12
+                  h2.text-center Read about a senior DCI graduate
+                .col-6.offset-3
+                  +singleStory(course.successStory)
           
-          #section4.my-5.courseSection
+          #section5.my-5.courseSection
             .container
               .row
                 .col-lg-8.col-lg-offset-3                
