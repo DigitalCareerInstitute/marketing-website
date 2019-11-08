@@ -188,7 +188,7 @@ function objectToCsv(data) {
   csvRows.push(headers.join(","));
   for (const row of data) {
     const values = headers.map(header => {
-      const escaped = "" + row[header].replace(/"/g, '\\"');
+      const escaped = !!row[header] ? "" + row[header].replace(/"/g, '\\"') : "";
       return `"${escaped}"`;
     });
     csvRows.push(values.join(","));
@@ -217,7 +217,7 @@ $("#downloadCSV").on("click", function(e) {
         name: lead.name,
         email: lead.email,
         phone: lead.phone,
-        locations: lead.locations && lead.locations[0] ? lead.locations[0].name ? ""
+        locations: lead.locations && lead.locations[0] ? lead.locations[0].name : ""
       }));
       let csvRow = objectToCsv(leads);
       downloadCsv(csvRow);
