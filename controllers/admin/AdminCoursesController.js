@@ -314,10 +314,15 @@ module.exports.updateCourse = async function (req, res) {
   verbose(archivements);
   verbose(timeline);
   verbose(features);
+  try {
+    await course.save();
+    req.flash("success", `Successfully updated ${course.title}`);
+    
+  } catch (error) {
+    req.flash("danger", JSON.stringify(error));
+    console.debug('error', error);
+  }
 
-  await course.save();
-
-  req.flash("success", `Successfully updated ${course.title}`);
 
   res.redirect("/admin/courses/edit/" + req.params.slug);
 };

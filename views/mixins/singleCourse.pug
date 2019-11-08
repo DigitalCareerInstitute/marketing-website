@@ -27,27 +27,29 @@ mixin singleCourse
               a.scrollbutton.nav-link.nav-link-spy.mb-2(href='#section5') How to Apply
             button.btn.btn-gradient-secondary.btn-spy(type='button' data-toggle='modal', data-target='#contactFormModal' ) Apply Now
 
-        .col-12.col-xl-9
+        .col-12.col-xl-9.py-3
           #section1.mb-5
             h2.mt-3.mb-3.text-left=course.title
             p.lead.text-left=course.subtitle  
             .row
               - 
               each object in course.archivements
-                figure.col-md-4.text-center
-                  .m-3.row.position-relative
-                    .col-10.offset-1.col-md-8.offset-md-2.align-items-center
-                      img.object-fit-cover.img-fluid.square(alt=object.description src="/media/pixel.gif" style="background-image: url('/images/"+object.icon+"')")
-                  p.lead=object.description
+                if object.icon
+                  figure.col-md-4.text-center
+                    .m-3.row.position-relative
+                      .col-10.offset-1.col-md-8.offset-md-2.align-items-center
+                        img.object-fit-cover.img-fluid.square(alt=object.description src="/media/pixel.gif" style="background-image: url('/images/"+object.icon+"')")
+                    p.lead=object.description
             
           #section2.my-5
             - 
             each object in course.features
-              .row.container            
-                .col-12.d.flex.m-auto
-                  img.img-fluid.float-left.mr-3.icons(src="/images/"+object.icon, alt=object.title)
-                  h3.text-left=object.title
-                  p.text-left.lead=object.subtitle
+              if object.icon
+                .row.container            
+                  .col-12.d.flex.m-auto
+                    img.img-fluid.float-left.mr-3.icons(src="/images/"+object.icon, alt=object.title)
+                    h3.text-left=object.title
+                    p.text-left.lead=object.subtitle
                   
           section.my-5
             h2 Want more details about our Web Development Course?
@@ -65,20 +67,20 @@ mixin singleCourse
                     h3.ml-5.pt-2.text-left=object.title 
                     p.ml-5.text-left=object.subtitle
                       
-          section.my-5
-            div.my-5
+          section.my-5.row.bg-light.p-5
+            div.my-2
               h2 More than just classwork
               p.lead Beyond building the hard skills in class, you need to get involved in the local tech scene and market yourself. We’re here to help you succeed with career development support and opportunities to get into the community.
               
-            div.my-5
+            div.my-2
               h2 Career workshops
               p.lead preparing an industry-specific resume to creating an online presence, you’ll pick up the skills to stand out.
             
-            div.my-5
+            div.my-2
               h2 Guest speakers
               p.lead additional specialised sessions from top professionals and get tips from DCI alumni.
             
-            div.my-5
+            div.my-2
               h2 Company Tours
               p.lead Take a tour of a local startup and see what the work environment is all about.
 
@@ -108,12 +110,18 @@ mixin singleCourse
                       p.courseApply-stepTitle Reserve your spot
 
                   button.btn.btn-lg.btn-gradient-secondary.mt-3.mb-5(type='button' data-toggle='modal', data-target='#contactFormModal') Apply
-            section.my-5
+            section.my-5.pr-md-5
               if course.locations.length > 0
                 .mb-5
                   h3 This course is available in: 
                   each location in course.locations
                     span.badge.badge-primary.mr-2=location.name
+                  if course.massnahmeNumber
+                    h4.mt-4.text-dark
+                      = "Massnahmenummer: "
+                      code.text-dark=course.massnahmeNumber
+                  if course.massnahmeDetails
+                    p.mt-4.text-dark=course.massnahmeDetails
               h2 Come see our campus!
               p.lead Have questions? Want to see the student life for yourself? Book a one-on-one visit with our admissions team and we’ll show you around.
               p Vulkanstraße 1
