@@ -12,7 +12,7 @@ const Story = require("../../models/story");
 
 module.exports.getCourses = async function(req, res) {
   let courses = await Course.find({})
-    .sort({"order": 1})
+    .sort({ order: 1 })
     .populate("language")
     .populate("languageVersion")
     .exec();
@@ -27,17 +27,22 @@ module.exports.getCourses = async function(req, res) {
   });
 };
 
-module.exports.getSingleCourse = function (req, res) {
-  Course.findOne({ slug: req.params.slug }, function (err, course) {
-    res.render("course", {
-      course,
-      courseFormConfig
-    });
+module.exports.getSingleCourse = function(req, res) {
+  Course.findOne({ slug: req.params.slug }, function(err, course) {
+    if (course) {
+      res.render("course", {
+        course,
+        courseFormConfig
+      });
+    }
+    res.render("admin/notFoundPage");
   });
 };
-module.exports.editCourse = async function (req, res) {
+module.exports.editCourse = async function(req, res) {
   try {
-    const course = await Course.findOne({ slug: req.params.slug }).populate("successStory");
+    const course = await Course.findOne({ slug: req.params.slug }).populate(
+      "successStory"
+    );
     const storys = await Story.find()
       .select("title slug")
       .exec();
@@ -49,12 +54,12 @@ module.exports.editCourse = async function (req, res) {
       let match = course.locations
         .map(pcat => pcat.toString())
         .includes(loc._id.toString());
-        if (match) {
-          return Object.assign({ selected: true }, loc._doc);
-        } else {
-          return loc._doc;
-        }
-      });
+      if (match) {
+        return Object.assign({ selected: true }, loc._doc);
+      } else {
+        return loc._doc;
+      }
+    });
     res.render("admin/editCourse", {
       course,
       storys,
@@ -62,13 +67,12 @@ module.exports.editCourse = async function (req, res) {
       locations: all
     });
   } catch (error) {
-    console.debug('error', error);
+    console.debug("error", error);
     req.flash("danger", JSON.stringify(error));
-    res.redirect("/admin/courses");
+    res.render("admin/notFoundPage");
   }
-
 };
-module.exports.createCourse = async function (req, res) {
+module.exports.createCourse = async function(req, res) {
   const storys = await Story.find()
     .select("title slug")
     .exec();
@@ -82,7 +86,6 @@ module.exports.createCourse = async function (req, res) {
   course.icon = req.body.icon;
   course.massnahmeNumber = req.body.massnahmenummer;
   course.massnahmeDetails = req.body.massnahmedetails;
-
 
   course.successStory = req.body.successStory;
 
@@ -112,7 +115,7 @@ module.exports.createCourse = async function (req, res) {
   course.curriculumPdf = req.body.curriculumPdf;
 
   // save the course and check for errors
-  course.save(async function (err) {
+  course.save(async function(err) {
     if (err) {
       console.log("error", err);
 
@@ -132,24 +135,25 @@ module.exports.createCourse = async function (req, res) {
     res.redirect("/admin/courses");
   });
 };
-module.exports.deleteCourse = function (req, res) {
+module.exports.deleteCourse = function(req, res) {
   Course.remove(
     {
       slug: req.params.slug
     },
-    function (err, course) {
+    function(err, course) {
       if (err) res.send(err);
       doc.remove(next);
       req.flash("success", `Successfully deleted ${doc.name}`);
       res.redirect("/admin/courses");
-    })
+    }
+  );
 };
 // Storage settings for project images
 const storage = multer.diskStorage({
-  destination: function (request, file, next) {
+  destination: function(request, file, next) {
     next(null, "./temp");
   },
-  filename: function (request, file, next) {
+  filename: function(request, file, next) {
     next(null, uuid(4));
   }
 });
@@ -222,7 +226,7 @@ exports.resizeImages = async (request, response, next) => {
   next();
 };
 
-module.exports.updateCourse = async function (req, res) {
+module.exports.updateCourse = async function(req, res) {
   let course = await Course.findOne({ slug: req.params.slug });
   course.icon = req.body.icon ? req.body.icon : course.icon;
   course.headline = req.body.headline;
@@ -231,14 +235,15 @@ module.exports.updateCourse = async function (req, res) {
   course.order = req.body.order;
   course.locations = req.body.locations;
 
-
   course.slug = req.body.slug;
   course.massnahmeNumber = req.body.massnahmenummer;
   course.massnahmeDetails = req.body.massnahmedetails;
   course.curriculumPdf = req.body.curriculumPdf;
- course.icon = req.files.icon ? req.body.icon : course.icon;
+  course.icon = req.files.icon ? req.body.icon : course.icon;
 
-  course.successStory = !!req.body.successStory ? req.body.successStory : undefined;
+  course.successStory = !!req.body.successStory
+    ? req.body.successStory
+    : undefined;
 
   course.curriculumPdf = req.body.curriculumPdf;
 
@@ -329,16 +334,15 @@ module.exports.updateCourse = async function (req, res) {
   try {
     await course.save();
     req.flash("success", `Successfully updated ${course.title}`);
-    
   } catch (error) {
     req.flash("danger", JSON.stringify(error));
-    console.debug('error', error);
+    console.debug("error", error);
+    res.render("admin/notFoundPage");
   }
-
 
   res.redirect("/admin/courses/edit/" + course.slug);
 };
 
 module.exports.setL18n = async (req, res) => {
-  AbstractController.cloneSite(req, res, Course)
+  AbstractController.cloneSite(req, res, Course);
 };
