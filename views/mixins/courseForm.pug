@@ -28,7 +28,13 @@ mixin courseForm
       label.d-block.d-block(for='icon') Course Title Icon
       if course && course.icon
         img.mw-150.mh-150.w-100.mw-150.mh-150.object-fit-cover(src="/images/"+course.icon)
-      input#exampleFormControlFile1.form-control-file(type='file' name='icon')
+      input#icon.form-control-file(type='file' name='icon')
+
+    .mb-3
+      label.d-block.d-block(for='subicon') Course Sub Icon
+      if course && course.subicon
+        img.mw-150.mh-150.w-100.mw-150.mh-150.object-fit-cover(src="/images/"+course.subicon)
+      input#subicon.form-control-file(type='file' name='subicon')
 
     .mb-3
       label(for='headline') Headline *
@@ -62,9 +68,12 @@ mixin courseForm
     .mb-3
       label(for='massnahme') Massnahmenummer
       input#massnahme.form-control(name='massnahmenummer', type='text', placeholder='massnahmenummer', value=course &&course.massnahmeNumber ? course.massnahmeNumber :"")
-    div
+    .mb-3
       label(for='massnahmedetails') Massnahme details
       textarea#massnahmedetails.form-control(name='massnahmedetails', placeholder='massnahmedetails')=course &&course.massnahmeDetails ? course.massnahmeDetails :""
+    .mb-3
+      label(for='courselength') Courselength
+      input#courselength.form-control(name='courselength', type='text', placeholder='Courselength', value=course && course.courselength ? course.courselength :"")
 
     h3.mt-3 Archivements
     each archivementGroup, i in courseFormConfig.archivementConfig
@@ -73,6 +82,8 @@ mixin courseForm
       if course && course.archivements[i] && course.archivements[i].icon
         img.mw-150.mh-150(src="/images/"+course.archivements[i].icon)
       input#exampleFormControlFile1.form-control-file(type=archivementGroup.fileField.type name=archivementGroup.fileField.name)
+
+      input.form-control(type=archivementGroup.titleField.type , name=archivementGroup.titleField.name,  value=course && course.archivements[i] ? course.archivements[i].title : '', placeholder=archivementGroup.titleField.placeholder )
 
       input.form-control(type=archivementGroup.textField.type , name=archivementGroup.textField.name,  value=course && course.archivements[i] ? course.archivements[i].description : '', placeholder=archivementGroup.textField.placeholder )
     h3.mt-3 Features

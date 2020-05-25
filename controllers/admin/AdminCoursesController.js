@@ -83,9 +83,11 @@ module.exports.createCourse = async function(req, res) {
   course.order = req.body.order;
   course.locations = req.body.locations;
   course.icon = req.body.icon;
+  course.subicon = req.body.subicon;
   course.coloraccent = req.body.coloraccent;
   course.massnahmeNumber = req.body.massnahmenummer;
   course.massnahmeDetails = req.body.massnahmedetails;
+  course.courselength = req.body.courselength;
 
   if(!!req.body.successStory) {
     course.successStory = req.body.successStory;
@@ -93,6 +95,7 @@ module.exports.createCourse = async function(req, res) {
 
   course.archivements = [1, 2, 3, 4, 5].map(item => {
     return {
+      title: req.body[`archivement_title_${item}`],
       icon: req.body[`archivement_icon_${item}`],
       description: req.body[`archivement_description_${item}`]
     };
@@ -176,6 +179,7 @@ module.exports.uploadImages = multer({
 }).fields([
   { name: "curriculumPdf", maxCount: 1 },
   { name: "icon", maxCount: 1 },
+  { name: "subicon", maxCount: 1 },
   { name: "archivement_icon_1", maxCount: 1 },
   { name: "archivement_icon_2", maxCount: 1 },
   { name: "archivement_icon_3", maxCount: 1 },
@@ -196,18 +200,17 @@ exports.resizeImages = async (request, response, next) => {
     return;
   }
   for await (const singleFile of Object.values(request.files)) {
-    const extension = singleFile[0].mimetype.split("/")[1];
     request.body[
       singleFile[0].fieldname
     ] = `${singleFile[0].filename}`;
     try {
-      if (singleFile[0].mimetype === "application/pdf") {
-        const pdfFile = fs.readFileSync(singleFile[0].path);
+      if (singleFile[0].mimetype === "image/svg+xml" || singleFile[0].mimetype === "application/pdf") {
+        const fileObject = fs.readFileSync(singleFile[0].path);
         fs.writeFileSync(
           `${process.env.IMAGE_UPLOAD_DIR}/${
             request.body[singleFile[0].fieldname]
           }`,
-          pdfFile
+          fileObject
         );
       }
       if (singleFile[0].mimetype.startsWith("image/")) {
@@ -229,7 +232,7 @@ exports.resizeImages = async (request, response, next) => {
 
 module.exports.updateCourse = async function(req, res) {
   let course = await Course.findOne({ slug: req.params.slug });
-  const { slug, massnahmedetails, massnahmenummer, subtitle, order, successStory, subheading, locations, headline, title, icon, curriculumPdf, coloraccent} = req.body;
+  const { slug, massnahmedetails, massnahmenummer, subtitle, order, successStory, subheading, locations, headline, title, icon, subicon, curriculumPdf, coloraccent} = req.body;
   course.slug = slug;
   course.icon = icon ? icon : course.icon;
   course.coloraccent = coloraccent ? coloraccent : "";
@@ -241,10 +244,12 @@ module.exports.updateCourse = async function(req, res) {
   course.order = order;
   course.massnahmeNumber = massnahmenummer;
   course.massnahmeDetails = massnahmedetails;
+  course.courselength = req.body.courselength;
   course.curriculumPdf = curriculumPdf;
   course.locations = locations;
   course.curriculumPdf = curriculumPdf;
   course.icon = req.files.icon ? icon : course.icon;
+  course.subicon = req.files.subicon ? subicon : course.subicon;
 
   function verbose(inputs) {
     let items = [];
@@ -277,6 +282,10 @@ module.exports.updateCourse = async function(req, res) {
     itemsAmount: 5,
     model: "archivements",
     titles: [
+      {
+        dbChild: "title",
+        reqChild: "archivement_title_"
+      },
       {
         dbChild: "icon",
         reqChild: "archivement_icon_"

@@ -5,10 +5,15 @@ module.exports = () => {
     timelineConfig
   };
 };
-const archivementConfig = [1, 2, 3, 4, 5].map(item => {
+const archivementConfig = [1, 2, 3, 4, 5, 6].map(item => {
   return {
     for: `archivement_description_${item}`,
     label: `Archivements icon ${item}`,
+    titleField: {
+      type: "text",
+      name: `archivement_title_${item}`,
+      placeholder: `archivement title ${item}` || ""
+    },
     fileField: {
       type: "file",
       name: `archivement_icon_${item}`

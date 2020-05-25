@@ -564,7 +564,7 @@ UPCOMING EVENTS
     right: 0;
     width: 100vw;
     height: 100%;
-    z-index: 0;
+    z-index: -1;
 
     .order-12 & {
       right: auto;

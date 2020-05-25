@@ -1,61 +1,86 @@
 mixin singleCourse
-  .position-relative.mb-3.bg-section.pb-200
-    .jumbotron.jumbotron-fluid.text-center.bg-light-blue.mb-0
-      h1.display-1.mt-5.mb-3=course.headline
-      p.lead.mb-5=course.subheading
-      button.btn.btn-lg.btn-secondary.mt-3.mb-5(type='button' data-toggle='modal', data-target='#contactFormModal')=__("Apply")
+  .jumbotron.jumbotron-fluid.mb-0.bg-section.p-0.z-1.position-relative
+    .container
+      .row
+        .col-md-6.bg-panel(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
+          h1.display-1.mt-5.mb-3=course.headline
+          p.lead.mb-5=course.subheading
+          each location in course.locations
+            span.badge.mr-2=location.name
+          div.my-4
+            a.btn.btn-white=__("How to Apply")
+        .col-md-6.py-5.py-md-0
+          .portrait.floatings
+            .position-absolute.top.transform-absolute-center.w-100.px-3.px-md-5.row.justify-content-end.h-100.align-items-end
+              .flex-grow-1.w-100
+                img.object-fit-cover.img-fluid(alt=course.description src="/images/"+course.icon)
+              .p-4.font-weight-bold(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )=course.courselength
+  .position-relative.mb-3
+    .container-fluid.position-relative
+      section#section1
+        .row.row-courses
+          .col-7.px-5.bg-white.pt-5
+            h5.font-weight-bold.text-muted.text-uppercase.py-3=__("Overview")
+            h2.mt-3.mb-3.text-left=course.title
+            p.lead.text-left=course.subtitle
+          .col-5.px-5.bg-white.d-flex.flex-column.justify-content-end
+          .col-7.py-3.px-5.bg-white.py-5.mb-5
+          .col-5.px-5.bg-white.d-flex.flex-column.justify-content-end
+            span(class=course && course.coloraccent ? `` : `text-primary`, style=course && course.coloraccent ? `color: ${course.coloraccent}` : `` )
+            img.object-fit-cover.img-fluid(alt=course.description src="/images/"+course.subicon)
 
-    .container.container-fluid-courses.position-relative
-      .row.row-courses
-        nav#courseScrollspy.courses-scroll.col-sm-3.col-4.pt-3
-          ul.nav.nav-pills.flex-column.nav-courses-pills.p-4.text-center.bg-white.mb-3
-            h4=course.headline
-            li.nav-item
-              a.scrollbutton.nav-link.connection-line.nav-link-spy.text-dark.mb-2.active.mb-5(href='#section1')=__("Overview")
-            li.nav-item
-              a.scrollbutton.nav-link.connection-line.nav-link-spy.text-dark.mb-2.mb-5(href='#section2')=__("What you will learn")
-            li.nav-item
-              a.scrollbutton.nav-link.connection-line.nav-link-spy.text-dark.mb-2.mb-5(href='#section3')=__("Day at DCI")
-            if course.successStory
-              li.nav-item
-                a.scrollbutton.nav-link.connection-line.nav-link-spy.text-dark.mb-2.mb-5(href='#section4')=__("A success story")
-            li.nav-item
-              a.scrollbutton.nav-link.connection-line.nav-link-spy.text-dark.mb-2.mb-5(href='#section5')=__("How to Apply")
-            button.btn.btn-secondary.btn-spy(type='button' data-toggle='modal', data-target='#contactFormModal' )=__("Apply now")
+    section.mb-5.position-relative.py-5
+      .position-absolute.top.left.right.bottom.half-transparent(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
 
 
-        .col-12.col-xl-9.py-3.px-5.bg-white
-          if course.archivements.filter(t => !!t.title).length > 0 
-            #section1.mb-5
-              h2.mt-3.mb-3.text-left=course.title
-              p.lead.text-left=course.subtitle
-              .row
-                -
-                each object in course.archivements
-                  if object.icon
-                    figure.col-md-4.text-center
-                      .m-3.row.position-relative
-                        .col-10.offset-1.col-md-8.offset-md-2.align-items-center
-                          img.object-fit-cover.img-fluid.square(alt=object.description src="/media/pixel.gif" style="background-image: url('/images/"+object.icon+"')")
-                      p.lead=object.description
-
-          if course.features.filter(t => !!t.title).length > 0 
-            #section2.my-5
-              -
-              each object in course.features
+      .container.container-fluid-courses.position-relative.text-center
+        h5.font-weight-bold.text-muted.text-uppercase.py-3=__("Curriculum")
+        h2.mb-3=__("What will I learn?")
+        p.lead.mb-5=__("We have designed an application oriented curriculum, tailored to people of all categories. Our students can go head-to-head with the competiton after the course.")
+        .my-5
+          if course.archivements.filter(t => !!t.description).length > 0 
+            .row
+              each object, index in course.archivements
                 if object.icon
-                  .row.container
-                    .col-12.d.flex.m-auto
-                      img.img-fluid.float-left.mr-3.icons(src="/images/"+object.icon, alt=object.title)
-                      h3.text-left=object.title
-                      p.text-left.lead=object.subtitle
+                  .col-md-6.text-center.d-flex.p-4.floatings
+                    .row.bg-white.p-3.rounded.hover-shadow
+                      figure.mw-150.row.position-relative.col
+                        .col.d-flex.flex-column.justify-content-center
+                          img.object-fit-cover.img-fluid.square(alt=object.description src="/media/pixel.gif" style="background-image: url('/images/"+object.icon+"')")
+                      .col.text-left
+                        h5.font-weight-bold=object.title
+                        p.lead=object.description
+                      .d-flex.flex-column.justify-content-center
+                        h2.font-weight-bold=`0${index}`
+
+        h3.mt-5=__("Want to know more?")
+        =__("Download the System Administration Course Overview.")
+    .container.container-fluid-courses.position-relative
+      if course.curriculumPdf
+        .text-center.mb-5 
+          a.btn.btn-lg.btn-secondary.border-0(href='/images/'+ course.curriculumPdf target='_blank' class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` ) 
+            div.h-2.d-inline-block.mr-2
+              include ../../assets/icons/download.svg
+            ="Download"
+
+      section.mb-5
+        if course.features.filter(t => !!t.title).length > 0 
+          section#section2.my-5
+            -
+            each object in course.features
+              if object.icon
+                .row.container
+                  .col-12.d.flex.m-auto
+                    img.img-fluid.float-left.mr-3.icons(src="/images/"+object.icon, alt=object.title)
+                    h3.text-left=object.title
+                    p.text-left.lead=object.subtitle
 
           section.my-5
             h2=__("Want more details about our Web Development Course?")
             p.lead=__("We will send you the full course information to your email")
 
           if course.timeline.filter(t => !!t.title).length > 0 
-            #section3.my-5.day-at-dci
+            section#section3.my-5.day-at-dci
               h2.mb-5=__("A day at DCI")
               each object in course.timeline
                 if !!object.title
@@ -85,13 +110,9 @@ mixin singleCourse
               h2=__("Company Tours")
               p.lead=__("Take a tour of a local startup and see what the work environment is all about.")
 
-          if course.curriculumPdf
-            .text-center
-              a.btn.btn-lg.btn-secondary.mt-3.mb-3(href='/images/'+ course.curriculumPdf target='_blank' ) Download Course Overview
-
-          #section4.my-5
+          section#section4.my-5
            if course.successStory
-            section.my-5
+            .my-5
               .row.bg-light.pt-4.hover-shadow.bg-light.w-10
                 .col-12
                   h2.text-center Read about a senior DCI graduate
@@ -99,7 +120,7 @@ mixin singleCourse
                   +singleStory(course.successStory)
 
 
-          #section5.my-5.courseSection
+          section#section5.my-5.courseSection
             .container
               .row
                 .col-lg-8.col-lg-offset-3
@@ -116,7 +137,7 @@ mixin singleCourse
                       p.courseApply-stepTitle=__("Reserve your spot")
 
                   button.btn.btn-lg.btn-secondary.mt-3.mb-5(type='button' data-toggle='modal', data-target='#contactFormModal') Apply
-            section.my-5.pr-md-5
+            section.my-5.pr-md-5.pb-200
               if course.locations.length > 0
                 .mb-5
                   h3=__("This course is available in")
