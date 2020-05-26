@@ -185,11 +185,13 @@ module.exports.uploadImages = multer({
   { name: "archivement_icon_3", maxCount: 1 },
   { name: "archivement_icon_4", maxCount: 1 },
   { name: "archivement_icon_5", maxCount: 1 },
+  { name: "archivement_icon_6", maxCount: 1 },
   { name: "features_icon_1", maxCount: 1 },
   { name: "features_icon_2", maxCount: 1 },
   { name: "features_icon_3", maxCount: 1 },
   { name: "features_icon_4", maxCount: 1 },
-  { name: "features_icon_5", maxCount: 1 }
+  { name: "features_icon_5", maxCount: 1 },
+  { name: "features_icon_6", maxCount: 1 }
 ]);
 
 // Resize the images with different thumbnail sizes
