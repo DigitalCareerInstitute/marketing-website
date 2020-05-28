@@ -1073,6 +1073,37 @@ body:not(.admin) {
   max-width: 150px;
 }
 
+.top-50 {
+  top: 50%;
+}
+
+.shift-left {
+  transform: translateX(50px);
+}
+.shift-right {
+  transform: translateX(-50px);
+}
+.shift-top {
+  transform: translateY(-50%);
+}
+.shift-bottom {
+  transform: translateY(50%);
+}
+.shift-vertical {
+  transform: translate(50%, -50%);
+}
+.rotate-180 { 
+  transform: rotate(180deg);
+}
+
+.shift-up-container {
+  height: -50%;
+
+  .shift-up-item {
+    transform: translateY(-50%);
+  }
+}
+
 .list-group-item {
   border: none;
   border-radius: 0;

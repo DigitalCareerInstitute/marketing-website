@@ -93,7 +93,7 @@ module.exports.createCourse = async function(req, res) {
     course.successStory = req.body.successStory;
   }
 
-  course.archivements = [1, 2, 3, 4, 5].map(item => {
+  course.archivements = [1, 2, 3, 4, 5, 6].map(item => {
     return {
       title: req.body[`archivement_title_${item}`],
       icon: req.body[`archivement_icon_${item}`],
@@ -101,7 +101,7 @@ module.exports.createCourse = async function(req, res) {
     };
   });
 
-  course.timeline = [1, 2, 3, 4, 5].map(item => {
+  course.timeline = [1, 2, 3, 4, 5, 6].map(item => {
     return {
       title: req.body[`timeline_title_${item}`],
       subtitle: req.body[`timeline_subtitle_${item}`],
@@ -109,7 +109,7 @@ module.exports.createCourse = async function(req, res) {
     };
   });
 
-  course.features = [1, 2, 3, 4, 5].map(item => {
+  course.features = [1, 2, 3, 4, 5, 6].map(item => {
     return {
       icon: req.body[`features_icon_${item}`],
       subtitle: req.body[`features_subtitle_${item}`],
@@ -281,7 +281,7 @@ module.exports.updateCourse = async function(req, res) {
     }
   }
   const archivements = {
-    itemsAmount: 5,
+    itemsAmount: 6,
     model: "archivements",
     titles: [
       {
@@ -300,7 +300,7 @@ module.exports.updateCourse = async function(req, res) {
   };
 
   const timeline = {
-    itemsAmount: 5,
+    itemsAmount: 6,
     model: "timeline",
     titles: [
       {
@@ -319,7 +319,7 @@ module.exports.updateCourse = async function(req, res) {
   };
 
   const features = {
-    itemsAmount: 5,
+    itemsAmount: 6,
     model: "features",
     titles: [
       {

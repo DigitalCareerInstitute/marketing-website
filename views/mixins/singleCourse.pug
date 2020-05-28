@@ -11,10 +11,11 @@ mixin singleCourse
             a.btn.btn-white=__("How to Apply")
         .col-md-6.py-5.py-md-0
           .portrait.floatings
-            .position-absolute.top.transform-absolute-center.w-100.px-3.px-md-5.row.justify-content-end.h-100.align-items-end
+            .position-absolute.top.transform-absolute-center.w-100.px-3.px-lg-5.row.align-items-center.h-100.justify-content-end
               .flex-grow-1.w-100
-                img.object-fit-cover.img-fluid(alt=course.description src="/images/"+course.icon)
-              .p-4.font-weight-bold(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )=course.courselength
+                img.object-fit-cover.img-fluid(alt=model.description src="/images/"+model.icon)
+              if model.courselength
+                .p-4.font-weight-bold.align-self-end(class=model && model.coloraccent ? `` : `bg-primary`, style=model && model.coloraccent ? `background-color: ${model.coloraccent}` : `` )=model.courselength
   .position-relative.mb-3
     .container-fluid.position-relative
       section#section1
@@ -52,9 +53,9 @@ mixin singleCourse
                         p.lead=object.description
                       .d-flex.flex-column.justify-content-center
                         h2.font-weight-bold=`0${index}`
-
-        h3.mt-5=__("Want to know more?")
-        =__("Download the System Administration Course Overview.")
+        if model.curriculumPdf
+          h3.mt-5=__("Want to know more?")
+          =__("Download the System Administration Course Overview.")
     .container.container-fluid-courses.position-relative
       if course.curriculumPdf
         .text-center.mb-5 
@@ -63,34 +64,100 @@ mixin singleCourse
               include ../../assets/icons/download.svg
             ="Download"
 
+
+      section.my-5
+        h2=__("Want more details about our Web Development Course?")
+        p.lead=__("We will send you the full course information to your email")
+
+        if model.timeline.filter(t => !!t.title).length > 0 
+          section#section3.my-5.day-at-dci
+            .row.container
+              .col-6.text-center.p-5
+                .position-absolute.top.left.right.bottom.half-transparent.z-minus(class=model && model.coloraccent ? `` : `bg-primary`, style=model && model.coloraccent ? `background-color: ${model.coloraccent}` : `` )     
+                h5.font-weight-bold.text-muted.text-uppercase.py-3=__("Our next Course Start")
+                each location in model.locations
+                  span.badge.badge-primary.mr-2=location.name
+              .col-6.p-3.p-md-5.position-relative
+                h5.font-weight-bold.text-muted.text-uppercase.py-3=__("FURTHER DETAILS & REQUIREMENTS")
+                h3 About this Course.
+                .d-flex.mb-2
+                  strong.mr-2=__("Teaching Mode")+":"
+                  span.position-relative.overflow-hidden.d-inline-block.px-1
+                    .position-absolute.top.left.right.bottom.half-transparent.z-minus(class=model && model.coloraccent ? `` : `bg-primary`, style=model && model.coloraccent ? `background-color: ${model.coloraccent}` : `` )
+                    ="On Campus"
+                .d-flex.mb-2
+                  strong.mr-2=__("Language")+":"
+                  span.position-relative.overflow-hidden.d-inline-block.px-1
+                    .position-absolute.top.left.right.bottom.half-transparent.z-minus(class=model && model.coloraccent ? `` : `bg-primary`, style=model && model.coloraccent ? `background-color: ${model.coloraccent}` : `` )
+                    ="English"
+                if model.courselength
+                  .d-flex.mb-2
+                    strong.mr-2=__("Duration")+":"
+                    span.position-relative.overflow-hidden.d-inline-block.px-1
+                      .position-absolute.top.left.right.bottom.half-transparent.z-minus(class=model && model.coloraccent ? `` : `bg-primary`, style=model && model.coloraccent ? `background-color: ${model.coloraccent}` : `` )
+                      = model.courselength
+                .d-flex.mb-2
+                  strong.mr-2=__("Availability")+":"
+                  span.position-relative.overflow-hidden.d-inline-block.px-1
+                    .position-absolute.top.left.right.bottom.half-transparent.z-minus(class=model && model.coloraccent ? `` : `bg-primary`, style=model && model.coloraccent ? `background-color: ${model.coloraccent}` : `` )
+                    ="Berlin, Düsseldorf, Hamburg & Leipzig"
+
+                h3 What do we require of you?
+                .d-flex.mb-2
+                  strong.mr-2=__("Language")+":"
+                  span.position-relative.overflow-hidden.d-inline-block.px-1
+                    .position-absolute.top.left.right.bottom.half-transparent.z-minus(class=model && model.coloraccent ? `` : `bg-primary`, style=model && model.coloraccent ? `background-color: ${model.coloraccent}` : `` )
+                    ="English - minimum B2 Level "
+                .d-flex.mb-2
+                  strong.mr-2=__("ComputerKnowledge")+":"
+                  span.position-relative.overflow-hidden.d-inline-block.px-1
+                    .position-absolute.top.left.right.bottom.half-transparent.z-minus(class=model && model.coloraccent ? `` : `bg-primary`, style=model && model.coloraccent ? `background-color: ${model.coloraccent}` : `` )
+                    ="Beginner"
       section.mb-5
         if course.features.filter(t => !!t.title).length > 0 
           section#section2.my-5
-            -
-            each object in course.features
+            each object in model.features
               if object.icon
                 .row.container
-                  .col-12.d.flex.m-auto
-                    img.img-fluid.float-left.mr-3.icons(src="/images/"+object.icon, alt=object.title)
+                  .col-6.text-center.p-5
+                    .px-5
+                      .px-5
+                        img.img-fluid.h-100(src="/images/"+object.icon, alt=object.title)
+                  .col-6.p-3.p-md-5.position-relative
+                    .position-absolute.top.left.right.bottom.half-transparent.z-minus(class=model && model.coloraccent ? `` : `bg-primary`, style=model && model.coloraccent ? `background-color: ${model.coloraccent}` : `` )     
                     h3.text-left=object.title
                     p.text-left.lead=object.subtitle
 
-          section.my-5
-            h2=__("Want more details about our Web Development Course?")
-            p.lead=__("We will send you the full course information to your email")
 
-          if course.timeline.filter(t => !!t.title).length > 0 
-            section#section3.my-5.day-at-dci
-              h2.mb-5=__("A day at DCI")
-              each object in course.timeline
-                if !!object.title
-                  .row.container.timelineRow
-                    .col-12.d.flex.m-auto
-                      div.timelineDiv.float-left.text-center
-                        span.timeline=object.time
-                      div.ml-5
-                        h3.ml-5.pt-2.text-left=object.title
-                        p.ml-5.text-left=object.subtitle
+        h5.font-weight-bold.text-muted.text-uppercase.py-3=__("APPLICATION")
+        h3=__("How to apply")
+
+        .row.container
+          .col-4.text-center.p-5
+            .d-flex.align-items-center
+              h2.font-weight-bold=`01`
+              div(class=model && model.coloraccent ? `` : `text-primary`, style=model && model.coloraccent ? `color: ${model.coloraccent}` : `` )
+                include ../../assets/icons/github-brands.svg
+            =__("Individual Appointment with DCI")
+            .position-absolute.right.h-3.shift-vertical.top-50 
+              .rotate-180(class=model && model.coloraccent ? `` : `text-primary`, style=model && model.coloraccent ? `color: ${model.coloraccent}` : `` )
+                include ../../assets/icons/back-button-arrow-left.svg
+
+          .col-4.text-center.p-5
+            .d-flex.align-items-center
+              h2.font-weight-bold=`02`
+              div(class=model && model.coloraccent ? `` : `text-primary`, style=model && model.coloraccent ? `color: ${model.coloraccent}` : `` )
+                include ../../assets/icons/github-brands.svg
+            =__("Individual Appointment with DCI")
+            .position-absolute.right.h-3.shift-vertical.top-50 
+              .rotate-180(class=model && model.coloraccent ? `` : `text-primary`, style=model && model.coloraccent ? `color: ${model.coloraccent}` : `` )
+                include ../../assets/icons/back-button-arrow-left.svg
+          .col-4.text-center.p-5
+            .d-flex.align-items-center
+              h2.font-weight-bold=`03`
+              div(class=model && model.coloraccent ? `` : `text-primary`, style=model && model.coloraccent ? `color: ${model.coloraccent}` : `` )
+                include ../../assets/icons/github-brands.svg
+            =__("Individual Appointment with DCI")
 
           section.my-5.row.bg-light.p-5
             div.my-2
