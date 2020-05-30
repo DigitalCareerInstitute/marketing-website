@@ -121,6 +121,9 @@ nav.container:after {
 .half-transparent {
   opacity: 0.5;
 }
+.third-transparent {
+  opacity: 0.333;
+}
 
 
 /******************************************
@@ -555,13 +558,18 @@ UPCOMING EVENTS
     z-index: 1;
   }
 
+  &.left:after {
+    left: 0;
+  }
+  &.right:after {
+    right: 0;
+  }
   &:after {
     background-color: inherit;
     content: '';
     display: block;
     position: absolute;
     top: 0;
-    right: 0;
     width: 100vw;
     height: 100%;
     z-index: -1;
@@ -1103,7 +1111,6 @@ body:not(.admin) {
     transform: translateY(-50%);
   }
 }
-
 .list-group-item {
   border: none;
   border-radius: 0;
@@ -1564,5 +1571,31 @@ body[class*="pages-"] {
 .text-underline {
   &, &:link {
     text-decoration: underline !important;
+  }
+}
+.circle {
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;;
+}
+
+.afterdot {
+  position: relative;
+  &:not(:last-child) {
+    &:after {
+      content: "";
+      width: 0.3em;
+      height: 0.3em;
+      background-color: black;
+      display: block;
+      position: absolute;
+      right: -0.65em;
+      top: 50%;
+      transform: translateY(-50%);
+    }
   }
 }

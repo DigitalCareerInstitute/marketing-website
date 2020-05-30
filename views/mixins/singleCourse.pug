@@ -2,28 +2,36 @@ mixin singleCourse
   .jumbotron.jumbotron-fluid.mb-0.bg-section.p-0.z-1.position-relative
     .container
       .row
-        .col-md-6.bg-panel(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
+        .col-md-6.bg-panel.right.py-3.py-md-5(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
           h1.display-1.mt-5.mb-3=course.headline
           p.lead.mb-5=course.subheading
-          each location in course.locations
-            span.badge.mr-2=location.name
+          .d-flex.align-items-center.flex-wrap
+            .bg-white.circle.mr-2
+              include ../../assets/icons/location.svg
+            each location in course.locations
+              span.font-weight-bold.mr-3.text-uppercase.afterdot=location.name
           div.my-4
-            a.btn.btn-white=__("How to Apply")
+            a.btn.btn-white.px-4(class=course && course.coloraccent ? `` : `text-primary`, style=course && course.coloraccent ? `color: ${course.coloraccent}!important` : `` )=__("Apply Now")
         .col-md-6.py-5.py-md-0
-          .portrait.floatings
-            .position-absolute.top.transform-absolute-center.w-100.px-3.px-lg-5.row.align-items-center.h-100.justify-content-end
-              .flex-grow-1.w-100
-                img.object-fit-cover.img-fluid(alt=model.description src="/images/"+model.icon)
-              if model.courselength
-                .p-4.font-weight-bold.align-self-end(class=model && model.coloraccent ? `` : `bg-primary`, style=model && model.coloraccent ? `background-color: ${model.coloraccent}` : `` )=model.courselength
-  .position-relative.mb-3
+          .floatings
+            .w-100.px-3.px-lg-5.row.align-items-center.h-100.justify-content-end
+              .flex-grow-1.w-100.py-3.py-md-5
+                if course.icon
+                  img.object-fit-cover.img-fluid(alt=course.description src="/images/"+course.icon)
+                else
+                  img.w-100(src="/media/pixel.gif" alt=course.headline style=`background-image: url('${course.icon ? `/images/` + course.icon : `/media/circuit-board.svg`}')`)
+              if course.courselength
+                .row
+                  .p-4.font-weight-bold.align-self-end(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )=course.courselength
+  .position-relative.mb-3.overflow-hidden
     .container-fluid.position-relative
       section#section1
         .row.row-courses
           .col-7.px-5.bg-white.pt-5
-            h5.font-weight-bold.text-muted.text-uppercase.py-3=__("Overview")
-            h2.mt-3.mb-3.text-left=course.title
-            p.lead.text-left=course.subtitle
+            .py-3.py-md-5
+              h5.font-weight-bold.text-muted.text-uppercase.py-3=__("Overview")
+              h2.mt-3.mb-3.text-left=course.title
+              p.lead.text-left=course.subtitle
           .col-5.px-5.bg-white.d-flex.flex-column.justify-content-end
           .col-7.py-3.px-5.bg-white.py-5.mb-5
           .col-5.px-5.bg-white.d-flex.flex-column.justify-content-end
@@ -31,7 +39,7 @@ mixin singleCourse
             img.object-fit-cover.img-fluid(alt=course.description src="/images/"+course.subicon)
 
     section.mb-5.position-relative.py-5
-      .position-absolute.top.left.right.bottom.half-transparent(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
+      .position-absolute.top.left.right.bottom.third-transparent(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
 
 
       .container.container-fluid-courses.position-relative.text-center
@@ -44,7 +52,7 @@ mixin singleCourse
               each object, index in course.archivements
                 if object.icon
                   .col-md-6.text-center.d-flex.p-4.floatings
-                    .row.bg-white.p-3.rounded.hover-shadow
+                    .row.bg-white.p-3.rounded.hover-shadow.w-100
                       figure.mw-150.row.position-relative.col
                         .col.d-flex.flex-column.justify-content-center
                           img.object-fit-cover.img-fluid.square(alt=object.description src="/media/pixel.gif" style="background-image: url('/images/"+object.icon+"')")
@@ -52,82 +60,86 @@ mixin singleCourse
                         h5.font-weight-bold=object.title
                         p.lead=object.description
                       .d-flex.flex-column.justify-content-center
-                        h2.font-weight-bold=`0${index}`
-        if model.curriculumPdf
+                        h2.font-weight-bold=`0${index+1}`
+        if course.curriculumPdf
           h3.mt-5=__("Want to know more?")
-          =__("Download the System Administration Course Overview.")
+          =__("Download Course Overview.")
     .container.container-fluid-courses.position-relative
       if course.curriculumPdf
         .text-center.mb-5 
-          a.btn.btn-lg.btn-secondary.border-0(href='/images/'+ course.curriculumPdf target='_blank' class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` ) 
+          a.btn.btn-lg.px-5.btn-secondary.border-0.text-white(href='/images/'+ course.curriculumPdf target='_blank' class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` ) 
             div.h-2.d-inline-block.mr-2
               include ../../assets/icons/download.svg
             ="Download"
 
 
-      section.my-5
-        h2=__("Want more details about our Web Development Course?")
-        p.lead=__("We will send you the full course information to your email")
+      section.my-5.pt-5
+        h5.font-weight-bold.text-muted.text-uppercase.py-3=__("COURSE DETAILS")
+        h2=__("What more do we offer?")
+        p.lead=__("We o!er much more than just teaching and hacking, such as;")
 
-        if model.timeline.filter(t => !!t.title).length > 0 
-          section#section3.my-5.day-at-dci
-            .row.container
-              .col-6.text-center.p-5
-                .position-absolute.top.left.right.bottom.half-transparent.z-minus(class=model && model.coloraccent ? `` : `bg-primary`, style=model && model.coloraccent ? `background-color: ${model.coloraccent}` : `` )     
-                h5.font-weight-bold.text-muted.text-uppercase.py-3=__("Our next Course Start")
-                each location in model.locations
-                  span.badge.badge-primary.mr-2=location.name
-              .col-6.p-3.p-md-5.position-relative
-                h5.font-weight-bold.text-muted.text-uppercase.py-3=__("FURTHER DETAILS & REQUIREMENTS")
-                h3 About this Course.
-                .d-flex.mb-2
-                  strong.mr-2=__("Teaching Mode")+":"
-                  span.position-relative.overflow-hidden.d-inline-block.px-1
-                    .position-absolute.top.left.right.bottom.half-transparent.z-minus(class=model && model.coloraccent ? `` : `bg-primary`, style=model && model.coloraccent ? `background-color: ${model.coloraccent}` : `` )
-                    ="On Campus"
-                .d-flex.mb-2
-                  strong.mr-2=__("Language")+":"
-                  span.position-relative.overflow-hidden.d-inline-block.px-1
-                    .position-absolute.top.left.right.bottom.half-transparent.z-minus(class=model && model.coloraccent ? `` : `bg-primary`, style=model && model.coloraccent ? `background-color: ${model.coloraccent}` : `` )
-                    ="English"
-                if model.courselength
-                  .d-flex.mb-2
-                    strong.mr-2=__("Duration")+":"
-                    span.position-relative.overflow-hidden.d-inline-block.px-1
-                      .position-absolute.top.left.right.bottom.half-transparent.z-minus(class=model && model.coloraccent ? `` : `bg-primary`, style=model && model.coloraccent ? `background-color: ${model.coloraccent}` : `` )
-                      = model.courselength
-                .d-flex.mb-2
-                  strong.mr-2=__("Availability")+":"
-                  span.position-relative.overflow-hidden.d-inline-block.px-1
-                    .position-absolute.top.left.right.bottom.half-transparent.z-minus(class=model && model.coloraccent ? `` : `bg-primary`, style=model && model.coloraccent ? `background-color: ${model.coloraccent}` : `` )
-                    ="Berlin, Düsseldorf, Hamburg & Leipzig"
 
-                h3 What do we require of you?
-                .d-flex.mb-2
-                  strong.mr-2=__("Language")+":"
-                  span.position-relative.overflow-hidden.d-inline-block.px-1
-                    .position-absolute.top.left.right.bottom.half-transparent.z-minus(class=model && model.coloraccent ? `` : `bg-primary`, style=model && model.coloraccent ? `background-color: ${model.coloraccent}` : `` )
-                    ="English - minimum B2 Level "
-                .d-flex.mb-2
-                  strong.mr-2=__("ComputerKnowledge")+":"
-                  span.position-relative.overflow-hidden.d-inline-block.px-1
-                    .position-absolute.top.left.right.bottom.half-transparent.z-minus(class=model && model.coloraccent ? `` : `bg-primary`, style=model && model.coloraccent ? `background-color: ${model.coloraccent}` : `` )
-                    ="Beginner"
       section.mb-5
         if course.features.filter(t => !!t.title).length > 0 
           section#section2.my-5
-            each object in model.features
+            each object in course.features
               if object.icon
                 .row.container
                   .col-6.text-center.p-5
                     .px-5
                       .px-5
                         img.img-fluid.h-100(src="/images/"+object.icon, alt=object.title)
-                  .col-6.p-3.p-md-5.position-relative
-                    .position-absolute.top.left.right.bottom.half-transparent.z-minus(class=model && model.coloraccent ? `` : `bg-primary`, style=model && model.coloraccent ? `background-color: ${model.coloraccent}` : `` )     
-                    h3.text-left=object.title
-                    p.text-left.lead=object.subtitle
+                  .col-6.position-relative
+                    .row.bg-panel.left.third-transparent.z-minus(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
+                    .p-3.p-md-5
+                      .p-md-4.position-relative
+                        h3.text-left=object.title
+                        p.text-left.lead=object.subtitle
 
+
+      section#section3.my-5.day-at-dci.pt-5
+        .row.container
+          .col-6.text-center.p-5
+            .position-absolute.top.left.right.bottom.third-transparent.z-minus(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )     
+            h5.font-weight-bold.text-muted.text-uppercase.py-3=__("Our next Course Start")
+            each location in course.locations
+              span.badge.badge-primary.mr-2=location.name
+          .col-6.p-3.p-md-5.position-relative
+            h5.font-weight-bold.text-muted.text-uppercase.py-3=__("FURTHER DETAILS & REQUIREMENTS")
+            h3 About this Course.
+            .d-flex.mb-2
+              strong.mr-2=__("Teaching Mode")+":"
+              span.position-relative.overflow-hidden.d-inline-block.px-1
+                .position-absolute.top.left.right.bottom.third-transparent.z-minus(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
+                ="On Campus"
+            .d-flex.mb-2
+              strong.mr-2=__("Language")+":"
+              span.position-relative.overflow-hidden.d-inline-block.px-1
+                .position-absolute.top.left.right.bottom.third-transparent.z-minus(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
+                ="English"
+            if course.courselength
+              .d-flex.mb-2
+                strong.mr-2=__("Duration")+":"
+                span.position-relative.overflow-hidden.d-inline-block.px-1
+                  .position-absolute.top.left.right.bottom.third-transparent.z-minus(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
+                  = course.courselength
+            .d-flex.mb-2
+              strong.mr-2=__("Availability")+":"
+              span.position-relative.overflow-hidden.d-inline-block.px-1
+                .position-absolute.top.left.right.bottom.third-transparent.z-minus(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
+                ="Berlin, Düsseldorf, Hamburg & Leipzig"
+
+            h3 What do we require of you?
+            .d-flex.mb-2
+              strong.mr-2=__("Language")+":"
+              span.position-relative.overflow-hidden.d-inline-block.px-1
+                .position-absolute.top.left.right.bottom.third-transparent.z-minus(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
+                ="English - minimum B2 Level "
+            .d-flex.mb-2
+              strong.mr-2=__("ComputerKnowledge")+":"
+              span.position-relative.overflow-hidden.d-inline-block.px-1
+                .position-absolute.top.left.right.bottom.third-transparent.z-minus(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
+                ="Beginner"
 
         h5.font-weight-bold.text-muted.text-uppercase.py-3=__("APPLICATION")
         h3=__("How to apply")
@@ -136,28 +148,28 @@ mixin singleCourse
           .col-4.text-center.p-5
             .d-flex.align-items-center
               h2.font-weight-bold=`01`
-              div(class=model && model.coloraccent ? `` : `text-primary`, style=model && model.coloraccent ? `color: ${model.coloraccent}` : `` )
-                include ../../assets/icons/github-brands.svg
+              div(class=course && course.coloraccent ? `` : `text-primary`, style=course && course.coloraccent ? `color: ${course.coloraccent}` : `` )
+                include ../../assets/icons/course_personal_data.svg
             =__("Individual Appointment with DCI")
             .position-absolute.right.h-3.shift-vertical.top-50 
-              .rotate-180(class=model && model.coloraccent ? `` : `text-primary`, style=model && model.coloraccent ? `color: ${model.coloraccent}` : `` )
+              .rotate-180(class=course && course.coloraccent ? `` : `text-primary`, style=course && course.coloraccent ? `color: ${course.coloraccent}` : `` )
                 include ../../assets/icons/back-button-arrow-left.svg
 
           .col-4.text-center.p-5
             .d-flex.align-items-center
               h2.font-weight-bold=`02`
-              div(class=model && model.coloraccent ? `` : `text-primary`, style=model && model.coloraccent ? `color: ${model.coloraccent}` : `` )
-                include ../../assets/icons/github-brands.svg
-            =__("Individual Appointment with DCI")
+              div(class=course && course.coloraccent ? `` : `text-primary`, style=course && course.coloraccent ? `color: ${course.coloraccent}` : `` )
+                include ../../assets/icons/course_job_interview.svg
+            =__("Appointment with AfA/ JobCenter")
             .position-absolute.right.h-3.shift-vertical.top-50 
-              .rotate-180(class=model && model.coloraccent ? `` : `text-primary`, style=model && model.coloraccent ? `color: ${model.coloraccent}` : `` )
+              .rotate-180(class=course && course.coloraccent ? `` : `text-primary`, style=course && course.coloraccent ? `color: ${course.coloraccent}` : `` )
                 include ../../assets/icons/back-button-arrow-left.svg
           .col-4.text-center.p-5
             .d-flex.align-items-center
               h2.font-weight-bold=`03`
-              div(class=model && model.coloraccent ? `` : `text-primary`, style=model && model.coloraccent ? `color: ${model.coloraccent}` : `` )
-                include ../../assets/icons/github-brands.svg
-            =__("Individual Appointment with DCI")
+              div(class=course && course.coloraccent ? `` : `text-primary`, style=course && course.coloraccent ? `color: ${course.coloraccent}` : `` )
+                include ../../assets/icons/course_checklist.svg
+            =__("Start your Class")
 
           section.my-5.row.bg-light.p-5
             div.my-2
