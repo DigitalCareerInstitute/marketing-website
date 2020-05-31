@@ -435,11 +435,6 @@ UPCOMING EVENTS
   }
 }
 
-#containerStorieSingle {
-  // max-width: 69%;
-  box-shadow: 10px 10px 10px #bfbebe;
-}
-
 .square {
   width: 100%;
   height: 0;
@@ -1344,12 +1339,14 @@ div[class*=" #{$class-slug}"] {
   transition: background-color $transition ease;
 }
 
-.form-control {
-  background-color: transparent;
+body:not(.admin) {
+  .form-control {
+    background-color: transparent;
 
-  &:focus,
-  &:active {
-    background-color: white !important;
+    &:focus,
+    &:active {
+      background-color: white !important;
+    }
   }
 }
 

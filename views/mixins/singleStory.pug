@@ -1,16 +1,18 @@
 mixin singleStory(story, showFullContent)
-  div.py-4.px-3.mb-3.d-flex.flex-column.justify-content-between.w-100
+  div.py-4.px-3.d-flex.flex-column.justify-content-between.w-100
     a(href="/stories/"+story.slug)
-      +storyImages(story)
-      div.content
-        h3.font-weight-bold=story.title
-        code=story.workPosition
-        blockquote.text-left.text-muted=story.excerpt
+      
+      .row
+        .col-md-9
+          div.content
+            blockquote.text-left.text-muted=story.excerpt
+            h5.font-weight-bold.text-right.text-dark=story.title
+            .text-muted.text-right.d-block=story.workPosition
+        .col-md-3.d-flex.flex-column.justify-content-end
+          +storyImages(story, " col-md-8 offset-md-2 col-6 offset-3")
 
-    div.text-right
-      a.text-muted.font-weight-bold(href="/stories/"+story.slug)=__("Show More")
     if user
-      form.d-flex.justify-content-between(method='POST', action='/admin/stories/delete/'+story.slug +'?_method=DELETE')
+      form.d-flex.justify-content-between.mt-3(method='POST', action='/admin/stories/delete/'+story.slug +'?_method=DELETE')
         a.btn.btn-outline-primary.mr-2(target="_blank" href="/stories/"+story.slug) Show
         if user.id === story.userId || user.admin === "true"
           .d-flex.align-items-center
