@@ -469,7 +469,7 @@ UPCOMING EVENTS
   blockquote {
     @extend .blockquote;
     color: var(--gray);
-
+    
     &:before {
       content: '"';
       position: absolute;
@@ -478,11 +478,21 @@ UPCOMING EVENTS
       left: -0.3em;
       z-index: 1;
     }
-
+    
     position: relative;
     padding: 1em 0 1em 1em;
     margin: 3em 0 2em 0;
   }
+}
+.quotesign {
+  content: '"';
+  position: absolute;
+  font-size: 4em;
+  top: -0.5em;
+  left: -0.3em;
+  z-index: 1;
+  width: 1em;
+  height: 1em;
 }
 
 .story-item {
@@ -1594,5 +1604,14 @@ body[class*="pages-"] {
       top: 50%;
       transform: translateY(-50%);
     }
+  }
+}
+.line-height-2-5 {
+  line-height: 2.5;
+}
+.hover-transparent {
+  transition: opacity $transition ease;
+  &:hover{
+    opacity: .8
   }
 }

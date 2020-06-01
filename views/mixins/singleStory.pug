@@ -5,11 +5,13 @@ mixin singleStory(story, showFullContent)
       .row
         .col-md-9
           div.content
-            blockquote.text-left.text-muted=story.excerpt
+            blockquote.text-left.text-muted
+              .quotesign(class=course && course.coloraccent ? `` : `text-primary`, style=course && course.coloraccent ? `color: ${course.coloraccent}` : `` )=`"`
+              =story.excerpt.replace(/"/g, "")
             h5.font-weight-bold.text-right.text-dark=story.title
-            .text-muted.text-right.d-block=story.workPosition
+            .text-muted.text-right.d-block.mb-3.mb-md-0=story.workPosition
         .col-md-3.d-flex.flex-column.justify-content-end
-          +storyImages(story, " col-md-8 offset-md-2 col-6 offset-3")
+          +storyImages(story, " p-0 col-md-8 offset-md-2 col-6 offset-3")
 
     if user
       form.d-flex.justify-content-between.mt-3(method='POST', action='/admin/stories/delete/'+story.slug +'?_method=DELETE')

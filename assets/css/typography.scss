@@ -6,6 +6,10 @@
   background-color: #fff;
   color: $blue;
 }
+.bg-section ::selection {
+  background-color: $blue;
+  color: #fff;
+}
 ::-moz-selection {
   background-color: $blue;
   color: #fff;
