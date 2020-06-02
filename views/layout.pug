@@ -78,7 +78,7 @@ html.h-100(lang='en')
               button.close.ml-3(type='button', data-dismiss='alert', aria-label='Close')
                 span(aria-hidden='true') ×
 
-    .h-100.d-flex.flex-column(class=currentPath && currentPath.includes('admin') ? ' bg-light pb-5' : "" )
+    .d-flex.flex-column(class=currentPath && currentPath.includes('admin') ? ' bg-light pb-5' : "" )
       if currentPath !== "/"
         div
           +navigation

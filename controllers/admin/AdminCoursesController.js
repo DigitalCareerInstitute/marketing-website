@@ -269,13 +269,20 @@ module.exports.updateCourse = async function(req, res) {
               description: ""
             };
           }
-          course[model][i][title.dbChild] = req[
-            model == "archivements" && title.dbChild == "icon"
+          if (req.body[`${title.reqChild}${i + 1}`] === ""){
+            course[model][i][`title`] = ""
+            course[model][i][`icon`] = ""
+            course[model][i][`subtitle`] = ""
+            course[model][i][`description`] = ""
+          } else {
+            course[model][i][title.dbChild] = req[
+              model == "archivements" && title.dbChild == "icon"
               ? "files"
               : "body"
-          ][`${title.reqChild}${i + 1}`]
+            ][`${title.reqChild}${i + 1}`]
             ? req.body[`${title.reqChild}${i + 1}`]
             : course[model][i][title.dbChild];
+          }
         });
       });
     }

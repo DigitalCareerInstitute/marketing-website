@@ -6,7 +6,8 @@ mixin singleStory(story, showFullContent)
         .col-md-9
           div.content
             blockquote.text-left.text-muted
-              .quotesign(class=course && course.coloraccent ? `` : `text-primary`, style=course && course.coloraccent ? `color: ${course.coloraccent}` : `` )=`"`
+              .quotesign.third-transparent.z-minus(class=course && course.coloraccent ? `` : `text-primary`, style=course && course.coloraccent ? `color: ${course.coloraccent}` : `` )
+                include ../../assets/icons/om_quote.svg
               =story.excerpt.replace(/"/g, "")
             h5.font-weight-bold.text-right.text-dark=story.title
             .text-muted.text-right.d-block.mb-3.mb-md-0=story.workPosition

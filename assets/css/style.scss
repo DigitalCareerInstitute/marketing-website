@@ -485,13 +485,12 @@ UPCOMING EVENTS
   }
 }
 .quotesign {
-  content: '"';
   position: absolute;
   font-size: 4em;
-  top: -0.5em;
-  left: -0.3em;
+  top: -0.75em;
+  left: 0;
   z-index: 1;
-  width: 1em;
+  width: 0.7em;
   height: 1em;
 }
 

@@ -28,13 +28,13 @@ mixin courseForm
       label.d-block.d-block(for='icon') Course Title Icon
       if course && course.icon
         img.mw-150.mh-150.w-100.mw-150.mh-150.object-fit-cover(src="/images/"+course.icon)
-      input#icon.form-control-file(type='file' name='icon')
+      input#icon.form-control.form-control-file(type='file' name='icon')
 
     .mb-3
       label.d-block.d-block(for='subicon') Course Sub Icon
       if course && course.subicon
         img.mw-150.mh-150.w-100.mw-150.mh-150.object-fit-cover(src="/images/"+course.subicon)
-      input#subicon.form-control-file(type='file' name='subicon')
+      input.form-control#subicon.form-control-file(type='file' name='subicon')
 
     .mb-3
       label(for='headline') Headline *
@@ -78,41 +78,41 @@ mixin courseForm
     h3.mt-3 Archivements
     each archivementGroup, i in courseFormConfig.archivementConfig
       .form-group
-      label.d-block(for=archivementGroup.for)=archivementGroup.label
-      if course && course.archivements[i] && course.archivements[i].icon
-        img.mw-150.mh-150(src="/images/"+course.archivements[i].icon)
-      input#exampleFormControlFile1.form-control-file(type=archivementGroup.fileField.type name=archivementGroup.fileField.name)
+        label.d-block(for=archivementGroup.for)=archivementGroup.label
+          button.btn.btn-secondary.badge.ml-2(type='button', data-container='body', data-toggle='popover',  data-trigger="hover",  data-placement='top', data-content='To remove an archivement, you can remove the title. Then the icon and the description will be also purged and the archivement will not show up')
+            | ?
+        .d-flex
+          if course && course.archivements[i] && course.archivements[i].icon
+            img.mw-150.mh-150(src="/images/"+course.archivements[i].icon)
+          .w-100
+            input.form-control#exampleFormControlFile1.form-control-file(type=archivementGroup.fileField.type name=archivementGroup.fileField.name)
 
-      input.form-control(type=archivementGroup.titleField.type , name=archivementGroup.titleField.name,  value=course && course.archivements[i] ? course.archivements[i].title : '', placeholder=archivementGroup.titleField.placeholder )
+            input.form-control(type=archivementGroup.titleField.type , name=archivementGroup.titleField.name,  value=course && course.archivements[i] ? course.archivements[i].title : '', placeholder=archivementGroup.titleField.placeholder )
 
-      input.form-control(type=archivementGroup.textField.type , name=archivementGroup.textField.name,  value=course && course.archivements[i] ? course.archivements[i].description : '', placeholder=archivementGroup.textField.placeholder )
+            input.form-control(type=archivementGroup.textField.type , name=archivementGroup.textField.name,  value=course && course.archivements[i] ? course.archivements[i].description : '', placeholder=archivementGroup.textField.placeholder )
     h3.mt-3 Features
     each featuresGroup, i in courseFormConfig.featuresConfig
       .form-group
-      label.d-block(for=featuresGroup.fileField.for)=featuresGroup.fileField.label
-      if course && course.features[i] && course.features[i].icon
-        img.mw-150.mh-150(src="/images/"+course.features[i].icon)
-      input.form-control#exampleFormControlFile1.form-control-file(type=featuresGroup.fileField.type name=featuresGroup.fileField.name)
+        label.d-block(for=featuresGroup.fileField.for)=featuresGroup.fileField.label
+        .d-flex
+          if course && course.features[i] && course.features[i].icon
+            img.mw-150.mh-150(src="/images/"+course.features[i].icon)
+          .w-100
+            input.form-control#exampleFormControlFile1.form-control-file(type=featuresGroup.fileField.type name=featuresGroup.fileField.name)
 
-      label(for=featuresGroup.textFieldTitle.for)=featuresGroup.textFieldTitle.label
-      input.form-control(type=featuresGroup.textFieldTitle.type, name=featuresGroup.textFieldTitle.name,  value=course && course.features[i] ? course.features[i].title : '', placeholder=featuresGroup.textFieldTitle.placeholder )
+            input.form-control(type=featuresGroup.textFieldTitle.type, name=featuresGroup.textFieldTitle.name,  value=course && course.features[i] ? course.features[i].title : '', placeholder=featuresGroup.textFieldTitle.placeholder )
 
-      label(for=featuresGroup.textFieldSubtitle.for)=featuresGroup.textFieldSubtitle.label
-      input.form-control(type=featuresGroup.textFieldSubtitle.type, name=featuresGroup.textFieldSubtitle.name,  value=course && course.features[i] ? course.features[i].subtitle : '', placeholder=featuresGroup.textFieldSubtitle.placeholder )
+            input.form-control(type=featuresGroup.textFieldSubtitle.type, name=featuresGroup.textFieldSubtitle.name,  value=course && course.features[i] ? course.features[i].subtitle : '', placeholder=featuresGroup.textFieldSubtitle.placeholder )
 
     h3.mt-3 Timeline
     each timelineGroup, i in courseFormConfig.timelineConfig
       .form-group
-      label(for=timelineGroup.title.name)=timelineGroup.title.label
-      input.form-control(type="text", id=timelineGroup.title.name name=timelineGroup.title.name, placeholder=timelineGroup.title.label, value= course && course.timeline[i]? course.timeline[i].title : "")
+        label(for=timelineGroup.title.name)=timelineGroup.title.label
+        input.form-control(type="text", id=timelineGroup.title.name name=timelineGroup.title.name, placeholder=timelineGroup.title.label, value= course && course.timeline[i]? course.timeline[i].title : "")
 
-      .form-group
-      label(for=timelineGroup.subtitle.name)=timelineGroup.subtitle.label
-      input.form-control(type="text", id=timelineGroup.subtitle.name name=timelineGroup.subtitle.name, placeholder=timelineGroup.subtitle.label, value= course && course.timeline[i]? course.timeline[i].subtitle : "")
+        input.form-control(type="text", id=timelineGroup.subtitle.name name=timelineGroup.subtitle.name, placeholder=timelineGroup.subtitle.label, value= course && course.timeline[i]? course.timeline[i].subtitle : "")
 
-      .form-group
-      label(for=timelineGroup.time.name)=timelineGroup.time.label
-      input.form-control(type="text", id=timelineGroup.time.name name=timelineGroup.time.name, placeholder=timelineGroup.time.label, value= course && course.timeline[i]? course.timeline[i].time : "")
+        input.form-control(type="text", id=timelineGroup.time.name name=timelineGroup.time.name, placeholder=timelineGroup.time.label, value= course && course.timeline[i]? course.timeline[i].time : "")
 
     h3.mt-3 Course available in locations:
     each location in locations
