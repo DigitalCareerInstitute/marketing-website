@@ -1,8 +1,8 @@
 mixin singleCourse
   .jumbotron.jumbotron-fluid.mb-0.bg-white.p-0.z-1.position-relative
-    .container
+    .container-md
       .row
-        .col-md-6.bg-panel.right.py-3.py-md-5(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
+        .col-md-6.bg-panel.right.py-3.py-md-5.px-5.px-md-0(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
           h1.display-1.mt-5.mb-3=course.headline
           p.lead.mb-5=course.subheading
           .d-flex.align-items-center.flex-wrap.line-height-2-5
@@ -16,7 +16,7 @@ mixin singleCourse
         .col-md-6.py-5.py-md-0
           .floatings.h-100
             .w-100.px-lg-5.align-items-end.h-100.justify-content-end.d-flex.flex-column
-              .flex-grow-1.w-100.py-5
+              .flex-grow-1.w-100.py-5.px-5.px-md-0
                 if course.icon
                   img.object-fit-cover.img-fluid(alt=course.description src="/images/"+course.icon)
                 else
@@ -43,7 +43,7 @@ mixin singleCourse
       .position-absolute.top.left.right.bottom.third-transparent(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
 
 
-      .container.container-fluid-courses.position-relative.text-center
+      .container.container-fluid-courses.position-relative.text-center.px-5
         h5.font-weight-bold.text-muted.text-uppercase.py-3=__("Curriculum")
         h2.mb-3=__("What will I learn?")
         p.lead.mb-5=__("We have designed an application oriented curriculum, tailored to people of all categories. Our students can go head-to-head with the competiton after the course.")
@@ -52,7 +52,7 @@ mixin singleCourse
             .row
               each object, index in course.archivements
                 if object.icon
-                  .col-md-6.text-center.d-flex.p-4.floatings
+                  .col-lg-6.text-center.d-flex.p-4.floatings
                     .d-flex.bg-white.p-3.rounded.shadow-sm.w-100
                       figure.mw-150.row.position-relative.col.mb-0
                         .col.d-flex.flex-column.justify-content-center
@@ -85,25 +85,24 @@ mixin singleCourse
             each object in course.features
               if object.icon
                 .row.container
-                  .col-md-6.text-center.p-5
+                  .col-lg-6.text-center.p-5
                     .px-lg-5
-                      .px-5
-                        img.img-fluid.h-100(src="/images/"+object.icon, alt=object.title)
-                  .col-md-6.position-relative
+                      img.img-fluid.h-100(src="/images/"+object.icon, alt=object.title)
+                  .col-lg-6.position-relative
                     .row.bg-panel.left.third-transparent.z-minus(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
-                    .p-3.p-md-5
+                    .p-3.px-md-5.py-5.pb-md-3
                       .p-md-4.position-relative
                         h3.text-left=object.title
                         p.text-left.lead=object.subtitle
 
 
       if course.successStory
-        section#section4.my-5.w-100.py-5
-          .row.my-5
+        section#section4.w-100.py-5.container
+          .row.my-md-5
             .col-md-8.offset-md-2.border.pt-4.p-5.rounded
               +singleStory(course.successStory)
 
-      section#section3.my-5.pt-5.container
+      section#section3.my-5.container
         .row
           .col-md-6.p-5
             .position-absolute.top.left.right.bottom.third-transparent.z-minus(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )     

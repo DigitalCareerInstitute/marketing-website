@@ -29,19 +29,21 @@
      color: #f39c12;
      transition:all .001s;
  }
- @media (max-width: 960px) and (min-width: 501px) {
-   footer {
-     text-align: center;
-   }
+
+ footer{
+   text-align: center;
  }
-@media (max-width: 500px) {
-  footer {
-    text-align: center;
-  }
-}
+
+ @include media-breakpoint-up(sm){
+    footer{
+      text-align: left;
+    }
+ }
+
 .pb-200 {
   padding-bottom: 200px;
 }
+
 footer.site-footer {
   #newsletter{
     margin-bottom: -100px;
@@ -71,6 +73,16 @@ footer.site-footer {
     transform-origin: bottom right;
     &:hover {
       transform: scale(1.05);
+    }
+  }
+
+  .col-xs-12{
+    margin-top: 1.5rem;
+  }
+
+  @include media-breakpoint-up(sm){
+    .col-xs-12{
+      margin-top: 0;
     }
   }
 }
