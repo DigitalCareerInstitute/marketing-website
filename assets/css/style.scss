@@ -1580,8 +1580,8 @@ body[class*="pages-"] {
   }
 }
 .circle {
-  width: 2em;
-  height: 2em;
+  width: 3em;
+  height: 3em;
   border-radius: 50%;
   text-align: center;
   display: flex;
@@ -1600,7 +1600,7 @@ body[class*="pages-"] {
       display: block;
       position: absolute;
       right: -0.65em;
-      top: 50%;
+      top: 45%;
       transform: translateY(-50%);
     }
   }

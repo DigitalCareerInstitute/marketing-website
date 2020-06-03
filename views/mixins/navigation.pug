@@ -6,11 +6,11 @@ mixin navigation
         if locals.settings && locals.settings.announcement_banner_cta && locals.settings.announcement_banner_cta !== currentPath
           a.btn.btn-link.ml-3.btn-secondary.py-0(href=locals.settings.announcement_banner_cta)=__("Show More")
 
-  nav#nav-primary.z-1.navbar.navbar-expand-lg.navbar-light.py-0.bg-tranition.px-3.px-md-3.bg-light-grey.bg-md-transparent.flex-column(class=currentPath == "/" ? " z-foreground " : "")
+  nav#nav-primary.pb-3.z-1.navbar.navbar-expand-lg.navbar-light.py-0.bg-tranition.px-3.px-md-3.flex-column(class=currentPath == "/" ? " z-foreground " : "")
     if course && course.coloraccent
       div.position-absolute.left.w-50.h-100.z-minus.d-none.d-lg-block(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}!important` : ``)
     .align-items-stretch(class=currentPath && currentPath.includes('admin') ? ' container-fluid' : " container" )
-      a.navbar-brand.pt-3.pl-3.text-primary.h-60(href="/")
+      a.navbar-brand.py-3.pl-3.text-primary.h-60(href="/")
         include ../../assets/media/dci.svg
       button.navbar-toggler(type='button', data-toggle='collapse', data-target='#collapsingNavbar3')
         span.navbar-toggler-icon

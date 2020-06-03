@@ -6,7 +6,7 @@ mixin singleCourse
           h1.display-1.mt-5.mb-3=course.headline
           p.lead.mb-5=course.subheading
           .d-flex.align-items-center.flex-wrap.line-height-2-5
-            .bg-white.circle.mr-2
+            .bg-white.circle.mr-2.p-2
               include ../../assets/icons/location.svg
             each location in course.locations
               span.font-weight-bold.mr-3.text-uppercase.afterdot=location.name
@@ -202,6 +202,6 @@ mixin singleCourse
             .col-md-6.order-0.order-md-12.pb-5.pb-md-0(style=course && course.coloraccent ? `color: ${course.coloraccent}` : `` )
               include ../../assets/icons/rocket_launch.svg
 
-      if user && user.admin === "true"
-        div.py-3
-          a.btn.btn-outline-primary(target="_blank" href='/admin/courses/edit/'+course.slug) Edit course
+        if user && user.admin === "true"
+          div.py-3
+            a.btn.btn-outline-primary(target="_blank" href='/admin/courses/edit/'+course.slug) Edit course

@@ -83,7 +83,7 @@ html.h-100(lang='en')
         div
           +navigation
           
-      .flex-grow-1(class=currentPath && currentPath.includes('admin') ? ' pb-5 pt-3' : "" )
+      .flex-grow-1.z-0(class=currentPath && currentPath.includes('admin') ? '' : "" )
         block content
       if currentPath && !currentPath.includes('admin')
         footer.site-footer(role='contentinfo' class=user ? "pb-5" : "")
