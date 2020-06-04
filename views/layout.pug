@@ -86,7 +86,7 @@ html.h-100(lang='en')
       .flex-grow-1.z-0(class=currentPath && currentPath.includes('admin') ? '' : "" )
         block content
       if currentPath && !currentPath.includes('admin')
-        footer.site-footer(role='contentinfo' class=user ? "pb-5" : "")
+        footer.site-footer.text-center.text-sm-left(role='contentinfo' class=user ? "pb-5" : "")
           section.bg-primary.position-relative
             a.triangle.hint.top-right(target="_blank" href="https://github.com/DigitalCareerInstitute/marketing-website" title=__("Wanna contribute and help making this site better? Fork me on GitHub"))
               include ../assets/icons/github-brands.svg

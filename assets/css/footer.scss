@@ -30,16 +30,6 @@
      transition:all .001s;
  }
 
- footer{
-   text-align: center;
- }
-
- @include media-breakpoint-up(sm){
-    footer{
-      text-align: left;
-    }
- }
-
 .pb-200 {
   padding-bottom: 200px;
 }
