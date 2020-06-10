@@ -1167,7 +1167,8 @@ div[class*=" #{$class-slug}"] {
 }
 
 .noFoundPage {
-  height: 75vh;
+  min-height: 840px;
+  height: 100vh;
   padding: 20px;
 }
 

@@ -1,11 +1,14 @@
 extends layout.pug
 block content
   .container.noFoundPage
-    div
-      div.pb-5
-        h1.my-5 This page could not be found
-        a(href="/") Click to go back
-        p You will automatically get redirected after 
+    div.row.flex-row-reverse.mt-md-5.pt-md-5
+      div.col-md-6
+        img.object-fit-cover.img-fluid(alt="404" src="/images/404.svg")
+      div.col-md-6
+        h1.my-5 Oops! The page you requested does not exist!
+        p.my-3 Don't worry; the button below will take you home!
+        a.btn.btn-lg.btn-secondary.my-3(href="/") Back to Homepage
+        p.my-1 You will automatically get redirected after 
           span.timerRedirect 5 
-          span secondes
+          span seconds
 
