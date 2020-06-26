@@ -69,6 +69,9 @@ var CourseSchema = new Schema({
   coloraccent: {
     type: String
   },
+  curriculumSectionSubheading: {
+    type: String
+  },
 });
 CourseSchema.plugin(URLSlugs("headline"));
 CourseSchema.pre("remove", function (next) {

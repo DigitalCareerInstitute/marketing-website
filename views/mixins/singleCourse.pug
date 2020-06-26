@@ -46,7 +46,7 @@ mixin singleCourse
       .container.container-fluid-courses.position-relative.text-center.px-5
         h5.font-weight-bold.text-muted.text-uppercase.py-3=__("Curriculum")
         h2.mb-3=__("What will I learn?")
-        p.lead.mb-5=__("We have designed an application oriented curriculum, tailored to people of all categories. Our students can go head-to-head with the competiton after the course.")
+        p.lead.mb-5=course.curriculumSectionSubheading
         .my-5
           if course.archivements.filter(t => !!t.description).length > 0 
             .row
@@ -77,7 +77,7 @@ mixin singleCourse
       section.my-5.pt-5
         h5.font-weight-bold.text-muted.text-uppercase.py-3=__("COURSE DETAILS")
         h2=__("What more do we offer?")
-        p.lead=__("We offer much more than just teaching and hacking, such as:")
+        p.lead=__("We offer much more than just teaching and hacking, such as")+":"
 
       section.mb-5
         if course.features.filter(t => !!t.title).length > 0 
@@ -121,7 +121,7 @@ mixin singleCourse
               strong.mr-2=__("Language")+":"
               span.position-relative.overflow-hidden.d-inline-block.px-sm-1
                 .position-absolute.top.left.right.bottom.third-transparent.z-minus(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
-                ="English"
+                =__("English or German")
             if course.courselength
               .d-flex.mb-2.flex-wrap
                 strong.mr-2=__("Duration")+":"
@@ -133,6 +133,10 @@ mixin singleCourse
               span.position-relative.overflow-hidden.d-inline-block.px-sm-1
                 .position-absolute.top.left.right.bottom.third-transparent.z-minus(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
                 ="Berlin, Düsseldorf, Hamburg & Leipzig"
+                each location, index in course.locations
+                  =location.name
+                  if index != course.locations.length
+                    =", "
           .col-md-6.position-relative.p-5
             h5.font-weight-bold.text-muted.text-uppercase.mb-4=__("REQUIREMENTS")
 
@@ -141,12 +145,12 @@ mixin singleCourse
               strong.mr-2=__("Language")+":"
               span.position-relative.overflow-hidden.d-inline-block.px-sm-1
                 .position-absolute.top.left.right.bottom.third-transparent.z-minus(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
-                ="English - minimum B2 Level "
+                =__("English - minimum B2 Level")
             .d-flex.mb-2.flex-wrap
               strong.mr-2=__("ComputerKnowledge")+":"
               span.position-relative.overflow-hidden.d-inline-block.px-sm-1
                 .position-absolute.top.left.right.bottom.third-transparent.z-minus(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
-                ="Beginner"
+                =__("Beginner")
       hr.d-md-none
 
       section.my-5.py-5

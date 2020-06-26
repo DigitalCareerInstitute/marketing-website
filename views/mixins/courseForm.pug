@@ -74,6 +74,9 @@ mixin courseForm
     .mb-3
       label(for='courselength') Courselength
       input#courselength.form-control(name='courselength', type='text', placeholder='Courselength', value=course && course.courselength ? course.courselength :"")
+    .mb-3
+      label(for='curriculumSectionSubheading') Curriculum subheading
+      input#curriculumSectionSubheading.form-control(name='curriculumSectionSubheading', type='text', placeholder='curriculumSectionSubheading', value=course && course.curriculumSectionSubheading ? course.curriculumSectionSubheading :"")
 
     h3.mt-3 Archivements
     each archivementGroup, i in courseFormConfig.archivementConfig

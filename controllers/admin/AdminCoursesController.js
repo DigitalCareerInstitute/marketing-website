@@ -88,6 +88,7 @@ module.exports.createCourse = async function(req, res) {
   course.massnahmeNumber = req.body.massnahmenummer;
   course.massnahmeDetails = req.body.massnahmedetails;
   course.courselength = req.body.courselength;
+  course.curriculumSectionSubheading = req.body.curriculumSectionSubheading;
 
   if(!!req.body.successStory) {
     course.successStory = req.body.successStory;
@@ -234,7 +235,7 @@ exports.resizeImages = async (request, response, next) => {
 
 module.exports.updateCourse = async function(req, res) {
   let course = await Course.findOne({ slug: req.params.slug });
-  const { slug, massnahmedetails, massnahmenummer, subtitle, order, successStory, subheading, locations, headline, title, icon, subicon, curriculumPdf, coloraccent} = req.body;
+  const { slug, massnahmedetails, massnahmenummer, subtitle, order, successStory, subheading, locations, headline, title, icon, subicon, curriculumPdf, coloraccent, curriculumSectionSubheading} = req.body;
   course.slug = slug;
   course.icon = icon ? icon : course.icon;
   course.coloraccent = coloraccent ? coloraccent : "";
@@ -252,6 +253,7 @@ module.exports.updateCourse = async function(req, res) {
   course.curriculumPdf = curriculumPdf;
   course.icon = req.files.icon ? icon : course.icon;
   course.subicon = req.files.subicon ? subicon : course.subicon;
+  course.curriculumSectionSubheading = req.body.curriculumSectionSubheading;
 
   function verbose(inputs) {
     let items = [];
