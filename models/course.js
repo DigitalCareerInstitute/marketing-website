@@ -72,6 +72,11 @@ var CourseSchema = new Schema({
   curriculumSectionSubheading: {
     type: String
   },
+  textColor: {
+    type: String,
+    enum : ['black','white'],
+    default: 'black'
+  },
 });
 CourseSchema.plugin(URLSlugs("headline"));
 CourseSchema.pre("remove", function (next) {

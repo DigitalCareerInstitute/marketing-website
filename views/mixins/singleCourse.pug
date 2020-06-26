@@ -3,14 +3,14 @@ mixin singleCourse
     .container-md
       .row
         .col-md-6.bg-panel.right.py-3.py-md-5.px-5.px-md-0(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
-          h1.display-1.mt-5.mb-3=course.headline
-          p.lead.mb-5=course.subheading
+          h1.display-1.mt-5.mb-3(style=`color: ${course.textColor}`)=course.headline
+          p.lead.mb-5(style=`color: ${course.textColor}`)=course.subheading
           .d-flex.align-items-center.flex-wrap.line-height-2-5
             .bg-white.circle.mr-2.p-2
               include ../../assets/icons/location.svg
             each location in course.locations
-              span.font-weight-bold.mr-3.text-uppercase.afterdot=location.name
-            span.font-weight-bold.mr-3.text-uppercase.afterdot="Online"
+              span.font-weight-bold.mr-3.text-uppercase.afterdot(style=`color: ${course.textColor}`)=location.name
+            span.font-weight-bold.mr-3.text-uppercase.afterdot(style=`color: ${course.textColor}`)="Online"
           div.my-4
             a.btn.btn-white.px-4(class=course && course.coloraccent ? `` : `text-primary`, style=course && course.coloraccent ? `color: ${course.coloraccent}!important` : `` )=__("Apply Now")
         .col-md-6.py-5.py-md-0

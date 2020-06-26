@@ -11,6 +11,15 @@ mixin courseForm
             label.px-4.input-group-text.text-capitalize.d-block#demo(for='coloraccent' style=`background-color: ${course && course.coloraccent ? course.coloraccent : ``}` ) 
             input#coloraccent.form-control(name='coloraccent', type='text', placeholder='Color accent', value=course ? course.coloraccent : "", autofocus='')
 
+      label.d-block.d-block(for='textColor') Text color
+      .d-flex
+        .custom-control.custom-radio.mr-2
+          input#textColor1.custom-control-input(type="radio" name="textColor" value="black" checked=course && course.textColor == "black")
+          label.custom-control-label(for="textColor1") Black
+        .custom-control.custom-radio.mr-2
+          input#textColor2.custom-control-input(type="radio" name="textColor" value="white" checked=course && course.textColor == "white")
+          label.custom-control-label(for="textColor2") White
+
       label.d-block.d-block(for='icon') Course Curriculum PDF
       if course && course.curriculumPdf
         input#curriculumPdf.hidePlaceholder.form-control-file(type='file' name='curriculumPdf')
