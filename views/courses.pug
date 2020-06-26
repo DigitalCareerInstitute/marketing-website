@@ -18,7 +18,7 @@ block content
                     .col-10.offset-1.col-md-8.offset-md-2.align-items-center.my-4
                       img.object-fit-cover.img-fluid.square(src="/media/pixel.gif" alt=course.headline style=`background-image: url('${course.icon ? `/images/` + course.icon : `/media/circuit-board.svg`}')`)
                   h3.text-dark= course.headline
-                  p.text-dark=course.title
+                  p.text-dark=course.subheading
                 div
                   hr
                   a.text-dark.font-weight-bold(href="/courses/" + course.slug): +translate("View course details")
