@@ -37,7 +37,7 @@ mixin singleCourse
           .col-md-7.d-none.d-md-flex.py-3.px-5.bg-white.py-5.mb-5
           .col-md-5.px-5.bg-white.d-flex.flex-column.justify-content-end
             span(class=course && course.coloraccent ? `` : `text-primary`, style=course && course.coloraccent ? `color: ${course.coloraccent}` : `` )
-            img.object-fit-cover.img-fluid(alt=course.description src="/images/"+course.subicon)
+            img.img-fluid(alt=course.description src="/images/"+course.subicon)
 
     section.mb-5.position-relative.py-5
       .position-absolute.top.left.right.bottom.third-transparent(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
@@ -72,8 +72,7 @@ mixin singleCourse
             div.h-2.d-inline-block.mr-2
               include ../../assets/icons/download.svg
             ="Download"
-
-
+            
       section.my-5.pt-5
         h5.font-weight-bold.text-muted.text-uppercase.py-3=__("COURSE DETAILS")
         h2=__("What more do we offer?")
@@ -101,7 +100,6 @@ mixin singleCourse
           .row.my-md-5
             .col-md-8.offset-md-2.border.pt-4.p-5.rounded
               +singleStory(course.successStory)
-
       section#section3.my-5.container
         .row
           .col-md-6.p-5

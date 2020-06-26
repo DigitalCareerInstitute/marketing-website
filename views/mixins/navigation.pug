@@ -5,18 +5,17 @@ mixin navigation
         =__(locals.settings.announcement_banner_string)
         if locals.settings && locals.settings.announcement_banner_cta && locals.settings.announcement_banner_cta !== currentPath
           a.btn.btn-link.ml-3.btn-secondary.py-0(href=locals.settings.announcement_banner_cta)=__("Show More")
-
   nav#nav-primary.pb-3.z-1.navbar.navbar-expand-lg.navbar-light.py-0.bg-tranition.px-3.px-md-3.flex-column(class=currentPath == "/" ? " z-foreground " : "")
     if course && course.coloraccent
       div.position-absolute.left.w-50.h-100.z-minus.d-none.d-lg-block(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}!important` : ``)
-    .align-items-stretch(class=currentPath && currentPath.includes('admin') ? ' container-fluid' : " container" )
-      a.navbar-brand.py-3.pl-3.text-primary.h-60(href="/")
+    .align-items-stretch.ml-0.ml-md-auto.pl-md-0(class=currentPath && currentPath.includes('admin') ? ' container-fluid' : " container" )
+      a.navbar-brand.py-3.pl-4.pl-lg-0.h-60(href="/" class=currentPath && currentPath.includes('/courses') && currentPath.lastIndexOf('/') > 0 ? 'text-white-responsive' : 'text-primary' )
         include ../../assets/media/dci.svg
       button.navbar-toggler(type='button', data-toggle='collapse', data-target='#collapsingNavbar3')
         span.navbar-toggler-icon
         span.sr-only="Toggle menu"
       #collapsingNavbar3.navbar-collapse.collapse.w-100.mt-4.mt-md-0.align-items-stretch
-        ul.nav.navbar-nav.my-3.my-lg-0.ml-auto.w-100.justify-content-end#headernav
+        ul.nav.navbar-nav.my-3.my-lg-0.ml-auto.w-100.justify-content-end#headernav(class=currentPath && currentPath.includes('/courses') && currentPath.lastIndexOf('/') > 0 ? 'not-set-active' : ' ' )
           li.position-relative.nav-item
             a.mx-0.mx-xl-3.mx-lg-2.nav-link.d-flex.align-items-center.h-100.z-1(class= currentPath && currentPath.includes('/courses') && !currentPath.includes('admin') ? "active" : "", href="/courses")
               =__("Courses")

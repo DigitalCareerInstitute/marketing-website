@@ -1,38 +1,38 @@
 @font-face {
-  font-family: 'Gordita-Regular';
-  src: url('~/fonts/Gordita-Regular.eot');
-   src: url('~/fonts/Gordita-Regular.eot?#iefix') format('embedded-opentype'),
-    url('~/fonts/Gordita-Regular.woff2') format('woff2'),
-    url('~/fonts/Gordita-Regular.woff') format('woff'),
-    url('~/fonts/Gordita-Regular.ttf') format('truetype');
+  font-family: "Gordita-Regular";
+  src: url("~/fonts/Gordita-Regular.eot");
+  src: url("~/fonts/Gordita-Regular.eot?#iefix") format("embedded-opentype"),
+    url("~/fonts/Gordita-Regular.woff2") format("woff2"),
+    url("~/fonts/Gordita-Regular.woff") format("woff"),
+    url("~/fonts/Gordita-Regular.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: 'Gordita-Light';
-  src: url('~/fonts/Gordita-Light.eot');
-   src: url('~/fonts/Gordita-Light.eot?#iefix') format('embedded-opentype'),
-    url('~/fonts/Gordita-Light.woff2') format('woff2'),
-    url('~/fonts/Gordita-Light.woff') format('woff'),
-    url('~/fonts/Gordita-Light.ttf') format('truetype');
+  font-family: "Gordita-Light";
+  src: url("~/fonts/Gordita-Light.eot");
+  src: url("~/fonts/Gordita-Light.eot?#iefix") format("embedded-opentype"),
+    url("~/fonts/Gordita-Light.woff2") format("woff2"),
+    url("~/fonts/Gordita-Light.woff") format("woff"),
+    url("~/fonts/Gordita-Light.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: 'Gordita-Bold';
-  src: url('~/fonts/Gordita-Bold.eot');
-   src: url('~/fonts/Gordita-Bold.eot?#iefix') format('embedded-opentype'),
-    url('~/fonts/Gordita-Bold.woff2') format('woff2'),
-    url('~/fonts/Gordita-Bold.woff') format('woff'),
-    url('~/fonts/Gordita-Bold.ttf') format('truetype');
+  font-family: "Gordita-Bold";
+  src: url("~/fonts/Gordita-Bold.eot");
+  src: url("~/fonts/Gordita-Bold.eot?#iefix") format("embedded-opentype"),
+    url("~/fonts/Gordita-Bold.woff2") format("woff2"),
+    url("~/fonts/Gordita-Bold.woff") format("woff"),
+    url("~/fonts/Gordita-Bold.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: 'Gordita-Medium';
-  src: url('~/fonts/GorditaMedium.eot');
-  src: url('~/fonts/GorditaMedium.svg') format('svg');
-  src: url('~/fonts/GorditaMedium.eot?#iefix') format('embedded-opentype'),
-    url('~/fonts/GorditaMedium.woff2') format('woff2'),
-    url('~/fonts/GorditaMedium.woff') format('woff'),
-    url('~/fonts/GorditaMedium.ttf') format('truetype');
+  font-family: "Gordita-Medium";
+  src: url("~/fonts/GorditaMedium.eot");
+  src: url("~/fonts/GorditaMedium.svg") format("svg");
+  src: url("~/fonts/GorditaMedium.eot?#iefix") format("embedded-opentype"),
+    url("~/fonts/GorditaMedium.woff2") format("woff2"),
+    url("~/fonts/GorditaMedium.woff") format("woff"),
+    url("~/fonts/GorditaMedium.ttf") format("truetype");
 }
 
 @import "global";
@@ -77,20 +77,20 @@ body:not(.admin).btn {
     opacity: 1;
     position: absolute;
     right: 0;
-    top: calc(100% + .5em);
+    top: calc(100% + 0.5em);
     transition: all 300ms ease-out;
     z-index: 10;
   }
 }
 
 .btn-lg,
-.btn-group-lg>.btn {
-  padding: .5em 1.5em;
+.btn-group-lg > .btn {
+  padding: 0.5em 1.5em;
 }
 
 .nav-pills .nav-link:hover,
 .nav-pills .nav-link.active,
-.nav-pills .show>.nav-link:hover {
+.nav-pills .show > .nav-link:hover {
   background-color: $blue !important;
   color: white !important;
   transition: color $transition ease, background-color $transition ease;
@@ -110,7 +110,7 @@ code {
   font-family: "Gordita-Bold", sans-serif;
 
   &:before {
-    content: "- "
+    content: "- ";
   }
 }
 
@@ -124,7 +124,6 @@ nav.container:after {
 .third-transparent {
   opacity: 0.333;
 }
-
 
 /******************************************
 //////////////////////////////////////////
@@ -465,11 +464,12 @@ UPCOMING EVENTS
   }
 }
 
-.story-item, body[class*="pages-"] {
+.story-item,
+body[class*="pages-"] {
   blockquote {
     @extend .blockquote;
     color: var(--gray);
-    
+
     &:before {
       content: '"';
       position: absolute;
@@ -478,7 +478,7 @@ UPCOMING EVENTS
       left: -0.3em;
       z-index: 1;
     }
-    
+
     position: relative;
     padding: 1em 0 1em 1em;
     margin: 3em 0 2em 0;
@@ -500,10 +500,9 @@ UPCOMING EVENTS
     background-color: white;
 
     p {
-     word-break: break-all; 
+      word-break: break-all;
     }
     &:hover {
-
       &:before,
       &:after {
         transform: scale(1.4);
@@ -513,14 +512,14 @@ UPCOMING EVENTS
     &:before,
     &:after {
       position: absolute;
-      content: '';
+      content: "";
       font-size: 2em;
       width: 1em;
       background-color: $blue;
       height: 1em;
       z-index: -1;
       display: block;
-      transition: transform .3s ease;
+      transition: transform 0.3s ease;
     }
 
     &:before {
@@ -553,12 +552,12 @@ UPCOMING EVENTS
   }
 }
 
-.about-us>div {
+.about-us > div {
   overflow-x: hidden;
 }
 
 .bg-panel {
-  >* {
+  > * {
     z-index: 1;
   }
 
@@ -570,7 +569,7 @@ UPCOMING EVENTS
   }
   &:after {
     background-color: inherit;
-    content: '';
+    content: "";
     display: block;
     position: absolute;
     top: 0;
@@ -590,7 +589,7 @@ UPCOMING EVENTS
 
   &:after {
     background-color: $blue;
-    content: '';
+    content: "";
     display: block;
     position: absolute;
     top: 10px;
@@ -600,7 +599,6 @@ UPCOMING EVENTS
     z-index: 0;
     border-radius: 50%;
   }
-
 }
 
 /******************************************
@@ -611,9 +609,11 @@ UPCOMING EVENTS
 }
 
 .modal-backdrop.show {
-  background: linear-gradient(to left,
-      darken(#3dbaf7, 10),
-      darken(#1d3b8b, 10)) !important;
+  background: linear-gradient(
+    to left,
+    darken(#3dbaf7, 10),
+    darken(#1d3b8b, 10)
+  ) !important;
 }
 
 .cf-title {
@@ -622,14 +622,13 @@ UPCOMING EVENTS
 }
 
 #contactForm {
-
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
 
-  input[type=number] {
+  input[type="number"] {
     -moz-appearance: textfield;
   }
 }
@@ -679,7 +678,7 @@ form.contactForm-form input {
   align-items: center;
 }
 
-.fluid-item>*:not(:last-child) {
+.fluid-item > *:not(:last-child) {
   margin-right: 1rem;
 }
 
@@ -707,7 +706,6 @@ div.contactForm-response-output {
 }
 
 body:not(.admin) {
-
   textarea,
   select,
   input[type="date"],
@@ -797,16 +795,16 @@ body:not(.admin) {
 }
 
 /* On mouse-over, add a grey background color */
-.checkbox:hover input~.checkmark {
+.checkbox:hover input ~ .checkmark {
   background-color: #ccc;
 }
-.checkbox input:active~.checkmark, 
-.checkbox input:focus~.checkmark {
+.checkbox input:active ~ .checkmark,
+.checkbox input:focus ~ .checkmark {
   box-shadow: 0px 0px 4px $blue;
 }
 
 /* When the checkbox is checked, add a blue background */
-.checkbox input:checked~.checkmark {
+.checkbox input:checked ~ .checkmark {
   background-color: #2196f3;
 }
 
@@ -818,7 +816,7 @@ body:not(.admin) {
 }
 
 /* Show the checkmark when checked */
-.checkbox input:checked~.checkmark:after {
+.checkbox input:checked ~ .checkmark:after {
   display: block;
 }
 
@@ -970,7 +968,6 @@ body:not(.admin) {
   }
 }
 
-
 @media (min-width: 767.98px) and (max-width: 1560px) {
   .card-img-top {
     height: 10vw;
@@ -1050,15 +1047,17 @@ body:not(.admin) {
   bottom: calc(-1 * var(--borderWidth));
   height: calc(100% + var(--borderWidth));
   width: calc(100% + var(--borderWidth));
-  background: linear-gradient(60deg,
-      #f79533,
-      #f37055,
-      #ef4e7b,
-      #a166ab,
-      #5073b8,
-      #1098ad,
-      #07b39b,
-      #6fba82);
+  background: linear-gradient(
+    60deg,
+    #f79533,
+    #f37055,
+    #ef4e7b,
+    #a166ab,
+    #5073b8,
+    #1098ad,
+    #07b39b,
+    #6fba82
+  );
   z-index: -1;
   animation: animatedgradient 3s ease alternate infinite;
   background-size: 300% 300%;
@@ -1105,7 +1104,7 @@ body:not(.admin) {
 .shift-vertical {
   transform: translate(50%, -50%);
 }
-.rotate-180 { 
+.rotate-180 {
   transform: rotate(180deg);
 }
 
@@ -1175,7 +1174,6 @@ div[class*=" #{$class-slug}"] {
 #stories {
   .wrapper {
     @include media-breakpoint-up(md) {
-
       &.wrapper-left {
         margin-right: -5em;
       }
@@ -1202,7 +1200,7 @@ div[class*=" #{$class-slug}"] {
       }
 
       &:after {
-        content: '';
+        content: "";
         width: 10px;
         height: 100%;
         background-color: black;
@@ -1267,8 +1265,6 @@ div[class*=" #{$class-slug}"] {
         }
       }
     }
-
-
   }
 }
 
@@ -1328,7 +1324,7 @@ div[class*=" #{$class-slug}"] {
     position: relative;
     align-content: center;
 
-    >* {
+    > * {
       position: absolute;
       top: 0;
       left: 0;
@@ -1372,7 +1368,7 @@ body:not(.admin) {
     left: 0;
     top: 0;
     background-color: $blue;
-    opacity: .3;
+    opacity: 0.3;
     z-index: 1;
   }
 }
@@ -1441,10 +1437,9 @@ canvas#polygons {
   position: absolute;
 }
 
-
 .w-md-50 {
   @include media-breakpoint-up(md) {
-    width: 50%
+    width: 50%;
   }
 }
 
@@ -1476,7 +1471,6 @@ body[class*="pages-"] {
   }
 
   @include media-breakpoint-up(md) {
-
     span.ql-size-small,
     img.ql-size-small {
       width: 50%;
@@ -1487,12 +1481,12 @@ body[class*="pages-"] {
     text-align: center;
   }
   .ql-align-right img {
-    padding: .5em 0 .5em .5em;
+    padding: 0.5em 0 0.5em 0.5em;
     float: right;
   }
 
   .ql-align-left img {
-    padding: .5em .5em .5em 0;
+    padding: 0.5em 0.5em 0.5em 0;
     float: left;
   }
 
@@ -1528,8 +1522,9 @@ body[class*="pages-"] {
     max-width: none;
   }
 }
-.vertical-align-revert{
-  &, > svg {
+.vertical-align-revert {
+  &,
+  > svg {
     vertical-align: revert;
   }
 }
@@ -1546,14 +1541,13 @@ body[class*="pages-"] {
 .rotating {
   animation: spinning 3s linear infinite;
 }
-.transform-absolute-center{
+.transform-absolute-center {
   top: 50%;
   transform: translateY(-50%);
 }
 
-
 #cookiehint {
-  transition: opacity .3s ease, transform .3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
   transform: translateY(100%);
 
   &.shown {
@@ -1577,7 +1571,8 @@ body[class*="pages-"] {
 }
 
 .text-underline {
-  &, &:link {
+  &,
+  &:link {
     text-decoration: underline !important;
   }
 }
@@ -1588,7 +1583,7 @@ body[class*="pages-"] {
   text-align: center;
   display: flex;
   justify-content: center;
-  align-items: center;;
+  align-items: center;
 }
 
 .afterdot {
@@ -1598,7 +1593,7 @@ body[class*="pages-"] {
       content: "";
       width: 0.3em;
       height: 0.3em;
-      background-color: black;
+      background-color: white;
       display: block;
       position: absolute;
       right: -0.65em;
@@ -1612,7 +1607,7 @@ body[class*="pages-"] {
 }
 .hover-transparent {
   transition: opacity $transition ease;
-  &:hover{
-    opacity: .8
+  &:hover {
+    opacity: 0.8;
   }
 }
