@@ -40,6 +40,7 @@ module.exports.getSettings = async (req, res) => {
 module.exports.createSetting = async (req, res) => {
   req.body.show_language_markers = req.body.show_language_markers === "on" ? true : false
   try {
+    req.body.landingpage_calltoaction === "" ? ( req.body.landingpage_calltoaction = undefined) : req.body.landingpage_calltoaction
     let setting = await Setting.findOneAndUpdate({}, req.body).exec({});
     let responseMsg = `Successfully updated`
     if (!setting) {

@@ -1,27 +1,21 @@
-mixin fullstory(story)
+mixin fullstory(story, index = undefined)
   div.story-item
-    .row.mh-33
-      .col-md-8
-        .pt-3
-          .position-relative.bg-light-blue.p-5.bg-panel.right
-            blockquote.blockquote
-              p.text-muted=story.excerpt
-          .my-5.brackets.bg-white.p-3
-            p.text-justify !{story.toHTML}
-      .col-md-4
-        .sticky-top.text-center.pt-3
-          .bg-light-blue.p-4
-            +storyImages(story)
-            h2.mt-3
-              if locals.pathclass === "stories"
-                a.text-dark.stretched-link(href=`/stories/${story.slug}`)
-                  =story.title
-              else
-                =story.title
-            if user && user.superAdmin === "true" || user && user.admin === "true"
-              a.position-absolute.mt-3.right.top.btn.btn-outline-primary.z-foreground(href=`/admin/stories/edit/${story.slug}`) Edit
-            table.table.m-0.mt-4.small
-              tbody
-                tr.text-left
-                  th.py-0.pr-3.pl-0 Position
-                  td.p-0= story.workPosition
+  .px-3.bg-white.position-relative.rounded.shadow-sm.mb-5
+    .row
+      .col-md-10.pr-md-0
+        .position-relative.pt-5.pb-3.pl-md-3
+          blockquote.blockquote
+            p.text-muted.small=story.excerpt
+
+          div(class=index !== undefined && index % 2 === 0 ? `text-left text-md-right` : `text-right`)
+            a.text-dark.stretched-link(href=`/stories/${story.slug}`)
+              div.font-weight-bold=story.title
+              = index
+              = story.workPosition
+
+      .col-md-2.d-flex.flex-column.justify-content-end.py-3
+        a.text-dark.stretched-link(href=`/stories/${story.slug}`)
+          .mw-150(class=index !== undefined && index % 2 === 0 ? `mr-auto` : `ml-auto`)
+            +storyImages(story, 'col')
+    if user && user.superAdmin === "true" || user && user.admin === "true"
+      a.position-absolute.mt-3.right.bottom.btn.btn-outline-primary.z-foreground(href=`/admin/stories/edit/${story.slug}`) Edit

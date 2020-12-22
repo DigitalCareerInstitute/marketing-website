@@ -57,7 +57,7 @@ const server = require("../server");
             }
             request(options, function (error, response, body) {
                 if (error) throw new Error(error);
-                assert.equal(JSON.parse(body).properties.are_you_registered_with_the_jobcenter_or_agentur_fr_arbeit.value, 'true')
+                assert.equal(JSON.parse(body).properties.afa_jc_registered_.value, 'Yes')
                 assert.equal(JSON.parse(body).properties.phone.value, '0987654321')
                 assert.equal(JSON.parse(body).properties.firstname.value, 'Testuser')
                 hubspotContactID = JSON.parse(body).vid

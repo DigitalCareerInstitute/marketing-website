@@ -4,11 +4,14 @@ const fs = require("fs");
 const jimp = require("jimp");
 const Partner = require("../../models/partner");
 const uuid = require("uuid");
+const AbstractController = require("./AbstractController");
 
 module.exports.getPartners = async function(req, res) {
   try {
     let partners = await Partner.find({})
       .sort("-createdAt")
+      .populate("language")
+      .populate("languageVersion")
       .exec();
 
     res.render("admin/partners", {
@@ -21,7 +24,7 @@ module.exports.getPartners = async function(req, res) {
 
 module.exports.deletePartner = async function(req, res) {
   await Partner.deleteOne({
-    _id: req.params.id
+    slug: req.params.slug
   });
 
   req.flash("success", `Successfully deleted Partner`);
@@ -29,22 +32,32 @@ module.exports.deletePartner = async function(req, res) {
 };
 
 module.exports.editPartner = async function(req, res) {
-  const partner = await Partner.findById(req.params.id);
+  const partner = await Partner
+    .findOne({ slug: req.params.slug })
+    .populate("language")
+    .populate("languageVersion")
   res.render("admin/editPartner", {
     partner: partner
   });
 };
 
 module.exports.updatePartner = async (req, res) => {
-  const partner = await Partner.findById(req.params.id);
+  const partner = await Partner.findOne({ slug: req.params.slug })
   partner.title = req.body.title;
   partner.link = req.body.link;
   partner.partnerlogo = req.files.partnerlogo
     ? req.body.partnerlogo
-    : partner.partnerlogo;
+    : partner.partnerlogo
+  partner.testimonial_name = req.body.testimonial_name !== "" ? req.body.testimonial_name : ""
+  partner.testimonial_content = req.body.testimonial_content !== "" ? req.body.testimonial_content : ""
+  partner.testimonial_job = req.body.testimonial_job !== "" ? req.body.testimonial_job : ""
+  partner.testimonial_show = req.body.testimonial_show === "on" ? true: false
+  if (partner.partnerlogo && fs.existsSync(`${partner.partnerlogo}.jpg`)) {
+    await fs.unlinkSync(`${process.env.IMAGE_UPLOAD_DIR}${partner.partnerlogo}`)
+  }
   await partner.save();
   req.flash("success", `Successfully updated ${partner.title}`);
-  res.redirect("/admin/partners/edit/" + partner._id);
+  res.redirect("/admin/partners/edit/" + partner.slug);
 };
 
 module.exports.createPartner = async function(req, res) {
@@ -53,6 +66,10 @@ module.exports.createPartner = async function(req, res) {
   partner.title = req.body.title;
   partner.order = req.body.order;
   partner.link = req.body.link;
+  partner.testimonial_name = req.body.testimonial_name
+  partner.testimonial_content = req.body.testimonial_content
+  partner.testimonial_job = req.body.testimonial_job
+  partner.testimonial_show = req.body.testimonial_show === "on" ? true: false
 
   partner.partnerlogo = req.files.partnerlogo
     ? req.body.partnerlogo
@@ -101,7 +118,7 @@ module.exports.resizeImages = async (request, response, next) => {
     }.${extension}`;
     try {
       const image = await jimp.read(singleFile[0].path);
-      // await image.cover(600, 600);
+      await image.scaleToFit(150, 150);
       await image.write(
         `${process.env.IMAGE_UPLOAD_DIR}/${
           request.body[singleFile[0].fieldname]
@@ -113,4 +130,8 @@ module.exports.resizeImages = async (request, response, next) => {
     }
   }
   next();
+};
+
+module.exports.setL18n = async (req, res) => {
+  AbstractController.cloneSite(req, res, Partner)
 };

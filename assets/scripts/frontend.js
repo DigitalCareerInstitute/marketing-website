@@ -7,7 +7,6 @@ import "bootstrap/js/dist/carousel";
 import "bootstrap/js/dist/alert";
 import {alertTimeout} from "./helper.js"
 require("./polygons");
-require("./google-analytics");
 require("../css/style.scss");
 
 const toggleNL = (remove = false) => {
@@ -192,15 +191,15 @@ getFileElements.forEach(el => {
 function objectToCsv(data) {
   const csvRows = [];
   const headers = Object.keys(data[0]);
-  csvRows.push(headers.join(","));
+  csvRows.push(headers.join(";"));
   for (const row of data) {
     const values = headers.map(header => {
       const escaped = !!row[header]
-        ? "" + row[header].replace(/"/g, '\\"')
+        ? "" + row[header].toString().replace(/"/g, '\\"')
         : "";
       return `"${escaped}"`;
     });
-    csvRows.push(values.join(","));
+    csvRows.push(values.join(";"));
   }
   return csvRows.join("\n");
 }
@@ -219,16 +218,16 @@ function downloadCsv(data) {
 }
 
 $("#downloadCSV").on("click", function (e) {
-  fetch(window.location.href + "/api-json")
+  fetch("/admin/contacts/api-json")
     .then(resp => resp.json())
     .then(data => {
-      let leads = data.map(lead => ({
-        name: lead.name,
-        email: lead.email,
-        phone: lead.phone,
-        locations:
-          lead.locations && lead.locations[0] ? lead.locations[0].name : ""
+      let leads = data
+      .map(lead => ({
+        ...lead,
+        utm_params: lead.utm_params ? JSON.stringify(lead.utm_params) : "",
+        locations: lead.locations && lead.locations[0] ? lead.locations[0].name : ""
       }));
+      console.log('leads', leads);
       let csvRow = objectToCsv(leads);
       downloadCsv(csvRow);
     })

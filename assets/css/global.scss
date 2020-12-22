@@ -1,5 +1,7 @@
 $primary: #1f3fc7;
 $primary-light: #4266fb;
+$primary-trans: #cddfffa6;
+$red-light: #FFDFDD;
 $light-grey: #DCE0F2;
 
 $secondary: #f2793c;
@@ -14,6 +16,7 @@ $light-blue: lighten($blue, 60);
 $green: #7aff29;
 $red: #ff4200;
 $yellow: #ffdb00;
+$yellow-light: #FFF7BF;
 $purple: #5c00ff;
 $pink: #a800ff;
 $turquoise: #3dbaf7;
@@ -38,6 +41,9 @@ $theme-colors: (
   @include media-breakpoint-up(md) {
     background-color: $light-blue;
   }
+}
+.bg-light-yellow {
+    background-color: $yellow-light;
 }
 
 .btn-secondary {

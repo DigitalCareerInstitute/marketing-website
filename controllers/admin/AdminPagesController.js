@@ -20,18 +20,28 @@ module.exports.getPages = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
+    req.flash("danger", JSON.stringify(err));
+    res.redirect("/admin/pages");
   }
 };
 
 module.exports.getSinglePage = async (req, res) => {
   try {
     const page = await Page.findOne({ slug: req.params.slug })
+    console.log('page', page);
 
-    res.render(`page`, {
-      page
-    });
+    if (page) {
+      res.render(`page`, {
+        page
+      });
+    } else {
+      req.flash("danger", `Page ${req.params.slug} not found`);
+      res.redirect("/admin/pages");
+    }
   } catch (err) {
     console.log(err);
+    req.flash("danger", JSON.stringify(err));
+    res.redirect("/admin/pages");
   }
 };
 module.exports.editPage = async (req, res) => {
@@ -40,7 +50,7 @@ module.exports.editPage = async (req, res) => {
       .findOne({ slug: req.params.slug })
       .populate("language")
       .populate("languageVersion");
-      
+
     let pages = await Page.find({})
       .sort("order")
       .exec();
@@ -67,6 +77,8 @@ module.exports.editPage = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
+    req.flash("danger", JSON.stringify(err));
+    res.redirect("/admin/pages");
   }
 };
 
@@ -79,7 +91,8 @@ module.exports.createPage = async (req, res) => {
     page.cta_button_url = req.body.cta_button_url;
     page.cta_button_text = req.body.cta_button_text;
     page.cta_text = req.body.cta_text;
-    page.prominent = req.body.prominent === "on" ? true : false;
+    page.companypage = req.body.companypage === "on" ? true : false;
+    page.metapage = req.body.metapage === "on" ? true : false;
     page.menulocations = req.body.menulocations;
 
     await page.save();
@@ -87,6 +100,8 @@ module.exports.createPage = async (req, res) => {
     res.redirect("/admin/pages");
   } catch (err) {
     console.log(err);
+    req.flash("danger", JSON.stringify(err));
+    res.redirect("/admin/pages");
   }
 };
 module.exports.deletePage = async (req, res, next) => {
@@ -102,6 +117,8 @@ module.exports.deletePage = async (req, res, next) => {
       })
   } catch (err) {
     console.log(err);
+    req.flash("danger", JSON.stringify(err));
+    res.redirect("/admin/pages");
   }
 };
 module.exports.updatePage = async (req, res) => {
@@ -111,7 +128,8 @@ module.exports.updatePage = async (req, res) => {
     page.title = req.body.title;
     page.content = JSON.parse(req.body.content);
     page.order = req.body.order;
-    page.prominent = req.body.prominent === "on" ? true : false;
+    page.companypage = req.body.companypage === "on" ? true : false;
+    page.metapage = req.body.metapage === "on" ? true : false;
     page.slug = req.body.slug;
     page.cta_button_url = req.body.cta_button_url;
     page.cta_button_text = req.body.cta_button_text ? req.body.cta_button_text : "GoGo gadget!";
@@ -123,6 +141,8 @@ module.exports.updatePage = async (req, res) => {
     res.redirect("/admin/pages/edit/" + page.slug);
   } catch (err) {
     console.log(err);
+    req.flash("danger", JSON.stringify(err));
+    res.redirect("/admin/pages");
   }
 };
 module.exports.setL18n = async (req, res) => {

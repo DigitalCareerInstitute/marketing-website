@@ -2,8 +2,8 @@ mixin buttonGroup(model, path, identifier = title)
   form.d-flex.flex-wrap(method='POST', action='/admin/'+path+'/delete/'+model.slug +'?_method=DELETE')
     if !!model.language && !!model.languageVersion
       a.btn.btn-outline-primary.btn-sm.mr-2.mb-2(href="/admin/" + path + "/edit/" + model.languageVersion.slug)
-        span.text-uppercase.font-weight-bold= model.language && model.language.title === "en" ? "de" : "en"
-        =model.languageVersion.identifier
+        span.text-uppercase.font-weight-bold= model.language && model.language.title === "en" ? "en" : "de" 
+        = model.languageVersion.identifier
         = " translation"
     else
       span.btn.btn-danger.btn-sm.disabled.mr-2.mb-2 No translation!

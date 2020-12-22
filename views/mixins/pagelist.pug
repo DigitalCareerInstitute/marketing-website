@@ -9,10 +9,13 @@ mixin pagelist(public)
               span.mr-2.mb-2
                 = "Order: "
                 =page.order
-            if page.prominent
-              strong.mr-2.mb-2
-                = "Prominent"
             br
+            if page.companypage
+              span.badge.badge-primary.mb-2.mr-2
+                = "companypage"
+            if page.metapage
+              span.badge.badge-primary.mb-2.mr-2
+                = "metapage"
             each menulocation in page.menulocations
               span.badge.badge-primary.mb-2.mr-2=menulocation.name
           if user && user.admin === "true"

@@ -2,6 +2,7 @@ import {alertTimeout} from "./helper.js"
 import "bootstrap/js/dist/popover";
 import "bootstrap/js/dist/alert";
 import "./settings";
+import "./redirects";
 import "bootstrap-colorpicker";
 import Quill from "quill/dist/quill";
 

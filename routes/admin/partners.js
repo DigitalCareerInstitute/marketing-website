@@ -7,7 +7,7 @@ const { ensureAuthenticated, redirectNonAdmin } = require("../../helpers/helper"
 router.get("/", ensureAuthenticated, redirectNonAdmin, PartnersController.getPartners);
 
 router.get(
-  "/edit/:id",
+  "/edit/:slug",
   ensureAuthenticated, redirectNonAdmin,
   PartnersController.editPartner
 );
@@ -21,15 +21,16 @@ router.post(
 );
 
 router.delete(
-  "/delete/:id",
+  "/delete/:slug",
   ensureAuthenticated, redirectNonAdmin,
   PartnersController.deletePartner
 );
 router.put(
-  "/update/:id",
+  "/update/:slug",
   ensureAuthenticated, redirectNonAdmin,
   PartnersController.uploadImages,
   PartnersController.resizeImages,
   PartnersController.updatePartner
 );
+router.get("/:slug/l18n", ensureAuthenticated, redirectNonAdmin, PartnersController.setL18n);
 module.exports = router;

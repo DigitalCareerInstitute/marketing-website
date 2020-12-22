@@ -13,10 +13,9 @@
   background: $primary;
   border-radius: 8vh;
   position: absolute;
-  height: 100vw;
-  width: 100vw;
+  height: 250vw;
+  width: 250vw;
   top: 50%;
-  transform: rotate(-45deg);
   transform-origin: top left;
   left: -50%;
 }
@@ -74,7 +73,6 @@
 .bluepolygon.right {
   right: -50%;
   top: -50%;
-  transform: rotate(25deg);
   transform-origin: top right;
   left: auto;
 }

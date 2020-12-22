@@ -1,0 +1,56 @@
+extends layout.pug
+block content
+  .bg-light
+    .jumbotron.container.mb-0.px-3.bg-light.pb-0.bg-transparent.z-1.position-relative
+      .row
+        .jumbotron-polygon.h-100.bg-primary
+        .col-md-6.order-12.order-md-1.py-5.pr-0.pr-sm-5
+          h1.pt-5.text-white=__("Financing")
+          p.text-light.mt-5.mb-5=__("You have found an exciting course, but don't know how to pay for it yet? No problem! We help you to find the right financing for you.")
+
+          a.btn.btn-lg.btn-secondary.mb-3(href='/contact', data-toggle='modal', data-target='#contactFormModal')=__("Contact us")
+        .col-md-6.order-1.order-md-12
+          .px-lg-5.px-5.px-md-0
+            img.w-100.px-5.px-md-0.pb-5.pb-md-0(src="/assets/financing_money.svg", alt="financing options")
+
+    .pb-5.py-md-5
+      .container.position-relative
+        .row.position-relative.pb-5.py-md-5
+          .col-md-6.px-5.py-md-5
+            include ../assets/icons/financing_bundesagentur_fur_arbeit.svg
+          .col-md-6.py-5
+            h5.font-weight-bold.text-muted.text-uppercase.py-3=__("Agentur für Arbeit / Jobcenter")
+            h2=__( "Registered in Germany and without a job?" )
+            p=__( "If you are registered with the Federal Employment Agency or the Job Center, you can attend all DCI courses free of charge. All you need is an education voucher, which you will receive from your personal employment agency. Our consulting team will explain to you exactly how this works." )
+
+            .d-flex.justify-content-center.align-items-center.pt-3.my-3
+              a.btn.btn-lg.btn-primary.mr-1.mr-md-0(href='/contact', data-toggle='modal', data-target='#contactFormModal')=__("Contact us")
+              span.d-none.d-md-inline-block.mx-5.border-1.border-right.border-grey.h-5
+              a.btn.btn-lg.btn-outline-primary.ml-1.ml-md-0(href='/contact', data-toggle='modal', data-target='#contactFormModal')=__("Book an Appointment")
+
+        .row.position-relative
+          .col-md-3
+          .col-md-9
+            hr.border-primary.half-transparent.border-top-2
+        .row.position-relative.py-5
+          .col-md-6.py-5.order-12.order-md-1
+            h5.font-weight-bold.text-muted.py-3=__("CHANCEN eG")
+            h2=__('Learn now, pay later?')
+            p=__('CHANCEN eG offers you the possibility to take over your entire course fees if you commit to a later repayment. You only pay when you can afford it - after completion of your course and depending on your income.')
+            a.btn.btn-lg.btn-primary.mt-3(href='/contact', data-toggle='modal', data-target='#contactFormModal')=__("Learn more")
+
+          .col-md-6.px-5.py-5.d-flex.flex-column.justify-content-center.order-1.order-md-12
+            include ../assets/icons/financing_chancen_eg.svg
+
+        .row.position-relative
+          .col-md-9
+            hr.border-primary.half-transparent.border-top-2
+        .row.position-relative.py-5.mb-200
+          .col-md-6.px-5.py-5
+            include ../assets/icons/financing_credit_card_boy.svg
+          .col-md-6.py-5
+            h5.font-weight-bold.text-muted.text-uppercase.py-3=__("Self payment")
+            h2=__('Immediate debt-free learning?')
+            p=__( "If you don't want to incur debts, you can pay your course immediately or in installments. Depending on the type and size of your course, different fees will apply. Our consulting team will gladly send you an individual offer." )
+            a.btn.btn-lg.btn-primary.mt-3(href='/contact', data-toggle='modal', data-target='#contactFormModal')=__("Contact us")
+  

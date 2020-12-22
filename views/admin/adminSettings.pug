@@ -21,7 +21,7 @@ block content
                 label.input-group-text.text-capitalize.d-block(for='landingpage_calltoaction') Landingpage polygon calltoaction button page
                   button.btn.btn-secondary.badge.ml-2(type='button', data-container='body', data-toggle='popover', delay=2,  data-trigger="hover",  data-placement='top', data-content='Defines the page which will be linked in the lower blue polgon section on the right')
                     | ?
-                select#landingpage_calltoaction.form-control(for='landingpage_calltoaction' name='landingpage_calltoaction' required)
+                select#landingpage_calltoaction.form-control(for='landingpage_calltoaction' name='landingpage_calltoaction')
                   option(value="") -- Select --
                   each page in pages
                     option(value=page._id, selected=settings.landingpage_calltoaction && settings.landingpage_calltoaction.toString() === page._id.toString() ?  "selected" :  false )=page.title

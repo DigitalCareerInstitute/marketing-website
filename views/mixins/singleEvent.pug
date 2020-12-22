@@ -6,11 +6,11 @@ mixin singleEvent(event)
           figure.mw-lg-150.p-0.position-relative.col-12.mb-0.col-lg
             .col.d-flex.flex-column.justify-content-center.h-100
               img.card-img-top.mb-3.mb-md-0(alt=event.name src=event.imageurl)
-          .col.text-left.order-3.order-sm-2
-            h5.font-weight-bold.text-dark=event.name
+          .col.text-left.order-3.order-sm-2.d-flex.flex-column.justify-content-center
+            h6.font-weight-bold.text-dark.mb-3=event.name
             
-            p.text-muted.mb-0
-              span.mr-3.w-1.d-inline-block
+            p.text-muted.mb-0.line-height-0.mb-3
+              span.mr-1.mr-xl-3.w-1.d-inline-block.mb-3.mb-xl-0
                 img.mb-1.w-100(src="/media/events_clock-thin.svg", alt="women on blackboard")
-              =moment(event.start).format('HH:SS DD.MMM.YYYY')
+              =moment(event.start).format('HH:SS A DD. MMM YYYY')
             a.text-right.d-block.stretched-link.font-weight-bold(href=event.url target="_blank" rel="noopener")="Register" 

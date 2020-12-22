@@ -1,7 +1,7 @@
 mixin storylist(isPublic)
   .container.pb-5.fullbleed
     .row.pb-5.justify-content-center
-      .col-md-6.mb-md-5.px-5.px-md-0.mr-minus-15
+      .col-md-6.mb-md-5.mr-minus-15
         #studentscarousel.wrapper.wrapper-left.carousel.slide.mb-md-5.w-100(data-ride='')
           h3.h4.text-center.my-5.my-md-0=__("Students")
           .carousel-inner.px-md-0
@@ -33,7 +33,7 @@ mixin storylist(isPublic)
         #employercarousel.wrapper.wrapper-right.carousel.leftCut.slide.mt-md-5.w-100(data-ride='')
           if companyStories[0] && companyStories[0].isCompanyStory
             h3.h4.text-center.text-md-right.pr-md-5.my-5.my-md-0=__("Companies")
-          .carousel-inner.px-5.px-md-0
+          .carousel-inner
             each story, index in companyStories
               .carousel-item(class= index === 0 ? ` active` : ``)
                 if (user && story && user.userId === story.userId) || user && !!user.admin === "true" || user && !!user.superAdmin === "true"

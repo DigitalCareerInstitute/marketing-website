@@ -28,32 +28,40 @@ mixin navigation
             a.mx-0.mx-xl-3.mx-lg-2.nav-link.d-flex.align-items-center.h-100.z-1(class=currentPath && currentPath.includes('/events') && !currentPath.includes('/admin') ? "active" : "", href='/events')
               =__("Events")
           li.position-relative.nav-item
-            a.mx-0.mx-xl-3.mx-lg-2.nav-link.d-flex.align-items-center.h-100(class=currentPath && currentPath.includes("/stories") ? "active" : "", href='/stories')=__("Stories")
+            a.mx-0.mx-xl-3.mx-lg-2.nav-link.d-flex.align-items-center.h-100.z-1(class=currentPath && currentPath.includes("/stories") ? "active" : "", href='/stories')=__("Stories")
+
           if headerPages
             each page in headerPages
-              if !!page.prominent
+              if !page.companypage && !page.metapage
                 li.position-relative.nav-item
                   a.mx-0.mx-xl-3.mx-lg-2.nav-link.d-flex.align-items-center.h-100(class= currentPath === ("/pages/" + page.slug) ? "active" : "" href='/pages/' + page.slug)=page.title
+            
+          li.position-relative.nav-item
+            //- a.dropdown-toggle.mx-0.mx-xl-3.mx-lg-2.nav-link.d-flex.align-items-center.h-100(class=page && page.companypage !== "true" && currentPath && currentPath.includes("/pages") || currentPath && currentPath.includes("/about-us") : "", href="#", data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")=__("Companies")
+            //- .dropdown-menu.p-0.border-radius-0.shadow-sm(aria-labelledby='navbarDropdownMenuLink')
+            //-   if headerPages
+            //-     each page in headerPages
+            //-       if page.companypage
+            //-         a.dropdown-item.nav-link(class= currentPath === ("/pages/" + page.slug) ? "active" : "" href='/pages/' + page.slug)=page.title
+            a.mx-0.mx-xl-3.mx-lg-2.nav-link.d-flex.align-items-center.h-100.z-1(class=currentPath && currentPath.includes("/tour") ? "active" : "" href='/tour')=__("Companies")
 
           li.position-relative.nav-item.dropdown
-            a.dropdown-toggle.mx-0.mx-xl-3.mx-lg-2.nav-link.d-flex.align-items-center.h-100(class=page && page.prominent !== "true" && currentPath && currentPath.includes("/pages") || currentPath && currentPath.includes("/about-us") || currentPath && currentPath.includes("/tour") ? "active" : "", href="#", data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")=__("Get involved")
+            a.dropdown-toggle.mx-0.mx-xl-3.mx-lg-2.nav-link.d-flex.align-items-center.h-100(class=page && page.metapage !== "true" && currentPath && currentPath.includes("/pages") || currentPath && currentPath.includes("/about-us") : "", href="#", data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")=__("Get involved")
             .dropdown-menu.p-0.border-radius-0.shadow-sm(aria-labelledby='navbarDropdownMenuLink')
               a.dropdown-item.nav-link(href='/about-us/' class=currentPath && currentPath.includes("/about-us") ? "active" : "")=__("About us")
-              a.dropdown-item.nav-link(class=currentPath && currentPath.includes("/tour") ? "active" : "" href='/tour')=__("Host our students")
               a.dropdown-item.nav-link(href='https://dci-jobs.personio.de/' class=currentPath == "/jobs" ? "active" : "")=__("Jobs")
               if headerPages
                 each page in headerPages
-                  if !page.prominent
+                  if page.metapage
                     a.dropdown-item.nav-link(class= currentPath === ("/pages/" + page.slug) ? "active" : "" href='/pages/'+ page.slug)=page.title
           li.position-relative.nav-item.dropdown
             a.contactlinktext.dropdown-toggle.mx-0.mx-xl-3.mx-lg-2.nav-link.d-flex.align-items-center.h-100( href="#", data-toggle='modal', data-target='#contactFormModal' aria-haspopup="true" aria-expanded="false" class=course && course.coloraccent ? `` : `text-white` )=__("Contact")
             .contactlink(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
             .dropdown-menu.p-0.border-radius-0.shadow-sm(aria-labelledby='navbarDropdownMenuLink')
               a.dropdown-item.nav-link(href="/contact", class=currentPath == "/contact" ? "active" : "")=__("Campuses")
-          if locale === "en"
-            li.position-relative.nav-item
-              a.mx-0.mx-xl-3.mx-lg-2.nav-link.d-flex.align-items-center.h-100(href="/i18n/de") DE
-          else
-            li.position-relative.nav-item
-              a.mx-0.mx-xl-3.mx-lg-2.nav-link.d-flex.align-items-center.h-100(href="/i18n/en") EN
+
+          li.position-relative.nav-item.d-flex.align-items-center
+            a.ml-0.ml-xl-3.ml-lg-2.nav-link.d-flex.align-items-center.h-100(href="/i18n/de" class=locale === "de" ? "active" : "") DE
+            = "|"
+            a.mr-0.mr-xl-3.mr-lg-2.nav-link.d-flex.align-items-center.h-100(href="/i18n/en" class=locale === "en" ? "active" : "") EN
 

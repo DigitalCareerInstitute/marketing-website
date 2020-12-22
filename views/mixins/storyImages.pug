@@ -1,6 +1,6 @@
 mixin storyImages(story, classes = " col-md-8 offset-md-2")
   .row.position-relative
     .align-items-center(class=classes)
-      img.object-fit-cover.img-fluid.rounded-circle.square(src="/media/pixel.gif" style=`box-shadow: 3px 3px ${course && course.coloraccent ? course.coloraccent : `!important`}; background-image: url('/images/${story.avatar}')` alt=story.subtitle )
+      img.object-fit-cover.img-fluid.rounded-circle.square(src="/media/pixel.gif" style=`box-shadow: 3px 3px ${course && course.coloraccent ? course.coloraccent : `#1f3fc7 !important`}; background-image: url('/images/${story.avatar}')` alt=story.subtitle )
 
 

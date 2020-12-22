@@ -1,8 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 
 function StringTranslation(props) {
   const [data, setData] = useState([]);
   const [changed, setChanged] = useState(new Set());
+  let titleRef = useRef()
+  let enRef = useRef()
+  let deRef = useRef()
   useEffect(() => {
     fetch(`/admin/settings`, {
       headers: {"content-type": "application/json"}
@@ -72,6 +75,9 @@ function StringTranslation(props) {
         const {...clone} = data;
         clone.stringtranslations.unshift(res.stringtranslation);
         setData(clone)
+        titleRef.current.value = ""
+        enRef.current.value = ""
+        deRef.current.value = ""
       }).catch(e => console.debug(e))
   }
 
@@ -83,14 +89,14 @@ function StringTranslation(props) {
           <div className="input-group-prepend w-100">
             <label className="input-group-text text-capitalize d-block" htmlFor="newtranslations">Title</label>
             <textarea
-              className="form-control" name="title" placeholder="title"/>
+              className="form-control" name="title" placeholder="title" ref={titleRef}/>
           </div>
         </div>
         <div className="input-group flex-grow-1 mr-2">
           <div className="input-group-prepend w-100">
             <label className="input-group-text text-capitalize d-block" htmlFor="newtranslationsen">en</label>
             <textarea
-              className="form-control" name="en" placeholder="en version">
+              className="form-control" name="en" placeholder="en version" ref={enRef}>
 
             </textarea>
           </div>
@@ -98,7 +104,7 @@ function StringTranslation(props) {
         <div className="input-group flex-grow-1 mr-2">
           <div className="input-group-prepend w-100">
             <label className="input-group-text text-capitalize d-block" htmlFor="newtranslationsde">de</label>
-            <textarea className="form-control" name="de" placeholder="de version">
+            <textarea className="form-control" name="de" placeholder="de version" ref={deRef}>
 
             </textarea>
           </div>

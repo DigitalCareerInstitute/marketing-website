@@ -23,3 +23,7 @@ module.exports.getSingleCourse = async (req, res) => {
     .exec()
   renderLanguageVersion(req, res, course, 'course', 'courses')
 }
+
+module.exports.financingOptions = async (req, res) => {
+    res.render('financingOptions')
+}

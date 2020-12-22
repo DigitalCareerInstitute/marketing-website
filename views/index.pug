@@ -16,12 +16,12 @@ block content
                 .d-flex
                   a.mb-3.btn.btn-lg.btn-secondary.mr-2.mr-md-4(href='#ourcourses', role='button'): +translate("Browse Courses")
               .col-md-6.py-5.order-1.order-md-12
-                img.w-100(src="/media/hero.png", alt="")
+                img.w-100(src="/media/hero.svg", alt="")
 
       section#ourcourses.position-relative.offset_title.pb-5
         header.offset_header.text-center
           .d-inline-block.position-relative
-            .bluepolygon.z-minus
+            .bluepolygon.z-minus(style="transform: rotate(-45deg) skew(20deg, 0) translateX(-3em)")
             h2.position-relative.d-inline-block.display-1.text-center.text-white
               +translate("Our courses")
         .container.pt-5.text-center
@@ -38,7 +38,7 @@ block content
                   div
                     hr
                     a.text-dark.font-weight-bold(href="/courses/" + course.slug): +translate("View course details")
-          a.z-1.btn.btn-lg.btn-secondary(href='/courses/', role='button', aria-pressed='true')
+          a.z-1.btn.btn-lg.btn-secondary.my-5(href='/courses/', role='button', aria-pressed='true')
             +translate("All")
             = " "
             +translate("Courses")
@@ -47,59 +47,60 @@ block content
         .position-relative.offset_title
           header.offset_header.text-left
             .d-inline-block.position-relative
-              .bluepolygon.z-minus.right
+              .bluepolygon.z-minus.right(style="transform: rotate(25deg) skew(10deg, -10deg) translate(1em, -2em)")
               h2.position-relative.d-inline-block.display-1.text-center.text-white.ml-3
                 +translate("Mission")
 
 
           .position-relative.container.overflow-hidden.my-5
-            .history-line.row.text-center.text-shadow-white
-              .offset-md-1
-              .col-md-2.d-flex.flex-column.justify-content-end
-                div.font-weight-bold.h3-md 2016
-                div: +translate("1st Campus in Berlin")
-              .col-md-2
-                div.d-md-none.font-weight-bold.h3-md 2017
-                div.d-md-none: +translate("New Campuses in Düsseldorf & Hamburg")
-              .col-md-2.flex-column.justify-content-end
-                div.d-none.d-md-block.font-weight-bold.h3-md 2018
-                div.d-none.d-md-block: +translate("Partnership with Facebook")
-              .col-md-2
-              .col-md-2
-                div.d-none.d-md-block.font-weight-bold.h3-md 2020
-                div.d-none.d-md-block: +translate("Courses run 100% remotely")
+            .bg-light.p-4.rounded
+              .history-line.justify-content-between.row.text-center.text-shadow-white
+                .col-md-2.d-flex.flex-column.justify-content-end
+                  div.font-weight-bold.h3-md 2016
+                  div: +translate("1st Campus in Berlin")
+                .col-md-2
+                  div.d-md-none.font-weight-bold.h3-md 2017
+                  div.d-md-none: +translate("New Campuses in Düsseldorf & Hamburg")
+                .col-md-2.flex-column.justify-content-end
+                  div.d-none.d-md-block.font-weight-bold.h3-md 2018
+                  div.d-none.d-md-block: +translate("Partnership with Facebook")
+                .col-md-2
+                .col-md-2
+                  div.d-none.d-md-block.font-weight-bold.h3-md 2020
+                  div.d-none.d-md-block: +translate("Courses run 100% remotely")
 
-            .history-line.row.text-center.text-shadow-white.pb-3.d-none.d-md-flex
-              .offset-md-1
-              .col-md-2
-                .line
-                  .circle
-                  hr
-              .col-md-2
-                .line
-                  .circle
-                  hr
-              .col-md-2
-                .line
-                  .circle
-                  hr
-              .col-md-2
-                .line
-                  .circle
-                  hr.arrow
+              .history-line.justify-content-between.row.text-center.text-shadow-white.pb-3.d-none.d-md-flex
+                div.flex-grow-1
+                  .line
+                    .circle
+                    hr
+                div.flex-grow-1
+                  .line
+                    .circle
+                    hr
+                div.flex-grow-1
+                  .line
+                    .circle
+                    hr
+                div.flex-grow-1
+                  .line
+                    .circle
+                    hr.arrow
+                div.flex-grow-1
+                .col-1
 
-            .history-line.row.text-center.text-shadow-white
-              .offset-md-1
-              .col-md-2
-              .col-md-2
-                div.d-md-block.d-none.font-weight-bold.h3-md 2017
-                div.d-md-block.d-none: +translate("New Campuses in Düsseldorf & Hamburg")
-              .col-md-2.flex-column.justify-content-end
-                div.d-md-none.font-weight-bold.h3-md 2018
-                div.d-md-none: +translate("Partnership with Facebook")
-              .col-md-2
-                div.font-weight-bold.h3-md 2019
-                div: +translate("Launched Online Marketing course and Leipzig Campus")
+              .history-line.justify-content-between.row.text-center.text-shadow-white
+                .col-md-2
+                .col-md-2
+                  div.d-md-block.d-none.font-weight-bold.h3-md 2017
+                  div.d-md-block.d-none: +translate("New Campuses in Düsseldorf & Hamburg")
+                .col-md-2.flex-column.justify-content-end
+                  div.d-md-none.font-weight-bold.h3-md 2018
+                  div.d-md-none: +translate("Partnership with Facebook")
+                .col-md-2
+                  div.font-weight-bold.h3-md 2019
+                  div: +translate("Launched Online Marketing course and Leipzig Campus")
+                .col-md-2
 
 
 
@@ -150,10 +151,55 @@ block content
       section#stories.my-5.offset_title.position-relative
         header.offset_header.text-right
           .d-inline-block.position-relative
-            .bluepolygon.z-minus.left
+            .bluepolygon.z-minus.left(style="transform: rotate(-45deg) skew(-20deg, 10deg) translate(0em, -4em)")
             h2.position-relative.d-inline-block.display-1.text-center.text-white.mr-3
               +translate("Stories")
-        +storylist
+
+        if stories
+          - storysWithTestimonial = stories
+          if storysWithTestimonial.length > 0
+            .container
+              .mx-lg-5
+                .mx-lg-5.px-lg-2
+                  .py-5
+                    h2.pb-3.bar-bottom.mb-5
+                      =__("What companies")
+                      span.badge.badge-primary-trans.text-primary.font-weight-normal.mx-1=__("love")
+                      =__("about our graduates")
+            #careersuccesscarousel.carousel.slide.mb-5.pt-3.pb-5(data-ride="carousel")
+              .carousel-inner
+                each story, index in storysWithTestimonial
+                  .carousel-item(class= index === 0 ? ` active` : ``)
+                    .container
+                      .mx-lg-5
+                        .mx-lg-5.px-lg-2
+                          .bg-white.p-4.rounded-md.border.pb-5
+                            if user && story && user.userId === story.userId || user && user.admin === "true"
+                              a.position-absolute.right.bottom.btn.btn-outline-primary.z-foreground(href=`/admin/stories/edit/${story.slug}`) Edit
+                                
+                            div.position-relative
+                              .p-5.story-item
+                                blockquote.blockquote.my-1=story.excerpt
+                              .d-flex.justify-content-end.align-items-end
+                                
+                                div.text-right.px-3
+                                  h3=story.subtitle
+                                  h4.font-italic=story.workPosition
+                                a.stretched-link.text-right.rounded-circle.overflow-hidden(href=`/stories/${story.slug}` style=`box-shadow: 3px 3px ${course && course.coloraccent ? course.coloraccent : `#1f3fc7 !important`};`)
+                                  img.mw-150.object-fit-contain.w-8.square(src="/media/pixel.gif" style=`background-image: url('/images/${story.avatar}'); box-shadow: 3px 3px ${course && course.coloraccent ? course.coloraccent : `#1f3fc7 !important`}`)
+
+                if storysWithTestimonial.length > 1
+                  ol.carousel-indicators
+                    each story, index in storysWithTestimonial
+                      li(data-target="#careersuccesscarousel" data-slide-to=index class=index==0 ? " active": "")
+
+                if storysWithTestimonial.length > 1
+                  a.carousel-control-prev(href="#careersuccesscarousel" role="button" data-slide="prev")
+                    span.carousel-control-prev-icon(aria-hidden="true")
+                    span.sr-only Previous
+                  a.carousel-control-next(href="#careersuccesscarousel" role="button" data-slide="next")
+                    span.carousel-control-next-icon(aria-hidden="true")
+                    span.sr-only Next
         .pt-4.text-center
           a.btn.btn-lg.btn-secondary.mx-5(href="/stories"): +translate("Show all Stories")
 

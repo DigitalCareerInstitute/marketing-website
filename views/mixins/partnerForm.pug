@@ -1,14 +1,10 @@
 mixin partnerForm
   - var editPath = currentPath.includes('admin/partners/edit')
-  form.mb-5(method='POST', action=editPath ? '/admin/partners/update/'+partner._id+'?_method=PUT' : '/admin/partners?alert=create', enctype="multipart/form-data")
+  form.mb-5(method='POST', action=editPath ? '/admin/partners/update/'+partner.slug+'?_method=PUT' : '/admin/partners?alert=create', enctype="multipart/form-data")
 
     h2
       span.mr-3=editPath ? "Edit Partner " :"Create a new Partner"
-      .btn-group
-        if editPath
-          a.btn.btn-outline-primary(href="/admin/partners")="Back"
-          a.btn.btn-outline-primary(target="_blank" rel="noopener" href="/partners/"+partner._id)="Show"
-        button.btn.btn-primary(type='submit')=editPath ? "Update" :"Create a new Partner"
+    +adminButtonGroup(partner, 'partners')
     .form-group
       label(for='title') Title
       input#inputName.form-control(name='title', type='text', placeholder='Title', required='', autofocus='', value=editPath ? partner.title : "")
@@ -29,3 +25,19 @@ mixin partnerForm
         button.btn.btn-secondary.badge.ml-2(type='button', data-container='body', data-toggle='popover',  data-trigger="hover",  data-placement='top', data-content='Defines the order the partners are displayed. 0,1,2,3,4')
           | ?
       input#inputOrder.form-control(name='order', type='number', placeholder='Order', required='', autofocus='', value=editPath ? partner.order : "")
+    label.checkbox.text-muted(for='testimonial_show')
+      ="Show testimonial on careersuccesspage?"
+      button.btn.btn-secondary.badge.ml-2(type='button', data-container='body', data-toggle='popover',  data-trigger="hover",  data-placement='top', data-content='To show the testimonial in the careersucess-page in the grid tick this box. To show it you must provide also a name, the content AND the job.')
+        | ?
+      input#testimonial_show(type='checkbox', name='testimonial_show', value="on", checked=partner && partner.testimonial_show && !!partner.testimonial_show ? true: false )
+      span.checkmark
+
+    .form-group
+      label.d-block(for='testimonial_name') Testimonial name
+      input.form-control#testimonial_name(type='text' name='testimonial_name' value=partner && partner.testimonial_name ? partner.testimonial_name : "")
+    .form-group
+      label.d-block(for='testimonial_content') Testimonial content
+      textarea.form-control#testimonial_content(type='text' name='testimonial_content')=partner && partner.testimonial_content ? partner.testimonial_content : ""
+    .form-group
+      label.d-block(for='testimonial_job') Testimonial job
+      input.form-control(type='text' name='testimonial_job' value=partner && partner.testimonial_job ? partner.testimonial_job : "")

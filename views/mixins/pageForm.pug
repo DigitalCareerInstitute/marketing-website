@@ -18,7 +18,7 @@ mixin pageForm
     .mb-3
       label(for='order')
         | Order
-        button.btn.btn-secondary.badge.ml-2(type='button', data-container='body', data-toggle='popover',  data-trigger="hover",  data-placement='top', data-content='Pagelocation defines where and whether the page should be visible in a menu. Prominent shows the page in the main header-navigation - otherwise its in the *GET INVOLVED* submenu sorted by order. If page location is not set, the page will be created, but not in a menu - so kind of invisible, but reachable per direct link. *Order* Defines the position of the pages amongst their location (header-page => 1, 2, 3 ... | footer-pages => 1, 2, 3)')
+        button.btn.btn-secondary.badge.ml-2(type='button', data-container='body', data-toggle='popover',  data-trigger="hover",  data-placement='top', data-content='*Order* Defines the position of the pages amongst their location (header-page => 1, 2, 3 ... | footer-pages => 1, 2, 3)')
           | ?
       input#inputOrder.form-control(name='order', type='number', placeholder='Order', autofocus='', value=editPath ? page.order : "")
     h4.d-inline-block Call to action
@@ -39,12 +39,17 @@ mixin pageForm
 
     .my-3
       label.h4(for="menulocations") Page Location
-      button.btn.btn-secondary.badge.ml-2(type='button', data-container='body', data-toggle='popover',  data-trigger="hover",  data-placement='top', data-content='Defines the Menulocation where the pages are displayed. Headerpages appear in the Header and on the landingpages "Get Involved" section. Footerpages just in the footer. If no location is defined, the page is "hidden" but accessible per direct url.')
+      button.btn.btn-secondary.badge.ml-2(type='button', data-container='body', data-toggle='popover',  data-trigger="hover",  data-placement='top', data-content='Defines the Menulocation where the pages are displayed. Headerpages appear in the Header. Footerpages just in the footer. Companypages appear below "Companies", metapages unter "Get invoved". If no location is defined, the page is "hidden" but accessible per direct url. ')
         | ?
 
       .custom-control.custom-checkbox
-        input.custom-control-input(name="prominent" type='checkbox' id="prominent" value=prominent  checked=(page && page.prominent ? true : false))
-        label.custom-control-label(for='prominent') Prominent
+        input.custom-control-input(name="companypage" type='checkbox' id="companypage" value=companypage  checked=(page && page.companypage ? true : false))
+        label.custom-control-label(for='companypage') Companypage
+
+        button.btn.btn-secondary.badge.ml-2(type='button', data-container='body', data-toggle='popover',  data-trigger="hover",  data-placement='top', data-content='If checked, the Page will be shown directly in the Main navigation instead hidden in a dropdown menu. Exact location depends on the MenuLocation.')
+      .custom-control.custom-checkbox
+        input.custom-control-input(name="metapage" type='checkbox' id="metapage" value=metapage  checked=(page && page.metapage ? true : false))
+        label.custom-control-label(for='metapage') Metapage
 
         button.btn.btn-secondary.badge.ml-2(type='button', data-container='body', data-toggle='popover',  data-trigger="hover",  data-placement='top', data-content='If checked, the Page will be shown directly in the Main navigation instead hidden in a dropdown menu. Exact location depends on the MenuLocation.')
       each menulocation in menulocations

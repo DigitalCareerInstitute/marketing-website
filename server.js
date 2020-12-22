@@ -241,6 +241,7 @@ const employeesRoutes = require('./routes/employees')
 const eventsRoutes = require('./routes/events')
 const coursesRoutes = require('./routes/courses')
 const redirects = require('./routes/redirects')
+const redirectsAdminRoutes = require('./routes/admin/redirects')
 
 const menulocationAdminRoutes = require('./routes/admin/menulocations')
 const storiesAdminRoutes = require('./routes/admin/stories')
@@ -277,6 +278,7 @@ app.use('/admin/contacts', contactsAdminRoutes)
 app.use('/admin/settings', settingsAdminRoutes)
 
 app.use('/admin/users', usersAdminRoutes)
+app.use('/admin/redirects', redirectsAdminRoutes)
 
 app.use('/admin*', contactsAdminRoutes)
 app.use(redirects)

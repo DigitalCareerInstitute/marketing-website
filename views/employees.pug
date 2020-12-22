@@ -3,7 +3,7 @@ block content
   .jumbotron.jumbotron-fluid.mb-0.bg-section.p-0
     .container
       .row
-        .col-md-6.py-5.py-md-0
+        .col-md-6.py-5.py-lg-0
           h1.display-1.mt-md-5.mb-3.pt-md-5.mb-5=__("About Us")
           strong.font-weight-bold.text-muted.mb-3.d-block=__("Who We Are?")
           p=__("The Digital Career Institute was born as an initiative to integrate refugees into digital jobs.Today it is committed to train anyone who wants to pursue a tech career.")
@@ -14,30 +14,30 @@ block content
             .position-absolute.top.transform-absolute-center.w-100.px-3.px-md-5.row
               .bg-white
                 .w-100.p-3
-                  img.w-100(src="/media/about_us.jpg" alt="Sommmerfest 2019 - Hamburg" )
-              h6.text-center.text-white.mt-4.w-100="Summerfest 2019 - Hamburg"
+                  img.w-100(src="/media/about_us.jpg" alt=__("People at DCI" ))
+              h6.text-center.text-white.mt-4.w-100=__("People at DCI" )
   .overflow-hidden.pb-200
     .container.position-relative
       .row.mb-5
-        .col-md-6.py-5.pl-md-5.bg-primary
+        .col-md-6.py-5.px-lg-5.bg-primary
           h4.font-weight-bold.text-white.mb-md-5=__("Our Team")
           .row
             each employee, index in employees.slice(0, Math.floor(employees.length / 4))
               +singleEmployee(employee, (index === 0 ? "mt-5 pt-5" : ""))
-        .col-md-6.py-5.pr-md-5
+        .col-md-6.py-5.px-lg-5
           h4.font-weight-bold.mt-md-5.pt-md-5.text-right.text-muted=__("Our values set us apart.")
           h6.font-weight-bold.mt-5.pt-5=__("Impact")
           p=__("We measure success by impact. As we continue to empower people to begin their new careers and learn new skills we see the positive social impact of our work. On difficult days, we can turn to our students as a reminder of what success means as they go on to impact the industry in new ways.")
           .row
             each employee, index in employees.slice(Math.floor(employees.length / 4), Math.floor(employees.length - (employees.length / 4) * 2))
               +singleEmployee(employee, (index === 0 ? "mt-5 pt-5" : ""))
-        .col-md-6.py-5.pl-md-5
+        .col-md-6.py-5.px-lg-5
           h6.font-weight-bold=__("Dedication")
           p=__("We’ve learned that to get the best out of people you have to be dedicated to get to know them. That’s why we focus on building a bond with every student, understanding their specific needs and adapting to their ways of learning. We put our students at the centre of the learning process.")
           .row
             each employee, index in employees.slice(Math.floor((employees.length / 4) * 2),  Math.floor((employees.length / 4) * 3))
               +singleEmployee(employee, (index === 0 ? "mt-5 pt-5" : ""))
-        .col-md-6.py-5.pr-md-5.bg-primary
+        .col-md-6.py-5.px-lg-5.bg-primary
           h6.font-weight-bold.text-white.mt-5.pt-5=__("Community")
           p.text-white=__("Community is at the core of everything we do. Our students come from a wide variety of backgrounds and build a culture of honest communication and open collaboration. We work towards a common goal by bringing people together and work with a positive feedback culture based on trust.")
           .row

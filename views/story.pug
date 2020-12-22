@@ -1,23 +1,25 @@
 extends layout.pug
 block content
   div.story-item.py-5
-    .position-relative.pb-200
+    .position-relative.pb-200.overflow-hidden
+      .position-absolute.bg-panel.bg-primary.left.bottom.top.shift-left-percent.w-100.d-none.d-md-block
       .container
         .row
-          .col-md-8
+          .col-md-8.order-12.order-md-1
             .pt-3.mt-5
               .position-relative.bg-light-blue.p-5.bg-panel.right
                 blockquote.blockquote
                   p.text-muted=story.excerpt
-              .mt-4.brackets.bg-white.p-3
+              .mt-4.bg-white.p-3
                 p.text-justify !{story.toHTML}
-          .col-md-4
+          .col-md-4.order-1.order-md-12
             .sticky-top.my-5.text-center.pt-3
-              .bg-light-blue.p-4
-                +storyImages(story)
-                h2.mt-3=story.title
+              .p-4
+                +storyImages(story, "col")
+                h2.mt-3.text-white=story.title
                 table.table.p-4.small
                   tbody
                     tr
-                      th Position
-                      td= story.workPosition
+                      th.border-0.text-white Position
+                      td.border-0.text-white= story.workPosition
+  .py-5

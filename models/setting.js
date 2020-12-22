@@ -13,6 +13,10 @@ var SettingSchema = new Schema({
   tourmailreceiver: String,
   mailreceiver: String,
   show_language_markers: Boolean,
+  careersuccesspage_alumni: Number,  
+  careersuccesspage_students: Number,  
+  careersuccesspage_companypartners: Number,
+  careersuccesspage_employmentrate: Number,
 });
 
 module.exports = mongoose.model("Setting", SettingSchema);

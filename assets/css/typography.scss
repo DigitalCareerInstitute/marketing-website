@@ -35,15 +35,15 @@ h6 {
 a:link {
   text-decoration: none !important;
 }
-.font-weight-light{
-  font-family: "Gordita-Regular", sans-serif;
+.font-weight-light {
+  font-family: "Gordita-Regular", sans-serif !important;
 }
 .font-weight-bold {
   font-weight: 100 !important;
   font-family: "Gordita-Bold", sans-serif;
 }
 .display-1 {
-  font-size: 1.5rem !important;
+  font-size: 3rem !important;
 }
 .display-2 {
   font-size: 1.7rem;
@@ -54,9 +54,6 @@ a:link {
   }
 }
 @include media-breakpoint-up(lg) {
-  .display-1 {
-    font-size: 2rem !important;
-  }
   .responsiveD-3 {
     font-size: 1.5rem;
   }
@@ -75,9 +72,6 @@ a:link {
 }
 
 @include media-breakpoint-up(xl) {
-  .display-1 {
-    font-size: 3rem !important;
-  }
   .responsiveD-3 {
     font-size: 2.4rem;
   }

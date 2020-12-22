@@ -6,6 +6,7 @@ const fs = require("fs");
 const path = require("path");
 
 const Employee = require("./models/employee");
+const Partner = require("./models/partner");
 
 const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGOURL, {
@@ -16,7 +17,7 @@ mongoose.connect(process.env.MONGOURL, {
 mongoose.Promise = global.Promise;
 (async () => {
   try {
-    const res = await Employee.find({})
+    const res = await Partner.find({})
     await Promise.all(res.map(async res => await res.save()))
     console.log("Migration successful");
   } catch (error) {

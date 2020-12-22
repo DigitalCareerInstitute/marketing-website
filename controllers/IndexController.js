@@ -36,24 +36,17 @@ module.exports.landingpage = async (req, res) => {
     }
     if (indexData === null) {
       let query = await getAvailableTranslations(req, res)
-      const companyStoriesQuery = {...query, isCompanyStory: true}
-      const nonCompanyStoriesQuery = {...query, isCompanyStory: {$ne: true}}
 
-      const companyStories = Story
-        .find(companyStoriesQuery)
+      const stories = Story
+        .find({...query})
         .sort('order')
         .exec({})
       const contact_userRes = Employee
         .findOne({...query, contact_user: true})
         .exec()
-      const nonCompanyStories = Story
-        .find(nonCompanyStoriesQuery)
-        .sort('order')
-        .limit(6)
-        .exec()
-        const locations = Location.find({})
+      const locations = Location.find({})
         .sort({ order: 1 })
-        .exec()
+        .exec() 
       const partners = Partner.find({})
         .sort('order')
         .exec({})
@@ -61,7 +54,7 @@ module.exports.landingpage = async (req, res) => {
         .find(query)
         .sort({order: 1})
         .exec()
-      indexData = await Promise.all([nonCompanyStories, companyStories, locations, partners, courses, contact_userRes])
+      indexData = await Promise.all([stories, locations, partners, courses, contact_userRes])
       const events = await fetchEventsByLocation(true, res.locals.settings.landingpage_number_events);
       indexData.push(events)
       if (process.env.USE_REDIS === 'true') {
@@ -72,12 +65,11 @@ module.exports.landingpage = async (req, res) => {
         }
       }
     }
-    const [nonComanyStoriesRes, companyStoriesRes, locationsRes, partnersRes, coursesRes, contact_user, events] = indexData;
+    const [storiesRes, locationsRes, partnersRes, coursesRes, contact_user, events] = indexData;
 
     res.render('index', {
       events,
-      companyStories: companyStoriesRes.length !== 0 ? companyStoriesRes : nonComanyStoriesRes.splice(nonComanyStoriesRes.length, nonComanyStoriesRes.length + 3),
-      nonComanyStories: nonComanyStoriesRes.splice(0, 3),
+      stories: storiesRes,
       partners: partnersRes,
       locations: locationsRes,
       contact_user,
@@ -198,7 +190,7 @@ module.exports.contact = async (req, res, next) => {
               { property: 'utm_campaign', value: req.session.utmParams ? JSON.stringify(req.session.utmParams.utm_campaign) : "" },
               { property: 'utm_content', value: req.session.utmParams ? JSON.stringify(req.session.utmParams.utm_content) : "" },
               { property: 'utm_term', value: req.session.utmParams ? JSON.stringify(req.session.utmParams.utm_term) : "" },
-              { property: 'are_you_registered_with_the_jobcenter_or_agentur_fr_arbeit', value: !!jobcenter },
+              { property: 'afa_jc_registered_', value: !jobcenter ? "No" : "Yes" },
               {
                 property: 'form_payload',
                 value: JSON.stringify({
@@ -245,7 +237,12 @@ module.exports.contact = async (req, res, next) => {
 }
 module.exports.tour = async (req, res) => {
   try {
-    res.render('tour', {companytour: true})
+    const query = await getAvailableTranslations(req, res)
+    const partners = await Partner.find(query)
+    .sort("-createdAt")
+    .exec();
+    res.locals.title = 'Become our Hiring Partner | DigitalCareerInstitute'
+    res.render('tour', { companytour: true, partners })
   } catch (err) {
     console.log(err)
   }

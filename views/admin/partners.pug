@@ -12,17 +12,17 @@ block content
                 if partner && partner.partnerlogo
                   img.w-100.mw-150.mh-150.object-fit-cover(alt=partner.title src="/images/"+partner.partnerlogo)
                 div.mr-3
-                  span.mr-2.mb-2
+                  span.d-block.mr-2
                     = "Order: "
                     =partner.order
 
+                  span.d-block.mr-2
+                    = "Testimonial on careersuccess: "
+                    label.checkbox.text-muted(for='testimonial_show')
+                      input#testimonial_show(disabled type='checkbox', name='testimonial_show', value="on", checked=partner && partner.testimonial_show && !!partner.testimonial_show ? true: false )
+                      span.checkmark
                 if user && user.admin === "true"
-                  form.d-flex.justify-content-between(method='POST', action='/admin/partners/delete/'+partner._id +'?_method=DELETE')
-                    a.btn.btn-outline-primary.mr-2(href="/partners/"+partner._id) Show
-
-                    .d-flex.align-items-center
-                      a.btn.btn-outline-primary.mr-2(href="/admin/partners/edit/"+partner._id) Edit
-                      button.btn.btn-outline-danger(type='submit') Delete
+                  +buttonGroup(partner, `partners`)
       .col-md-4
         +partnerForm
 

@@ -71,6 +71,22 @@ Remove all seeds from database:
 In the private [infrastructure repo](https://github.com/DigitalCareerInstitute/infrastructure) we manage the deployment and the server provision per [Ansible](https://www.ansible.com/). If you need to deploy, require ssh access to the live environment from an admin.
 
 
+## Server & database access
+Let a admin add your ssh key to the server. Then map the live-mongo db to an alternative local port:
+
+`ssh dci@95.217.184.232  -L 27018:localhost:27017`
+
+Then connect to the live mongo-db from another terminal window:
+
+`mongo --port 27018`
+
+Then you can run normal mongo commands in your local mongo-terminal towards the remote production mongo instance. 
+
+Eg. update a users admin privileges:
+```
+db.users.findOneAndUpdate({email: "user@digitalcareerinstitute.org}, {$set: {admin: "true", superAdmin: "true"}})
+```
+
 ## Features
 
 For some actions you need a superadmin account, for some a normal admin role is enought. Contact [@spielhoelle](mailto:thomas.kuhnert@digitalcareerinstitute.org) or [@LeandroDCI](https://github.com/LeandroDCI) for extended access rights.

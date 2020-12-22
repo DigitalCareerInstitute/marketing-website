@@ -1,12 +1,54 @@
 extends layout.pug
 block content
-  .jumbotron.jumbotron-fluid.text-center.bg-transparent
-    h1.display-1.mt-5.mb-3=__("Stories")
-    p.lead=__("Lets transform your future into one of our success stories")
+  .bg-light.position-relative.overflow-hidden
+    - const studentstories = stories.filter(st => !st.isCompanyStory)
+    - const companystories = stories.filter(st => st.isCompanyStory)
+    - const firststory = studentstories[0]
+    .position-absolute.bg-panel.bg-primary.left.bottom.top.shift-left-percent.w-100.d-none.d-md-block
+    .container-md.position-relative.mb-5.pb-200.z-1
+      .row
+        .col-md-6.right.py-3.py-md-5.pl-md-0
+          h1.display-1.my-3.mt-xl-5=__("Stories")
+          p.lead.mb-3.pt-3()=__("Lets transform your future into one of our success stories")
+        .col-md-6.right.py-3.py-md-5.px-5.pl-md-0.position-static
 
-  .container.h-100.pb-200
-    .row
-      each story in stories
-        .position-relative
-          .container
-            +fullstory(story)
+      .position-relative.mb-3
+        .row
+          .col-md-8.pb-4.pt-5.d-flex.flex-column.justify-content-between.w-100.bg-light-blue.bg-panel.right.pl-md-0.order-12.order-md-1
+            .row
+              .col-md-10
+                .position-relative
+                  blockquote.blockquote.mb-0
+                    h3.font-weight-bold.text-muted=firststory.excerpt
+
+                  .text-right
+                    a.text-dark.stretched-link(href=`/stories/${firststory.slug}`)
+                      div.font-weight-bold=firststory.title
+                      span.font-weight-bold.text-muted= firststory.workPosition
+
+              .col-md-2.d-flex.flex-column.justify-content-end
+                a.text-dark.stretched-link(href=`/stories/${firststory.slug}`)
+                  .mw-150.ml-auto
+                    +storyImages(firststory, 'col')
+            if user && user.superAdmin === "true" || user && user.admin === "true"
+              a.position-absolute.mt-3.right.bottom.btn.btn-outline-primary.z-foreground(href=`/admin/stories/edit/${firststory.slug}`) Edit
+          .col-md-4.d-flex.flex-column.align-items-end.justify-content-center.text-md-white.order-1.order-md-12
+            h2.position-relative.d-inline-block
+              =__("Latest Story")
+              .text-underline-bold.bg-md-white
+              
+    .container.pb-200
+      .row
+        .col-md-6
+          .text-right
+            h2.position-relative.d-inline-block.mb-5
+              =__("Student stories")
+              .text-underline-bold.bg-primary
+          each story, index in studentstories.splice(1)
+            +fullstory(story, index)
+        .col-md-6
+          h2.mb-5.text-md-white
+            =__("Company stories")
+          each story, index in companystories 
+            +fullstory(story, index)
+    .pb-200
