@@ -14,7 +14,11 @@ jobs:
         id: extract_branch
       - name: Print branch name
         shell: bash
-        run: echo "${{ github.event.pull_request.base.ref }}"
+        run: echo "${GITHUB_REF}"
+      - name: Print branch name 2
+        uses: nelonoel/branch-name@v1
+        # Use branch name for whatever purpose
+        run: echo ${BRANCH_NAME}
       # - name: Trigger Deploy - Dispatch initiating repository event for infrastructure repo to trigger a deployment
       #   if: github.event.action != 'deploy_successful'
       #   run: |
