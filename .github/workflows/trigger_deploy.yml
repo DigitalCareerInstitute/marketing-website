@@ -5,19 +5,11 @@ jobs:
   notify_infrastructure_repo:
     runs-on: ubuntu-latest
     steps:
-      - name: Event Information
-        run: |
-          echo "Event '${{ github.event.action }}' received from '${{ github.event.client_payload.repository }}'"
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
-      - name: Print branch name
-        shell: bash
-        run: echo "${GITHUB_REF}"
-      - uses: nelonoel/branch-name@v1.0.1
-      # Use branch name for whatever purpose
-      - run: echo ${BRANCH_NAME}
+      - name: Git branch name
+        id: git-branch-name
+        uses: EthanSK/git-branch-name-action@v1
+      - name: Echo the branch name
+        run: echo "Branch name ${GIT_BRANCH_NAME}"
       # - name: Trigger Deploy - Dispatch initiating repository event for infrastructure repo to trigger a deployment
       #   if: github.event.action != 'deploy_successful'
       #   run: |
