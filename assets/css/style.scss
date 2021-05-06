@@ -1209,33 +1209,39 @@ div[class*=" #{$class-slug}"] {
     max-height: none!important;
   }
 }
-@for $i from 1 through 10 {
+@for $i from 0 through 10 {
   .top-#{ $i * 10 } {
     top: 10% * $i;
   }
+
+  .left-#{ $i * 10 } {
+    left: 10% * $i;
+  }
+
+  .right-#{ $i * 10 } {
+    right: 10% * $i;
+  }
+
+  .bottom-#{ $i * 10 } {
+    bottom: 10% * $i;
+  }
+
+}
+@for $i from 0 through 10 {
   @include media-breakpoint-up(md) {
     .top-md-#{ $i * 10 } {
       top: 10% * $i;
     }
-  }
-  .left-#{ $i * 10 } {
-    left: 10% * $i;
   }
   @include media-breakpoint-up(md) {
     .left-md-#{ $i * 10 } {
       left: 10% * $i;
     }
   }
-  .right-#{ $i * 10 } {
-    right: 10% * $i;
-  }
   @include media-breakpoint-up(md) {
     .right-md-#{ $i * 10 } {
       right: 10% * $i;
     }
-  }
-  .bottom-#{ $i * 10 } {
-    bottom: 10% * $i;
   }
   @include media-breakpoint-up(md) {
     .bottom-md-#{ $i * 10 } {
@@ -1472,6 +1478,11 @@ body:not(.admin) {
 .w-md-50 {
   @include media-breakpoint-up(md) {
     width: 50% !important;
+  }
+}
+.w-md-100 {
+  @include media-breakpoint-up(md) {
+    width: 100%;
   }
 }
 .w-md-100 {
