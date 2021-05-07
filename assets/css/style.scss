@@ -1228,6 +1228,14 @@ div[class*=" #{$class-slug}"] {
 
 }
 @for $i from 0 through 10 {
+  .h-#{ $i * 10 }-percent {
+    height: 10% * $i;
+  }
+  @include media-breakpoint-up(md) {
+    .h-md-#{ $i * 10 }-percent {
+      height: 10% * $i;
+    }
+  }
   @include media-breakpoint-up(md) {
     .top-md-#{ $i * 10 } {
       top: 10% * $i;
@@ -1467,14 +1475,6 @@ body:not(.admin) {
   transform: translateX(-50%);
 }
 
-.h-25-percent {
-  height: 25%;
-}
-@include media-breakpoint-up(md) {
-  .h-md-50-percent {
-    height: 25%;
-  }
-}
 .w-md-50 {
   @include media-breakpoint-up(md) {
     width: 50% !important;
