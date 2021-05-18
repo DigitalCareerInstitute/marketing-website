@@ -1,13 +1,13 @@
 mixin navigation
   if currentPath && !currentPath.includes('admin') && !currentPath.includes('users') && locals.settings && locals.settings.announcement_banner_string
-    .w-100.text-white.p-2.text-center.z-foreground(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent};  color: ${course.textColor} !important` : `` : `` )
+    .w-100.text-white.p-2.text-center.z-foreground.bg-primary()
       div
         =__(locals.settings.announcement_banner_string)
         if locals.settings && locals.settings.announcement_banner_cta && locals.settings.announcement_banner_cta !== currentPath
-          a.btn.btn-link.ml-3.btn-secondary.py-0(class=course && course.coloraccent ? `btn-white` : `btn-secondary` style=course && course.coloraccent ? `color: ${course.coloraccent} !important` : `` href=locals.settings.announcement_banner_cta)=__("Show More")
+          a.btn.btn-link.ml-3.btn-secondary.py-0()=__("Show More")
   nav#nav-primary.pb-3.z-1.navbar.navbar-expand-lg.navbar-light.py-0.bg-tranition.px-3.px-md-3.flex-column(class=currentPath == "/" ? " z-foreground " : "")
     if course && course.coloraccent
-      div.position-absolute.left.w-50.h-100.z-minus.d-none.d-lg-block(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}!important` : ``)
+      div.position-absolute.left.w-50.h-100.z-minus.d-none.d-lg-block()
     .align-items-stretch.pl-md-0(class=currentPath && currentPath.includes('/admin') ? ' container-fluid' : " container-md" )
       a.navbar-brand.py-3.pl-sm-3.h-60(href="/" class=course && course.coloraccent ? 'text-white-responsive' : 'text-primary' )
         include ../../assets/media/dci.svg
@@ -23,7 +23,7 @@ mixin navigation
             .dropdown-menu.border-radius-0.shadow-sm.z-0.p-0(aria-labelledby='navbarDropdownMenuLink')
               a.dropdown-item.nav-link.px-2(class= currentPath == "/courses" ? "active" : "" style=currentPath === "/courses" ? "color: white!important;" : "" href='/courses')=__("All courses")
               each course in courses
-                a.dropdown-item.nav-link.px-2(class=course && currentPath.includes(course.slug) && !course.coloraccent ? `bg-primary text-white` : ``, style=course && currentPath.includes(course.slug) && course.coloraccent ? `background-color: ${course.coloraccent}!important` : `` href='/courses/'+ course.slug)=course.headline
+                a.dropdown-item.nav-link.px-2(href='/courses/'+ course.slug)=course.headline
           li.position-relative.nav-item
             a.mx-0.mx-xl-3.mx-lg-2.nav-link.d-flex.align-items-center.h-100.z-1(class=currentPath && currentPath.includes('/events') && !currentPath.includes('/admin') ? "active" : "", href='/events')
               =__("Events")
@@ -59,7 +59,7 @@ mixin navigation
                     a.dropdown-item.nav-link(class= currentPath === ("/pages/" + page.slug) ? "active" : "" href='/pages/'+ page.slug)=page.title
           li.position-relative.nav-item.dropdown-custom.z-foreground
             a.contactlinktext.dropdown-toggle.mx-0.mx-xl-3.mx-lg-2.nav-link.d-flex.align-items-center.h-100( href="#", class=course && course.coloraccent ? `` : `text-white`  aria-haspopup="true" aria-expanded="false"  )=__("Contact")
-            .contactlink(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
+            .contactlink.bg-primary()
             .dropdown-menu.p-0.border-radius-0.shadow-sm(aria-labelledby='navbarDropdownMenuLink')
               a.dropdown-item.nav-link(data-toggle='modal', data-target='#signupFormModal' aria-haspopup="true" aria-expanded="false" href="/signup")=__("Apply Now")
               a.dropdown-item.nav-link(data-toggle='modal', data-target='#contactFormModal' aria-haspopup="true" aria-expanded="false" href="/contact")=__("Contact")

@@ -98,13 +98,13 @@ block content
               p=__("We are an AZAV certified German educational institution. This not only allows DCI to be funded by the Agentur für Arbeit and Jobcenter, but also ensures the continuous quality of our courses. The certification is recognized in Germany and all of Europe.")
               a.pt-3.text-primary(href="/jobcenter" )
                 =__("Learn more")
-                .ml-2.d-inline-block(class=course && course.coloraccent ? `` : `text-primary`, style=course && course.coloraccent ? `color: ${course.coloraccent}` : `` )
+                .ml-2.d-inline-block()
                 include ../assets/icons/arrow.svg
             #affiliate_partner1.card.collapse.d-md-none.bg-white.p-4.shadow-sm
               p=__("We are an AZAV certified German educational institution. This not only allows DCI to be funded by the Agentur für Arbeit and Jobcenter, but also ensures the continuous quality of our courses. The certification is recognized in Germany and all of Europe.")
               a.pt-3.text-primary(href="/jobcenter")
                 =__("Learn more")
-                .ml-2.d-inline-block(class=course && course.coloraccent ? `` : `text-primary`, style=course && course.coloraccent ? `color: ${course.coloraccent}` : `` )
+                .ml-2.d-inline-block()
                 include ../assets/icons/arrow.svg
           .col-md-4.border-width-0.border-md-width-2.border-right.border-left.border-width-2.border-light-blue.mb-4
             
@@ -120,13 +120,13 @@ block content
               p=__("We are collaborating together with AWS to support learners in building new careers in cloud computing. The participants will learn everything they need to know for an entry level cloud career such as cloud operations, site reliability and infrastructure support.")
               a.pt-3.text-primary(href=`/courses/${courses.find(e => e.headline.toLowerCase().includes("aws")).slug}`)
                 =__("Learn more")
-                .ml-2.d-inline-block(class=course && course.coloraccent ? `` : `text-primary`, style=course && course.coloraccent ? `color: ${course.coloraccent}` : `` )
+                .ml-2.d-inline-block()
                 include ../assets/icons/arrow.svg
             #affiliate_partner2.card.collapse.d-md-none.bg-white.p-4.shadow-sm
               p=__("We are collaborating together with AWS to support learners in building new careers in cloud computing. The participants will learn everything they need to know for an entry level cloud career such as cloud operations, site reliability and infrastructure support.")
               a.pt-3.text-primary(href=`/courses/${courses.find(e => e.headline.toLowerCase().includes('aws')).slug}`)
                 =__("Learn more")
-                .ml-2.d-inline-block(class=course && course.coloraccent ? `` : `text-primary`, style=course && course.coloraccent ? `color: ${course.coloraccent}` : `` )
+                .ml-2.d-inline-block()
                 include ../assets/icons/arrow.svg
           .col-md-4.border-width-0.border-md-width-2.border-left.border-width-2.border-light-blue.mb-4
             
@@ -142,13 +142,13 @@ block content
               p=__("We are exclusively working together with Delivery Hero to build the next generation of Software Engineers! The Delivery Hero Tech Academy (DHTA) is based in Berlin and on a mission to increase diversity and inclusion within the tech industry.")
               a.pt-3.text-primary(href="https://careers.deliveryhero.com/global/en/techacademy" target="_blank")
                 =__("Learn more")
-                .ml-2.d-inline-block(class=course && course.coloraccent ? `` : `text-primary`, style=course && course.coloraccent ? `color: ${course.coloraccent}` : `` )
+                .ml-2.d-inline-block()
                 include ../assets/icons/arrow.svg
             #affiliate_partner3.card.collapse.d-md-none.bg-white.p-4.shadow-sm
               p=__("We are exclusively working together with Delivery Hero to build the next generation of Software Engineers! The Delivery Hero Tech Academy (DHTA) is based in Berlin and on a mission to increase diversity and inclusion within the tech industry.")
               a.pt-3.text-primary(href="https://careers.deliveryhero.com/global/en/techacademy" target="_blank")
                 =__("Learn more")
-                .ml-2.d-inline-block(class=course && course.coloraccent ? `` : `text-primary`, style=course && course.coloraccent ? `color: ${course.coloraccent}` : `` )
+                .ml-2.d-inline-block()
                 include ../assets/icons/arrow.svg
 
     section#mission.position-relative.overflow-hidden

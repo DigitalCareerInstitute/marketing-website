@@ -14,7 +14,6 @@
     "bcryptjs": "*",
     "body-parser": "^1.18.3",
     "bootstrap": "^4.4.1",
-    "bootstrap-colorpicker": "^3.2.0",
     "compression": "^1.7.4",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^3.2.0",

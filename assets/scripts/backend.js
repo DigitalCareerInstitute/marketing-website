@@ -3,7 +3,6 @@ import "bootstrap/js/dist/popover";
 import "bootstrap/js/dist/alert";
 import "./settings";
 import "./redirects";
-import "bootstrap-colorpicker";
 import Quill from "quill/dist/quill";
 
 setTimeout(() => {
@@ -63,12 +62,3 @@ if (editorContainer) {
 
 const deleteButtons = document.querySelectorAll("button.btn-danger, button.btn-outline-danger");
 Array.from(deleteButtons).map(button => button.addEventListener("click", (e) => !confirm("are you sure?") && e.preventDefault()))
-$(function () {
-  $('#coloraccent').colorpicker({
-    autoInputFallback: false,
-    format: "rgb"
-  });
-  $('#coloraccent').on('colorpickerChange', function (event) {
-    $('#colorpicker').css('background-color', event.color.toRgbString());
-  });
-});

@@ -12,7 +12,7 @@ mixin successCarousel(stories)
               div.position-relative.h-100.d-flex.flex-column.justify-content-around
                 .px-sm-5.story-item
                   blockquote.blockquote.z-0
-                    .quotesign.z-minus(class=course && course.coloraccent ? `` : `text-primary`, style=course && course.coloraccent ? `color: ${course.coloraccent}` : `` )
+                    .quotesign.z-minus()
                       include ../../assets/icons/om_quote.svg
                     if story.testimonial_content
                       = story.testimonial_content

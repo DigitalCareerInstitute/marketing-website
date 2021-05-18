@@ -5,13 +5,6 @@ mixin courseForm
     +adminButtonGroup(course, 'courses')
     .row
       .col.form-group
-        .mb-3
-          label(for='coloraccent') Color accent
-          .input-group.mr-2
-            .input-group-prepend.w-100
-              label.px-4.input-group-text.text-capitalize.d-block#colorpicker(for='coloraccent' style=`background-color: ${course && course.coloraccent ? course.coloraccent : ``}` ) 
-              input#coloraccent.form-control(name='coloraccent', type='text', placeholder='Color accent', value=course ? course.coloraccent : "", autofocus='')
-      .col.form-group
         label(for="financingoption")="Chancen EG"
         .mb-3
           .custom-control.custom-checkbox

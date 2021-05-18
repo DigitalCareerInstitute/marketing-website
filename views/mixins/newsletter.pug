@@ -2,7 +2,7 @@ mixin newsletter
   #newsletter.container.px-md-5
     .px-md-5.floatings
       .bg-section.box-shadow.p-5.position-relative.overflow-hidden
-        .position-absolute.left.bottom.top.shift-left-percent-skew.w-100(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
+        .position-absolute.left.bottom.top.shift-left-percent-skew.w-100.bg-primary()
         .p-2
           .row
             .col-lg-5.pr-0.pb-5.pb-lg-0
@@ -14,5 +14,5 @@ mixin newsletter
                   div.mb-3
                     label.text-white.font-size-120(for='newsletter_email')=__("Email")
                     input#newsletter_email.subs_input.text-white.border-bottom.border-white(type='email', required, name='email')
-                  button.float-right#nlbtn.btn.btn-outline-primary(type="submit", class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: rgb(${course.coloraccent.replace(/.*\((.*)\)/g, "$1").split(',').map(i => Math.floor(i * 0.8)).join(', ')}` : `` )
+                  button.float-right#nlbtn.btn.btn-outline-primary(type="submit")
                     span=__("Subscribe")
