@@ -192,7 +192,7 @@ body:not(.index) #nav-primary {
   }
 } */
 
-body:not(.admin) .btn {
+body:not(.admin) .btn:not(.btn-lg) {
   padding: 0.375rem 1.5rem;
 }
 
@@ -1702,6 +1702,9 @@ body[class*="pages-"] {
     clip-path: polygon(0px 0px, calc(100% - 50px) 10.86%, 100% 100%, 0% 100%);
     transform: unset;
   }
+}
+.jumbotron {
+  background-color: transparent;
 }
 
 .border-width-0 {
