@@ -124,31 +124,41 @@ mixin singleCourse
               else
                 +translate("Join the tech disruption at DCI and launch your career in tech.")
             a.btn.btn-lg.px-4.mb-5.text-white( data-toggle='modal', data-target='#contactFormModal' )
-      .container.container-fluid-courses.position-relative
+      .position-relative
         if course.features.filter(t => !!t.title).length > 0   
-          section.my-5.pt-5
+          section.my-5.pt-5.container.container-fluid-courses
             h5.font-weight-bold.text-muted.text-uppercase.py-3: +translate("COURSE DETAILS")
             h2: +translate("What more do we offer?")
             p.lead
             +translate("We offer much more than just teaching and hacking, such as")
             = ":"
 
-          .mb-5
-            .my-5
+          .py-5.position-relative
+            .bg-primary-trans.position-absolute.w-20.w-lg-25.h-20.h-lg-25.right-md-0.right.top-0.mb-5.z-minus
+            .bg-primary-trans.position-absolute.w-20.w-lg-25.h-20.h-lg-25.left.bottom-50.mb-5.shift-bottom-percent.z-minus
+            .bg-primary-trans.position-absolute.w-20.w-lg-25.h-20.h-lg-25.right-md-0.right.bottom-0.bottom-md-0.mb-5.z-minus
+            .my-0.container.container-fluid-courses
               each object in course.features
                 if object.icon
-                  .row.mb-5
-                    .col-lg-6.text-center.pl-5.pr-5.pt-5
-                      .px-lg-5
-                        img.img-fluid.h-100(src="/images/"+object.icon, alt=object.title)
-                    .col-lg-6.position-relative
-                      .row.bg-panel.left.third-transparent.z-minus
-                      .p-3.px-md-5.py-5.pb-md-3
-                        .p-md-4.position-relative
-                          h3.text-left=object.title
-                          p.text-left.lead=object.subtitle
+                  .card.p-3.mb-5.shadow-sm
+                    .row.mb-5
+                      .col-3.text-center.px-0.py-3
+                        .pr-3
+                          img.img-fluid.h-100(src="/images/"+object.icon, alt=object.title)
+                      .col-9.position-relative.d-flex.align-items-center
+                        .row.bg-panel.left.third-transparent.z-minus
+                        .p-3.border-left.border-muted
+                          .p-md-4.position-relative
+                            h3.text-left=object.title
+                      .col-12
+                        p.text-left.lead=object.subtitle
 
 
+      section#youtube
+        .container
+          h2=__("DCI Alumni at Work")
+          .videoWrapper
+            iframe(width='100%' src='https://www.youtube.com/embed/oDzyVmmDh5c' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen)
       if course.successStory
         section#section4.w-100.py-5.container
           .row.my-md-5
@@ -178,14 +188,13 @@ mixin singleCourse
 
       section#section3.my-5.container.text-left
         .row
-          .col-md-6.p-5
+          .col-md-6
             .position-absolute.top.left.right.bottom.third-transparent.z-minus     
             //- h5.font-weight-bold.text-muted.text-uppercase.py-3: +translate("Our next Course Start")
             //- each location in course.locations
             //-   span.badge.badge-primary.mr-2=location.name
 
-            h5.font-weight-bold.text-muted.text-uppercase.mb-4: +translate("FURTHER DETAILS")
-            h3: +translate("About this Course")
+            h2.font-weight-bold.text-uppercase.mb-4: +translate("Course Destails & Requirements")
             if course.startInterval
               .my-3
                 strong.mr-2
@@ -223,10 +232,7 @@ mixin singleCourse
                     if index != course.locations.length - 1
                       =", "
                   =" & Online"
-          .col-md-6.position-relative.p-5
-            h5.font-weight-bold.text-muted.text-uppercase.mb-4: +translate("REQUIREMENTS")
-
-            h3: +translate("What do we require of you?")
+          .col-md-6.position-relative
             if course.requiredLanguages
               .my-3
                 strong.mr-2
@@ -255,79 +261,46 @@ mixin singleCourse
       hr.d-md-none
 
       section.my-5.py-5
-        h5.font-weight-bold.text-muted.text-uppercase.py-3: +translate("APPLICATION")
-        h3: +translate("How to apply")
-        .row.container
-          .col-md-4.text-center.p-5
-            .d-flex.align-items-center
-              h2.font-weight-bold=`01`
-              div.text-primary-light
-                include ../../assets/icons/course_personal_data.svg
-            strong.text-muted: +translate("Individual Appointment with DCI")
-            .d-none.d-md-block.position-absolute.right.h-3.shift-down-left.top-50 
-              .rotate-180
-                include ../../assets/icons/back-button-arrow-left.svg
-
-          .col-md-4.text-center.p-5
-            .d-flex.align-items-center
-              h2.font-weight-bold=`02`
-              div.text-primary-light
-                include ../../assets/icons/course_job_interview.svg
-            strong.text-muted: +translate("Appointment with AfA/ JobCenter")
-            .d-none.d-md-block.position-absolute.right.h-3.shift-down-left.top-50 
-              .rotate-180
-                include ../../assets/icons/back-button-arrow-left.svg
-          .col-md-4.text-center.p-5
-            .d-flex.align-items-center
-              h2.font-weight-bold=`03`
-              div.text-primary-light
-                include ../../assets/icons/course_checklist.svg
-            strong.text-muted=course.startYourClass ? course.startYourClass : __("Start your Class")
-
-      if course.financingoption
-        section.text-center
-          .position-relative
-            hr.position-absolute.top.left.right.z-minus.m-2
-            p.d-inline.p-3.bg-white.font-weight-bold: +translate("or")
+        .container
+          h2: +translate("Financing options")
           .row
-            .col-md-6.py-5.py-md-0
-              div.h-100.d-flex.flex-column.justify-content-center.px-5
-                .flex-grow-1.d-flex.flex-column.justify-content-center
-                  include ../../assets/icons/financing_chancen_eg.svg
-                strong.text-muted.d-block.text-center.mt-5.mt-md-0: +translate("Financing with Chancen eG")
-            .col-md-6.py-5.py-md-0
-              div.h-100.d-flex.flex-column.justify-content-center.px-5
-                .px-5.flex-grow-1
-                  include ../../assets/icons/credit_card.svg
-                strong.text-muted.d-block.text-center: +translate("Self-payer")
-          .py-5
-            p.my-3: +translate("Want to learn more about our financing options?")
-            a.btn.btn-lg.px-4.btn-secondary.border-0.text-white(href='/courses/financingoptions')
-            
-      section.pb-200.mt-5.w-100
+            .col-md-4
+              .card.shadow-sm.p-5
+                .d-flex.align-items-center
+                  div.text-primary-light
+                    include ../../assets/icons/course_job_interview.svg
+                  h2.ml-5.w-3.h-3.bg-primary-light.text-white.d-flex.justify-content-center.align-items-center.font-weight-bold=`01`
+                p: +translate("If you are unemployed or in Kurzarbeit, the course can be 100% financed by the Jobcenter or Agentur für Arbeit.")
+
+            if course.financingoption
+              .col-md-4
+                .card.shadow-sm.p-5
+                  .d-flex.align-items-center
+                    .flex-grow-1.d-flex.flex-column.justify-content-center
+                      include ../../assets/icons/financing_chancen_eg.svg
+                    h2.ml-5.w-3.h-3.bg-primary-light.text-white.d-flex.justify-content-center.align-items-center.font-weight-bold=`02`
+                  p: +translate("CHANCEN eG takes over your entire course fee and let’s you pay once you complete the course and find a stable job.")
+              .col-md-4
+                .card.shadow-sm.p-5
+                  .d-flex.align-items-center
+                    .flex-grow-1.d-flex.flex-column.justify-content-center.text-primary-light
+                      include ../../assets/icons/credit_card.svg
+                    h2.ml-5.w-3.h-3.bg-primary-light.text-white.d-flex.justify-content-center.align-items-center.font-weight-bold=`03`
+                  p: +translate("You can also pay your course immediately or in installments.")
+
+            .py-5
+              p.my-3: +translate("Want to learn more about our financing options?")
+              a.btn.btn-lg.px-4.btn-secondary.border-0.text-white(href='/courses/financingoptions')
+              
+      section.pb-200.mt-5.w-100.bg-primary-trans
         .p-5.position-relative.shadow-sm.overflow-hidden.mb-5
           .p-md-5.mb-5
             div.position-absolute.top.left.w-100.h-100.third-transparent
             .row
               .col-md-7.order-12.order-md-0.text-left
-                .mb-3
-                  h3: +translate("What are you waiting for?")
-                  if course.joinTheTechDisruption != ""
-                    span= course.joinTheTechDisruption
-                  else
-                    +translate("Join the tech disruption at DCI and launch your career in tech.")
-                a.btn.btn-lg.px-4.mb-5.text-white( data-toggle='modal', data-target='#signupFormModal'): +translate("Apply Now")
-                .mb-3
-                  h3: +translate("Have questions?")
-                  +translate("Our education counselors are always there to advise you.")
-                a.btn.btn-lg.px-4.mb-5.text-white( data-toggle='modal', data-target='#signupFormModal'): +translate("Contact us")
-                if course.curriculumPdf
-                  .mb-3
-                    h3: +translate("Download Course Overview")
-                  a.btn.btn-lg.px-4.btn-secondary.border-0.text-white(href='#' data-toggle='modal', data-target='#curriculumpopup' data-course=`${course.slug}` ) 
-                    div.h-2.w-2.d-inline-block.mr-2
-                      include ../../assets/icons/download.svg
-                    ="Download"
+                div.my-3.my-y-xl-5.text-center
+                  a.btn.btn-lg.btn-secondary.mx-3.mb-3.w-100.w-md-auto(href='#' data-toggle='modal', data-target='#contactFormModal'): +translate("Apply Now")
+                  a.btn.btn-lg.btn-outline-white.mx-3.mb-3.w-100.w-md-auto(href='#' data-toggle='modal', data-target='#curriculumpopup' data-course=`${course.slug}` ): +translate("Download Course Overview")
 
         if user && user.admin === "true"
           div.py-3
