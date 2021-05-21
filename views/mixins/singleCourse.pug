@@ -115,19 +115,11 @@ mixin singleCourse
                         include ../../assets/icons/arrow.svg
 
             a.btn.btn-lg.btn-secondary.mb-3.w-100.w-md-auto(href='#' data-toggle='modal', data-target='#contactFormModal'): +translate("Apply Now")
-          .bg-light
-            .text-center.py-5
-              h3.pt-lg-5: +translate("Want to know more?")
-              h5.mb-3
-              if course.joinTheTechDisruption
-                = course.joinTheTechDisruption
-              else
-                +translate("Join the tech disruption at DCI and launch your career in tech.")
-            a.btn.btn-lg.px-4.mb-5.text-white( data-toggle='modal', data-target='#contactFormModal' )
       .position-relative
+        .d-md-none.bg-primary-light.w-3.h-3.position-absolute
+        .d-md-none.bg-light-blue.position-absolute.z-minus.w-3.h-3.mt-3.ml-4
         if course.features.filter(t => !!t.title).length > 0   
           section.my-5.pt-5.container.container-fluid-courses
-            h5.font-weight-bold.text-muted.text-uppercase.py-3: +translate("COURSE DETAILS")
             h2: +translate("What more do we offer?")
             p.lead
             +translate("We offer much more than just teaching and hacking, such as")
@@ -141,7 +133,7 @@ mixin singleCourse
               each object in course.features
                 if object.icon
                   .card.p-3.mb-5.shadow-sm
-                    .row.mb-5
+                    .row
                       .col-3.text-center.px-0.py-3
                         .pr-3
                           img.img-fluid.h-100(src="/images/"+object.icon, alt=object.title)
@@ -160,31 +152,7 @@ mixin singleCourse
           .videoWrapper
             iframe(width='100%' src='https://www.youtube.com/embed/oDzyVmmDh5c' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture' allowfullscreen)
       if course.successStory
-        section#section4.w-100.py-5.container
-          .row.my-md-5
-            .col-md-8.offset-md-2.border.pt-4.p-5.rounded
-              .pt-md-4
-                div.py-4.px-3.d-flex.flex-column.justify-content-between.w-100
-                  a(href="/stories/"+course.successStory.slug)
-                    .row
-                      .col-md-9
-                        div.content
-                          blockquote.text-left.text-muted.z-1
-                            .quotesign.z-minus.mt-n3
-                              include ../../assets/icons/om_quote.svg
-                            =course.successStory.excerpt.replace(/"/g, "")
-                          h5.font-weight-bold.text-right.text-dark=course.successStory.title
-                          .text-muted.text-right.d-block.mb-3.mb-md-0=course.successStory.workPosition
-                      .col-md-3.d-flex.flex-column.justify-content-end
-                        +storyImages(course.successStory, " p-0 col-md-9 offset-md-1 col-6 offset-3")
-
-                  if user
-                    form.d-flex.justify-content-between.mt-3(method='POST', action='/admin/stories/delete/'+course.successStory.slug +'?_method=DELETE')
-                      a.btn.btn-outline-primary.mr-2(target="_blank" rel="noopener" href="/stories/"+course.successStory.slug) Show
-                      if user.id === course.successStory.userId || user.admin === "true"
-                        .d-flex.align-items-center
-                          a.btn.btn-outline-primary.mr-2(href="/admin/stories/edit/"+course.successStory.slug) Edit
-                          button.btn.btn-outline-danger(type='submit') Delete
+        +successCarousel([ course.successStory ])
 
       section#section3.my-5.container.text-left
         .row
@@ -260,38 +228,36 @@ mixin singleCourse
                 span.padded-text()=course.other
       hr.d-md-none
 
-      section.my-5.py-5
+      section.my-5.py-5.position-relative
+        .dotted.d-md-none.blue.w-9.h-9.position-absolute.top-30.left.mr-5
+        .dotted.d-md-none.blue.w-9.h-9.position-absolute.right.bottom.ml-2
         .container
           h2: +translate("Financing options")
           .row
-            .col-md-4
-              .card.shadow-sm.p-5
+            .col-md-4.mb-4
+              .card.shadow-sm.p-3.h-100.d-flex.justify-content-between
                 .d-flex.align-items-center
                   div.text-primary-light
                     include ../../assets/icons/course_job_interview.svg
-                  h2.ml-5.w-3.h-3.bg-primary-light.text-white.d-flex.justify-content-center.align-items-center.font-weight-bold=`01`
+                  h2.ml-5.w-3.h-3.bg-primary-light.text-white.d-flex.justify-content-center.align-items-center.font-weight-bold.flex-shrink-0=`01`
                 p: +translate("If you are unemployed or in Kurzarbeit, the course can be 100% financed by the Jobcenter or Agentur für Arbeit.")
 
             if course.financingoption
-              .col-md-4
-                .card.shadow-sm.p-5
+              .col-md-4.mb-4
+                .card.shadow-sm.p-3.h-100.d-flex.justify-content-between
                   .d-flex.align-items-center
                     .flex-grow-1.d-flex.flex-column.justify-content-center
                       include ../../assets/icons/financing_chancen_eg.svg
-                    h2.ml-5.w-3.h-3.bg-primary-light.text-white.d-flex.justify-content-center.align-items-center.font-weight-bold=`02`
+                    h2.ml-5.w-3.h-3.bg-primary-light.text-white.d-flex.justify-content-center.align-items-center.font-weight-bold.flex-shrink-0=`02`
                   p: +translate("CHANCEN eG takes over your entire course fee and let’s you pay once you complete the course and find a stable job.")
-              .col-md-4
-                .card.shadow-sm.p-5
+              .col-md-4.mb-4
+                .card.shadow-sm.p-3.h-100.d-flex.justify-content-between
                   .d-flex.align-items-center
                     .flex-grow-1.d-flex.flex-column.justify-content-center.text-primary-light
                       include ../../assets/icons/credit_card.svg
-                    h2.ml-5.w-3.h-3.bg-primary-light.text-white.d-flex.justify-content-center.align-items-center.font-weight-bold=`03`
+                    h2.ml-5.w-3.h-3.bg-primary-light.text-white.d-flex.justify-content-center.align-items-center.font-weight-bold.flex-shrink-0=`03`
                   p: +translate("You can also pay your course immediately or in installments.")
 
-            .py-5
-              p.my-3: +translate("Want to learn more about our financing options?")
-              a.btn.btn-lg.px-4.btn-secondary.border-0.text-white(href='/courses/financingoptions')
-              
       section.pb-200.mt-5.w-100.bg-primary-trans
         .p-5.position-relative.shadow-sm.overflow-hidden.mb-5
           .p-md-5.mb-5
@@ -300,7 +266,7 @@ mixin singleCourse
               .col-md-7.order-12.order-md-0.text-left
                 div.my-3.my-y-xl-5.text-center
                   a.btn.btn-lg.btn-secondary.mx-3.mb-3.w-100.w-md-auto(href='#' data-toggle='modal', data-target='#contactFormModal'): +translate("Apply Now")
-                  a.btn.btn-lg.btn-outline-white.mx-3.mb-3.w-100.w-md-auto(href='#' data-toggle='modal', data-target='#curriculumpopup' data-course=`${course.slug}` ): +translate("Download Course Overview")
+                  a.btn.btn-lg.btn-outline-primary.mx-3.mb-3.w-100.w-md-auto(href='#' data-toggle='modal', data-target='#curriculumpopup' data-course=`${course.slug}` ): +translate("Download Course Overview")
 
         if user && user.admin === "true"
           div.py-3

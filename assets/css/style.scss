@@ -592,6 +592,9 @@ body[class*="pages-"] {
   height: 1em;
 }
 
+.story-item-shadow {
+  box-shadow: 3px 3px $primary-light;
+}
 .story-item {
   blockquote {
     @extend .blockquote;

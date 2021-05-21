@@ -10,7 +10,7 @@ mixin successCarousel(stories)
             .bg-white.p-4.rounded-sm.h-100
                   
               div.position-relative.h-100.d-flex.flex-column.justify-content-around
-                .px-sm-5.story-item
+                .px-sm-5
                   blockquote.blockquote.z-0
                     .quotesign.z-minus()
                       include ../../assets/icons/om_quote.svg
@@ -27,11 +27,11 @@ mixin successCarousel(stories)
                       if story.workPosition
                         h6.font-weight-bold.text-muted=story.workPosition
                   if isPartner
-                    .text-right.rounded-circle.overflow-hidden.mb-md-0.order-1.order-md-12(style=`box-shadow: 3px 3px ${course && course.coloraccent ? course.coloraccent : `#1f3fc7 !important`};`)
-                      img.mw-150.w-6.h-6.w-md-8.h-md-8(src=`/images/${story.partnerlogo ? story.partnerlogo : story.avatar}` style=`box-shadow: 3px 3px ${course && course.coloraccent ? course.coloraccent : `#1f3fc7 !important`}` class=story.partnerlogo ? "object-fit-contain" : "object-fit-cover")
+                    .text-right.rounded-circle.overflow-hidden.mb-md-0.order-1.order-md-12.story-item-shadow()
+                      img.mw-150.w-8.h-8(src=`/images/${story.partnerlogo ? story.partnerlogo : story.avatar}` class=story.partnerlogo ? "object-fit-contain" : "object-fit-cover")
                   else 
-                    a.text-right.rounded-circle.overflow-hidden.order-1.order-md-12.flex-shrink-0.mb-4.mb-md-0(href=story.partnerlogo ? `#` : `/stories/${story.slug}` style=`box-shadow: 3px 3px ${course && course.coloraccent ? course.coloraccent : `#1f3fc7 !important`};` class=story.partnerlogo ? "" : "stretched-link")
-                      img.mw-150.w-6.h-6.w-md-8.h-md-8(src=`/images/${story.partnerlogo ? story.partnerlogo : story.avatar}` style=`box-shadow: 3px 3px ${course && course.coloraccent ? course.coloraccent : `#1f3fc7 !important`}` class=story.partnerlogo ? "object-fit-contain" : "object-fit-cover")
+                    a.text-right.rounded-circle.overflow-hidden.order-1.order-md-12.flex-shrink-0.mb-4.mb-md-0.story-item-shadow(href=story.partnerlogo ? `#` : `/stories/${story.slug}`  class=story.partnerlogo ? "" : "stretched-link")
+                      img.mw-150.w-8.h-8(src=`/images/${story.partnerlogo ? story.partnerlogo : story.avatar}` class=story.partnerlogo ? "object-fit-contain" : "object-fit-cover")
       if stories.length > 1
         ol.carousel-indicators
           each story, index in stories
