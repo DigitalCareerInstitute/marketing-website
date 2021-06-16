@@ -434,12 +434,20 @@ const findAnswers = (question, model) => {
   //   })
   // }
   // setObserver(document.querySelector('.intersection_observed'))
+  answers.filter(answer => answer.extras && !!answer.extras.freequestion)
+  if (!!answers.filter(answer => answer.extras && !!answer.extras.freequestion).length) {
+
+  }
+
   questionroot.innerHTML = `
     <div class="py-3 mb-3">
       <h2>${question.name}</h2>
-      ${answers.map(answer => {
+      ${!answers.filter(answer => answer.extras && !!answer.extras.freequestion).length ? answers.map(answer => {
     return `<button class="btn btn-primary mr-2 answerbutton" data-question="${question.name}" data-answer="${answer.id}">${answer.name}</button>`
-  }).join('')}
+  }).join('') : `
+        <input class="form-control" name="freequestion" type="text" data-type="question" id="freequestion" />
+        <button class="btn btn-primary mr-2 answerbutton" data-answer="${answers[0].id}" data-question="${question.name}">Next</button>
+      `}
     </div>`
 }
 
@@ -456,7 +464,9 @@ if (questionroot) {
       const startquestion = Object.values(diagramNodes).find(model => model.ports.find(port => port.label === "In").links.length === 0)
       document.addEventListener('click', (e) => {
         if (e.target.classList.contains("answerbutton")) {
-          localStorage.setItem('dcianswers', JSON.stringify({ ...JSON.parse(localStorage.getItem('dcianswers')), [e.target.dataset.question]: e.target.innerText }))
+          const freequestion = document.getElementById('freequestion')
+          localStorage.setItem('dcianswers', JSON.stringify({ ...JSON.parse(localStorage.getItem('dcianswers')), [e.target.dataset.question]: freequestion ? freequestion.value : e.target.innerText }))
+
           const currentAnswer = diagramNodes[e.target.dataset.answer]
           var linkToNext = links[currentAnswer.ports.find(port => port.name === "Out").links[0]]
           if (linkToNext) {
@@ -468,6 +478,7 @@ if (questionroot) {
           }
         }
       })
+      console.log(startquestion);
       findAnswers(startquestion, res.payload.model)
     })
 }
