@@ -1941,7 +1941,7 @@ a[tabindex="0"]:focus {
 
 .bottom-block {
   display: block;
-  @include media-breakpoint-up(md) {
+  @include media-breakpoint-up(lg) {
     display: none;
   }
   &:after {
