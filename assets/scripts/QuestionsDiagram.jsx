@@ -101,11 +101,6 @@ function QuestionsDiagram(props) {
             <label className="form-check-label" htmlFor="freequestion">Free answer</label>
             <input type="checkbox" name="entityanswer" className="form-check-input" style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="entityanswer" onChange={() => setansweravailable(!answeravailable ? "entityanswer" : answeravailable)} />
             <label className="form-check-label" htmlFor="entityanswer">Entityanswer</label>
-            <select name="entityanswer">
-
-              <option value={`locations`}></option>
-              <option value={`locations`}></option>
-            </select>
           </div>
         </div>
       </form>
