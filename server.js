@@ -98,6 +98,7 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 
 app.use(express.static('public'))
 app.use('/assets', express.static(path.join(__dirname, 'node_modules/')))
+app.use('/assets', express.static(path.join(__dirname, 'public/')))
 app.use('/assets', express.static(path.join(__dirname, 'assets/css/')))
 app.use('/assets', express.static(path.join(__dirname, 'assets/icons/')))
 app.use('/fonts', express.static(path.join(__dirname, 'assets/fonts/')))

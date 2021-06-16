@@ -25,6 +25,7 @@
 
 @import "global";
 @import "../../node_modules/bootstrap-colorpicker/src/sass/colorpicker";
+@import '../../node_modules/intl-tel-input/build/css/intlTelInput.css';
 @import "footer";
 @import "typography";
 
@@ -1955,4 +1956,24 @@ a[tabindex="0"]:focus {
     background: white;
     z-index: 1;
   }
+}
+.iti {
+  display: block;
+}
+.iti input, 
+.iti input[type="text"], 
+.iti input[type="tel"] {
+  margin-bottom: 1.5rem !important;
+}
+.iti__flag {
+  background-image: url("../../node_modules/intl-tel-input/build/img/flags.png");
+}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .iti__flag {
+    background-image: url("../../node_modules/intl-tel-input/build/img/flags@2x.png");
+  }
+}
+input[name*="phone"] {
+  padding-left: 45px !important;
 }

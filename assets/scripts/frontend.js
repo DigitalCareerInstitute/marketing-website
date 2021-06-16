@@ -5,6 +5,7 @@ import "bootstrap/js/dist/dropdown";
 import "bootstrap/js/dist/collapse";
 import "bootstrap/js/dist/carousel";
 import "bootstrap/js/dist/alert";
+import intlTelInput from 'intl-tel-input';
 import { alertTimeout } from "./helper.js"
 require("../css/style.scss");
 
@@ -510,6 +511,12 @@ const findAnswers = (questions, model) => {
       </form>
       </div>
     </div>`
+
+  const input = document.querySelector('input[name*="phone"]')
+  console.log('input', input);
+  intlTelInput(input, {
+    initialCountry: "de"
+  });
 }
 
 if (
