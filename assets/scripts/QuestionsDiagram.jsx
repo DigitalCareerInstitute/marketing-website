@@ -4,14 +4,15 @@ import createEngine, {
   DefaultNodeModel
 } from '@projectstorm/react-diagrams';
 import {
-  CanvasWidget
+  CanvasWidget,
+  DeleteItemsAction
 } from '@projectstorm/react-canvas-core';
 import styled from '@emotion/styled';
 import { CustomNodeModel } from './CustomNode/CustomNodeModel';
 import { CustomNodeFactory } from './CustomNode/CustomNodeFactory';
 import { CustomPortFactory } from './CustomNode/CustomPortFactory';
 import { CustomPortModel } from './CustomNode/CustomPortModel';
-const engine = createEngine();
+const engine = createEngine({ registerDefaultDeleteItemsAction: false });
 class StartNodeModel extends DiagramModel {
   serialize() {
     return {
@@ -218,6 +219,7 @@ function QuestionsDiagram() {
   //   model.addAll(node);
   //   engine.setModel(model);
   // }
+  engine.getActionEventBus().registerAction(new DeleteItemsAction({ keyCodes: [8], modifiers: { shiftKey: true } }));
   return (
     <div className="h-100 d-flex flex-column">
       <div>
@@ -348,7 +350,7 @@ function QuestionsDiagram() {
         </div>
       )}
       <CanvasWrapper>
-        <CanvasWidget keyDown={e => console.log('AAAA', e)} id='canvas' engine={engine} />
+        <CanvasWidget id='canvas' engine={engine} />
       </CanvasWrapper>
     </div>
   );
