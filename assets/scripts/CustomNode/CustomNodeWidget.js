@@ -68,7 +68,13 @@ export class CustomNodeWidget extends DefaultNodeWidget {
 				background={this.props.node.getOptions().color}> <Title>
 					<TitleName>{this.props.node.getOptions().name}</TitleName>
 				</Title>
-				<TitleName>Key: {this.props.node.options.extras.questionidentifier}</TitleName>
+				{this.props.node.options.extras.customType === "question" && (
+					<TitleName>Key: {this.props.node.options.extras.questionidentifier}</TitleName>
+				)}
+				{this.props.node.options.extras.customType === "answer" && this.props.node.options.extras.dropdown && (
+
+					<TitleName>Type: dropdown</TitleName>
+				)}
 				<Ports>
 					<PortsContainer>{_.map(this.props.node.getInPorts(), this.generatePort)}</PortsContainer>
 					<PortsContainer>{_.map(this.props.node.getOutPorts(), this.generatePort)}</PortsContainer>

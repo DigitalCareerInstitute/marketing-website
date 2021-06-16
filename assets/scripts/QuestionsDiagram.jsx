@@ -46,9 +46,10 @@ const CanvasWrapper = styled.div`
     width: 100vw;
   }
 `
-
 function QuestionsDiagram() {
   let [loading, setloading] = useState(true)
+  let [form, setForm] = useState({})
+  let [button, setbutton] = useState('Add')
   let [answeravailable, setansweravailable] = useState(true)
   let [error, seterror] = useState(undefined)
   useEffect(() => {
@@ -60,6 +61,15 @@ function QuestionsDiagram() {
       .then(res => {
         if (res.payload.model) {
           model.deserializeModel(res.payload.model, engine);
+          Object.values(model.activeNodeLayer.models).forEach((item) => {
+            item.registerListener({
+              eventDidFire: (e) => {
+                e.stopPropagation();
+                e.isSelected ? setbutton('update') : setbutton('add')
+                setForm({ ...form, "question": e.isSelected && item.options.extras.customType !== "answer" ? item.options.name : "", 'questionidentifier': e.isSelected ? item.options.extras.questionidentifier : "", "answer": e.isSelected && item.options.extras.customType === "answer" ? item.options.name : "" })
+              }
+            });
+          });
           engine.setModel(model);
         }
       }).catch(err => {
@@ -71,37 +81,49 @@ function QuestionsDiagram() {
 
   const addQuestion = (e) => {
     e.preventDefault()
-    const node = new CustomNodeModel({
-      name: `${e.target.elements.addquestion.value}`,
-      color: e.target.elements.addquestion.dataset.color,
-      extras: {
-        customType: e.target.elements.addquestion.dataset.type,
-        questionidentifier: e.target.elements.addquestionidentifier.value
-      }
-    });
-    node.setPosition(engine.canvas.offsetWidth / 2, engine.canvas.offsetHeight / 2);
-
-    let port1 = node.addInPort('In');
-    let port2 = node.addOutPort('Out');
-
+    const selectedNodes = Object.values(engine.model.activeNodeLayer.models).filter(i => i.options.selected)
+    let node
+    if (selectedNodes.length === 1) {
+      node = selectedNodes[0]
+      node.options.name = form['question']
+      node.options.extras.questionidentifier = form['questionidentifier']
+    } else {
+      node = new CustomNodeModel({
+        name: `${e.target.elements.addquestion.value}`,
+        color: e.target.elements.addquestion.dataset.color,
+        extras: {
+          customType: e.target.elements.addquestion.dataset.type,
+          questionidentifier: e.target.elements.addquestionidentifier.value
+        }
+      });
+      node.setPosition(engine.canvas.offsetWidth / 2, engine.canvas.offsetHeight / 2);
+      node.addInPort('In');
+      node.addOutPort('Out');
+    }
     model.addAll(node);
     engine.setModel(model);
   }
   const addAnswer = (e) => {
     e.preventDefault()
-    const node = new DefaultNodeModel({
-      name: !!e.target.elements.freeanswer && !!e.target.elements.freeanswer.checked ? "Freeanswer" : e.target.elements.input.value,
-      color: !!e.target.elements.freeanswer && !!e.target.elements.freeanswer.checked ? "rgb(0, 128, 229)" : e.target.elements.input.dataset.color,
-      extras: {
-        customType: e.target.elements.input.dataset.type,
-        freeanswer: !!e.target.elements.freeanswer && !!e.target.elements.freeanswer.checked
-      }
-    });
-    node.setPosition(engine.canvas.offsetWidth / 2, engine.canvas.offsetHeight / 2);
-
-    let port1 = node.addInPort('In');
-    let port2 = node.addOutPort('Out');
-
+    const selectedNodes = Object.values(engine.model.activeNodeLayer.models).filter(i => i.options.selected)
+    let node
+    if (selectedNodes.length === 1) {
+      node = selectedNodes[0]
+      node.options.name = form['answer']
+    } else {
+      node = new CustomNodeModel({
+        name: !!e.target.elements.freeanswer && !!e.target.elements.freeanswer.checked ? "Freeanswer" : e.target.elements.answer.value,
+        color: !!e.target.elements.freeanswer && !!e.target.elements.freeanswer.checked ? "rgb(0, 128, 229)" : e.target.elements.answer.dataset.color,
+        extras: {
+          customType: e.target.elements.answer.dataset.type,
+          freeanswer: !!e.target.elements.freeanswer && !!e.target.elements.freeanswer.checked,
+          dropdown: !!e.target.elements.dropdown && !!e.target.elements.dropdown.checked
+        }
+      });
+      node.setPosition(engine.canvas.offsetWidth / 2, engine.canvas.offsetHeight / 2);
+      node.addInPort('In');
+      node.addOutPort('Out');
+    }
     model.addAll(node);
     engine.setModel(model);
   }
@@ -165,23 +187,46 @@ function QuestionsDiagram() {
         <form onSubmit={addQuestion}>
           <div className="form-group">
             <label htmlFor="addquestion">Add Question</label>
-            <input className="form-control" name="input" type="text" data-type="question" data-color="rgb(0, 128, 129)" style={{ borderColor: "rgb(0, 128, 129)", borderStyle: "solid" }} id="addquestion" required />
+            <input className="form-control" name="question" type="text" value={form['question']}
+              onChange={(e) => {
+                e.stopPropagation();
+                setForm({ ...form, [e.target.name]: e.target.value })
+              }} data-type="question" data-color="rgb(0, 128, 129)" style={{ borderColor: "rgb(0, 128, 129)", borderStyle: "solid" }} id="addquestion" required />
             <label htmlFor="addquestionidentifier">Questionidentifier</label>
-            <input className="form-control" name="input" type="text" data-type="questionidentifier" data-color="rgb(0, 128, 129)" style={{ borderColor: "rgb(0, 128, 129)", borderStyle: "solid" }} id="addquestionidentifier" required />
+            <input className="form-control" name="questionidentifier" type="text" value={form['questionidentifier']}
+              onChange={(e) => {
+                e.stopPropagation();
+                setForm({ ...form, [e.target.name]: e.target.value })
+              }} data-type="questionidentifier" data-color="rgb(0, 128, 129)" style={{ borderColor: "rgb(0, 128, 129)", borderStyle: "solid" }} id="addquestionidentifier" required />
           </div>
-          <button className="btn btn-primary" type="submit">Add</button>
+          <button className="btn btn-primary" type="submit">{button}</button>
         </form>
 
         <label htmlFor="addanswer">Add Answer</label>
         <form className="form-inline" onSubmit={addAnswer}>
           <div className="form-group w-100">
-            <input className="form-control w-100" name="input" type="text" data-type="answer" data-color="rgb(255, 204, 1)" style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="addanswer" disabled={!answeravailable} />
-            <button className="btn btn-primary" type="submit">Add</button>
+            <input className="form-control w-100" name="answer" value={form['answer']}
+              onChange={(e) => {
+                e.stopPropagation();
+                setForm({ ...form, [e.target.name]: e.target.value })
+              }} type="text" data-type="answer" data-color="rgb(255, 204, 1)" style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="addanswer" disabled={!answeravailable} />
+            <button className="btn btn-primary" type="submit">{button}</button>
           </div>
           <div className="form-group w-100">
             <div className="form-group form-check  mb-3">
-              <input type="checkbox" name="freeanswer" className="form-check-input" style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="freeanswer" onChange={() => setansweravailable(!answeravailable)} />
+              <input type="checkbox" name="freeanswer" className="form-check-input"
+                onChange={(e) => {
+                  e.stopPropagation();
+                  setForm({ ...form, [e.target.name]: e.target.value })
+                }} style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="freeanswer" onChange={() => setansweravailable(!answeravailable)} />
               <label className="form-check-label" htmlFor="freeanswer">Free answer</label>
+              <input type="checkbox" name="dropdown" className="form-check-input"
+                onChange={(e) => {
+                  e.stopPropagation();
+                  setForm({ ...form, [e.target.name]: e.target.value })
+                }} style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="dropdown" />
+              <label className="form-check-label" htmlFor="dropdown">Is dropdown</label>
+              <button className="btn btn-secondary badge ml-2" type="button" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="comma seperated list build the dropdown" data-original-title="" title=""> ? </button>
             </div>
           </div>
         </form>
@@ -198,13 +243,13 @@ function QuestionsDiagram() {
           }}>{loading ? "Loading" : "Save"}</button>
       </div>
       {error && (
-        <div clase="flash m-0 mr-3 alert fade show alert-danger ">
+        <div claseName="flash m-0 mr-3 alert fade show alert-danger ">
           Error: {error}
           <button className="close ml-3" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
         </div>
       )}
       <CanvasWrapper>
-        <CanvasWidget id='canvas' engine={engine} />
+        <CanvasWidget keyDown={e => console.log('AAAA', e)} id='canvas' engine={engine} />
       </CanvasWrapper>
     </div>
   );
