@@ -11,7 +11,7 @@
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^10.0.27",
     "@fortawesome/fontawesome-free": "^5.12.0",
-    "@projectstorm/react-diagrams": "^6.2.0",
+    "@projectstorm/react-diagrams": "^6.5.2",
     "autoprefixer": "^9.7.4",
     "babel-loader": "^8.0.4",
     "babel-preset-es2015": "^6.24.1",

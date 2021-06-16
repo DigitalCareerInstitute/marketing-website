@@ -82,6 +82,16 @@ $theme-colors: (
     box-shadow: 0px 25px 35px -10px rgba(255, 110, 24, 0.45);
   }
 }
+.btn-outline-secondary {
+  @include btn-color(white, $secondary, $secondary);
+  transition: all $transition ease;
+  &:hover,
+  &:focus,
+  &:active,
+  &.active {
+    // box-shadow: 0px 25px 35px -10px rgba(255, 110, 24, 0.45);
+  }
+}
 .bg-section {
   background-color: $bluetrans;
 }
