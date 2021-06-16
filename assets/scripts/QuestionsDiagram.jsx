@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import createEngine, {
   DiagramModel,
   DefaultNodeModel
@@ -51,9 +51,13 @@ const questioncolor = "rgb(0, 128, 129)"
 function QuestionsDiagram() {
   let [loading, setloading] = useState(true)
   let [form, setForm] = useState({})
+  let formRef = useRef(form)
   let [button, setbutton] = useState('Add')
   let [answeravailable, setansweravailable] = useState(true)
   let [error, seterror] = useState(undefined)
+  useEffect(() => {
+    formRef.current = form
+  }, [form])
   useEffect(() => {
     fetch(`/admin/questions/fetch`, {
       headers: {
@@ -68,7 +72,7 @@ function QuestionsDiagram() {
               eventDidFire: (e) => {
                 e.stopPropagation();
                 e.isSelected ? setbutton('update') : setbutton('add')
-                setTimeout(() => {
+                if (e.isSelected) {
                   const newForm = {
                     "question": e.isSelected && item.options.extras.customType === "question" ? item.options.name : "",
                     'questionidentifier': e.isSelected ? item.options.extras.questionidentifier : "",
@@ -80,7 +84,13 @@ function QuestionsDiagram() {
                     "dropdown": e.isSelected ? item.options.extras.dropdown : "",
                   }
                   setForm({ ...form, ...newForm })
-                }, 100);
+                } else {
+                  let formClone = { ...formRef.current }
+                  Object.keys(formClone).map(a => {
+                    formClone = { ...formClone, [a]: "" }
+                  })
+                  setForm(formClone)
+                }
               }
             });
           });
