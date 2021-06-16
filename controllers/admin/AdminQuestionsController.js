@@ -14,7 +14,7 @@ module.exports.renderQuestions = async (req, res) => {
 module.exports.getQuestions = async (req, res) => {
   try {
     let questions = await Question.findOne({})
-    return jsonResponseObject(res, questions.model)
+    return jsonResponseObject(res, questions)
   } catch (err) {
     console.log(err);
   }
