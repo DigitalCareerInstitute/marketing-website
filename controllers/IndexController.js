@@ -84,7 +84,7 @@ module.exports.contactLocations = async (req, res) => {
 };
 module.exports.contact = async (req, res, next) => {
   try {
-    const { firstname, lastname, age, age_years, language_german, language_english, email, body, phone, locations, companytour, signup_form, TermsofService, jobcenter, unemployed } = req.body
+    const { firstname, lastname, age, age_years, language_german, language_english, email, body, phone, locations, companytour, signup_form, TermsofService, afa_jc_registered_, form_are_you_currently_unemployed } = req.body
     if (age) {
       console.log('Bot stepped into honeypot!')
       if (req.headers['content-type'] === 'application/json') {
@@ -117,8 +117,8 @@ module.exports.contact = async (req, res, next) => {
     contact.phone = phone.replace(/[a-z]/g, '')
     contact.track = req.headers.referer
     contact.body = body
-    contact.jobcenter = !!jobcenter
-    contact.unemployed = unemployed
+    contact.jobcenter = afa_jc_registered_
+    contact.unemployed = form_are_you_currently_unemployed
     if (req.session.utmParams) {
       contact.utm_params = req.session.utmParams
     }
@@ -148,10 +148,10 @@ module.exports.contact = async (req, res, next) => {
     </tr>
     ${!companytour && `<tr>
       <td>Is registered at Jobcenter:</td>
-      <td>${!!jobcenter}</td>
+      <td>${afa_jc_registered_}</td>
     </tr><tr>
       <td>Is unemployed:</td>
-      <td>${unemployed}</td>
+      <td>${form_are_you_currently_unemployed}</td>
     </tr>`}
     <tr>
       <td>Content: </td>
@@ -204,11 +204,11 @@ module.exports.contact = async (req, res, next) => {
       if (location) {
         properties.push({ property: 'state_de_', value: location.name })
       }
-      if (jobcenter !== undefined) {
-        properties.push({ property: 'afa_jc_registered_', value: !jobcenter ? "No" : "Yes" })
+      if (afa_jc_registered_ !== undefined) {
+        properties.push({ property: 'afa_jc_registered_', value: afa_jc_registered_ })
       }
-      if (unemployed) {
-        properties.push({ property: 'form_are_you_currently_unemployed', value: unemployed })
+      if (form_are_you_currently_unemployed) {
+        properties.push({ property: 'form_are_you_currently_unemployed', value: form_are_you_currently_unemployed })
       }
       if (age_years) {
         properties.push({ property: 'age', value: age_years })

@@ -9,7 +9,7 @@ var ContactSchema = new Schema({
   phone: String,
   track: String,
   body: String,
-  jobcenter: Boolean,
+  jobcenter: String,
   unemployed: String,
   utm_params: Object,
   updatedAt: {
