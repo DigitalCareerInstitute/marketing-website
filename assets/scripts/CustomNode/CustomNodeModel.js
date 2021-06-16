@@ -3,10 +3,8 @@ export class CustomNodeModel extends DefaultNodeModel {
     constructor(props) {
         super({
             name: props.name,
-            extras: {
-                questionidentifier: props.extras.questionidentifier,
-                customType: props.extras.customType,
-            },
+            color: props.color,
+            extras: props.extras,
             type: 'custom_question_node'
         });
     }

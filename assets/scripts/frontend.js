@@ -445,8 +445,10 @@ const findAnswers = (question, model) => {
   // if (!!answers.filter(answer => answer.extras && !!answer.extras.freeanswer).length) {
 
   // }
-  const buttons = answers.filter(answer => !answer.extras.freeanswer)
-  const freeanswers = answers.filter(answer => answer.extras.freeanswer)
+  const buttons = answers.filter(answer => !answer.extras.freeanswer && !answer.extras.dropdown)
+  const freeanswers = answers.filter(answer => answer.extras.freeanswer && !answer.extras.dropdown)
+  const dropdowns = answers.filter(answer => answer.extras.dropdown)
+  console.log('dropdowns', dropdowns);
   questionroot.innerHTML = `
     <div class="w-100">
       <div id="popup" class="py-5 d-flex flex-column justify-content-between w-300px w-100 mt-n5 rounded-right-bottom rounded-bottom-left px-5">
@@ -461,6 +463,10 @@ const findAnswers = (question, model) => {
             return `<input class="form-control mb-4" name="freeanswer" type="text" data-type="question" placeholder="Enter custom ${question.extras.questionidentifier}" type="text" id="freeanswer" />
             <button class="btn btn-lg w-100 btn-outline-secondary mb-4  mr-2 answerbutton" data-answer="${answers[0].id}" data-question="${question.extras.questionidentifier}">Next</button>`
           }).join('')}
+          ${dropdowns.length > 0 && `<select class='form-select mb-3' id="dropdown">` + dropdowns.map(answer => {
+            return answer.name.split(',').map(dropdownItem => `<option class="form-control mb-4" name="button" type="text" data-type="question" placeholder="Enter custom ${question.extras.questionidentifier}" type="text" > ${dropdownItem}`).join('')
+          }).join('')
+    + `</select><button class="btn btn-lg w-100 btn-outline-secondary mb-4  mr-2 answerbutton" data-answer="${answers[0].id}" data-question="${question.extras.questionidentifier}">Next</button>`}
         </div>
       </div>
     </div>`
@@ -480,7 +486,8 @@ if (questionroot && !localStorage.getItem('dcianswers')) {
       document.addEventListener('click', (e) => {
         if (e.target.classList.contains("answerbutton")) {
           const freeanswer = document.getElementById('freeanswer')
-          localStorage.setItem('dcianswers', JSON.stringify({ ...JSON.parse(localStorage.getItem('dcianswers')), [e.target.dataset.question]: freeanswer.value !== '' ? freeanswer.value : e.target.innerText }))
+          const dropdown = document.getElementById('dropdown')
+          localStorage.setItem('dcianswers', JSON.stringify({ ...JSON.parse(localStorage.getItem('dcianswers')), [e.target.dataset.question]: dropdown ? dropdown.selectedOptions[0].innerText : freeanswer && freeanswer.value !== '' ? freeanswer.value : e.target.innerText }))
 
           const currentAnswer = diagramNodes[e.target.dataset.answer]
           var linkToNext = links[currentAnswer.ports.find(port => port.name === "Out").links[0]]
@@ -506,7 +513,6 @@ if (questionroot && !localStorage.getItem('dcianswers')) {
           }
         }
       })
-      console.log(startquestion);
       findAnswers(startquestion, res.payload.model)
     })
 }
