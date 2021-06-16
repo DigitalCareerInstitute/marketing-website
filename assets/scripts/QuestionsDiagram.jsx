@@ -74,7 +74,9 @@ function QuestionsDiagram() {
                     'questiontranslation': e.isSelected ? item.options.extras.questiontranslation : "",
                     "answer": e.isSelected && item.options.extras.customType === "answer" ? item.options.name : "",
                     "answeridentifier": e.isSelected ? item.options.extras.answeridentifier : "",
-                    "answertranslation": e.isSelected ? item.options.extras.answertranslation : ""
+                    "answertranslation": e.isSelected ? item.options.extras.answertranslation : "",
+                    "freeanswer": e.isSelected ? item.options.extras.freeanswer : "",
+                    "dropdown": e.isSelected ? item.options.extras.dropdown : "",
                   }
                   setForm({ ...form, ...newForm })
                 }, 100);
@@ -272,19 +274,19 @@ function QuestionsDiagram() {
           <div className=" row">
             <div className="col-md-4">
               <label htmlFor="addanswer">Add Answer</label>
-              <input className="form-control w-100" name="answer" value={form['answer']}
+              <input className="form-control w-99" name="answer" value={form['answer']}
                 onChange={(e) => {
                   e.stopPropagation();
                   setForm({ ...form, [e.target.name]: e.target.value })
-                }} type="text" data-type="answer" data-color="rgb(255, 204, 1)" style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="addanswer" />
+                }} type="text" data-type="answer" data-color="rgb(256, 204, 1)" style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="addanswer" />
             </div>
-            <div className="col-md-4">
-              <label htmlFor="answertranslation">Questitranslation</label>
-              <input className="form-control w-100" name="answertranslation" type="text" value={form['answertranslation']}
+            <div className="col-md-3">
+              <label htmlFor="answertranslation">Answertranslation</label>
+              <input className="form-control w-99" name="answertranslation" type="text" value={form['answertranslation']}
                 onChange={(e) => {
                   e.stopPropagation();
                   setForm({ ...form, [e.target.name]: e.target.value })
-                }} data-type="answertranslation" data-color={questioncolor} style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="answertranslation" required />
+                }} data-type="answertranslation" data-color={questioncolor} style={{ borderColor: "rgb(256, 204, 1)", borderStyle: "solid" }} id="answertranslation" required />
             </div>
             <div className="col-md-4">
               <div className='d-flex align-items-end'>
@@ -302,21 +304,28 @@ function QuestionsDiagram() {
           </div>
           <div className="d-flex w-100 mt-2">
             <div className="form-check d-flex align-items-center mr-3 mb-3">
-              <input type="checkbox" name="freeanswer" className="form-check-input"
+              <input
+                checked={form['freeanswer']}
+                name='freeanswer'
+                type="checkbox" name="freeanswer" className="form-check-input"
                 onChange={(e) => {
                   e.stopPropagation();
-                  setForm({ ...form, [e.target.name]: e.target.value })
+
+                  setForm({ ...form, [e.target.name]: e.target.checked })
                 }} style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="freeanswer" />
               <label className="form-check-label" htmlFor="freeanswer">Free answer</label>
             </div>
             <div className="form-group form-check d-flex align-items-center mr-3 mb-3">
-              <input type="checkbox" name="dropdown" className="form-check-input"
+              <input
+                checked={form['dropdown']}
+                name='dropdown'
+                type="checkbox" name="dropdown" className="form-check-input"
                 onChange={(e) => {
                   e.stopPropagation();
-                  setForm({ ...form, [e.target.name]: e.target.value })
+                  setForm({ ...form, [e.target.name]: e.target.checked })
                 }} style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="dropdown" />
               <label className="form-check-label" htmlFor="dropdown">Is dropdown</label>
-              <button className="btn btn-secondary badge ml-2" type="button" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="If checked, use a comma seperated list to define the list items: 'Option 1, Option 2, Option 3'" data-original-title="" title=""> ? </button>
+              <button className="btn btn-secondary badge ml-2" type="button" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="If checked, the name field gets more complex. Use a label followed by semicolon and then a comma seperated list to define the dropdown and its items. Eg: 'Whats your language level: A1, A2, B1, B2' - or: 'State: Berlin, Bayern'" data-original-title="" title=""> ? </button>
             </div>
           </div>
         </form>
