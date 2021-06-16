@@ -446,18 +446,24 @@ if (questionroot) {
   }).then(res => res.json())
     .then(res => {
       // console.log('res', res);
-      const diagramNodes = res.payload.layers.find(layer => layer.type === "diagram-nodes").models
-      const links = res.payload.layers.find(layer => layer.type === "diagram-links").models
+      const diagramNodes = res.payload.model.layers.find(layer => layer.type === "diagram-nodes").models
+      const links = res.payload.model.layers.find(layer => layer.type === "diagram-links").models
       const startquestion = Object.values(diagramNodes).find(model => model.ports.find(port => port.label === "In").links.length === 0)
       document.addEventListener('click', (e) => {
         if (e.target.classList.contains("answerbutton")) {
           const currentAnswer = diagramNodes[e.target.dataset.answer]
           var linkToNext = links[currentAnswer.ports.find(port => port.name === "Out").links[0]]
-          const nextQuestion = Object.values(diagramNodes).find(model => model.id === linkToNext[linkToNext.target === currentAnswer.id ? "source" : "target"])
-          findAnswers(nextQuestion, res.payload)
-          localStorage.setItem('answers', JSON.stringify({ ...JSON.parse(localStorage.getItem('answers')), [e.target.dataset.question]: e.target.innerText }))
+          if (linkToNext) {
+            const nextQuestion = Object.values(diagramNodes).find(model => model.id === linkToNext[linkToNext.target === currentAnswer.id ? "source" : "target"])
+            findAnswers(nextQuestion, res.payload.model)
+            localStorage.setItem('answers', JSON.stringify({ ...JSON.parse(localStorage.getItem('answers')), [e.target.dataset.question]: e.target.innerText }))
+          } else {
+            // TODO post to hubspot
+
+            questionroot.innerHTML = `<h2>Thanks</h2>`
+          }
         }
       })
-      findAnswers(startquestion, res.payload)
+      findAnswers(startquestion, res.payload.model)
     })
 }
