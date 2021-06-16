@@ -490,7 +490,7 @@ const findAnswers = (questions, model) => {
           return `<div class="${freeanswers.length === 1 ? "col-md-12" : "col-md-6"}"><label for="freeanswer_${answer.extras.answeridentifier}" >${isGerman && answer.extras.answertranslation ? answer.extras.answertranslation : answer.name}</label>
           <input class="form-control mb-4 freeanswer dynamicinput" name="${answer.extras.answeridentifier}" type="text" data-type="question" type="text"  id="freeanswer_${answer.extras.answeridentifier}" required/> </div>`
         }).join('') + "</div>" : ""}
-        ${dropdowns.length > 0 ? dropdowns.map(answer => (`<label for="dropdown_${answer.extras.answeridentifier}" >${isGerman && answer.extras.answertranslation ? answer.extras.answertranslation.split(":")[0] : answer.name.split(":")[0]}</label><select id="dropdown_${answer.extras.answeridentifier}" name="${answer.extras.answeridentifier}" class='form-select mb-3' class="dynamicinput dropdown"><option class="form-control mb-4" name="button" type="text" data-type="question" placeholder="${isGerman ? "Auswählen..." : "Select..."}" type="text" >${isGerman ? "Auswählen..." : "Select..."}</option>` +
+        ${dropdowns.length > 0 ? dropdowns.map(answer => (`<label for="dropdown_${answer.extras.answeridentifier}" >${isGerman && answer.extras.answertranslation ? answer.extras.answertranslation.split(":")[0] : answer.name.split(":")[0]}</label><select id="dropdown_${answer.extras.answeridentifier}" name="${answer.extras.answeridentifier}" class='form-select mb-3' class="dynamicinput dropdown" required="required"><option class="form-control mb-4" name="button" type="text" data-type="question" placeholder="${isGerman ? "Auswählen..." : "Select..."}" type="text" value="" disabled selected>${isGerman ? "Auswählen..." : "Select..."}</option>` +
           (answer.extras.answertranslation ? answer.extras.answertranslation : answer.name).split(":").reverse()[0].split(',').map(dropdownItem => `<option class="form-control mb-4" name="button" type="text" data-type="question" placeholder="${answer.extras.answeridentifier}" type="text" > ${dropdownItem}`).join('')
           + `</select>`)).join("") : ""}
         ${buttons.map(answer => {
@@ -553,7 +553,11 @@ const jumpToNextQuestion = (e, diagramNodes, model) => {
     findAnswers(nextQuestions, model)
   } else {
     let payload = JSON.parse(localStorage.getItem('dcianswers'))
-    fetch(`/submitanswers`, {
+    if (payload.age) {
+      payload.age_years = payload.age
+      delete payload.age
+    }
+    fetch(`/contact`, {
       method: "POST",
       headers: {
         "content-type": "application/json"
