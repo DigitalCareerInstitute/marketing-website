@@ -431,11 +431,12 @@ const findAnswers = (question, model) => {
   // }
   // setObserver(document.querySelector('.intersection_observed'))
   questionroot.innerHTML = `
-    <h2>${question.name}</h2>
-    ${answers.map(answer => {
-    return `<button class="btn btn-primary mr-2 answerbutton" data-question="${question.id}" data-answer="${answer.id}">${answer.name}</button>`
-  }).join('')}
-  `
+    <div class="py-3 mb-3">
+      <h2>${question.name}</h2>
+      ${answers.map(answer => {
+        return `<button class="btn btn-primary mr-2 answerbutton" data-question="${question.id}" data-answer="${answer.id}">${answer.name}</button>`
+      }).join('')}
+    </div>`
 }
 
 if (questionroot) {
