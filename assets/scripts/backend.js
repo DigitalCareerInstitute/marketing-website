@@ -3,8 +3,10 @@ import 'bootstrap/js/dist/popover';
 import 'bootstrap/js/dist/alert';
 import './settings';
 import './redirects';
+import './questions';
 import 'bootstrap-colorpicker';
 import Quill from 'quill/dist/quill';
+
 
 setTimeout(() => {
   $('.alert').alert('close');
