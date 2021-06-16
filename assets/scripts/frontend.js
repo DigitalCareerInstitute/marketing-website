@@ -458,7 +458,7 @@ const findAnswers = (question, model) => {
             return `<button class="btn btn-lg mb-4 btn-white blue-light-shadow answerbutton w-100 w-md-auto mb-3 mr-3" data-question="${question.extras.questionidentifier}" data-answer="${answer.id}">${answer.name}</button>`
           }).join('')}
           ${freeanswers.map(answer => {
-            return `<input class="form-control mb-4" name="freeanswer" type="text" data-type="question" id="freeanswer" />
+            return `<input class="form-control mb-4" name="freeanswer" type="text" data-type="question" placeholder="Enter custom ${question.extras.questionidentifier}" type="text" id="freeanswer" />
             <button class="btn btn-lg w-100 btn-outline-secondary mb-4  mr-2 answerbutton" data-answer="${answers[0].id}" data-question="${question.extras.questionidentifier}">Next</button>`
           }).join('')}
         </div>
