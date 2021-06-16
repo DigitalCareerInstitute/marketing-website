@@ -443,7 +443,6 @@ const canTrigger = (questions, model) => {
   const ifThereAreNotJustButtons = questions.filter(q => {
     const allAnswers = getAnswers(q, model)
     const buttons = allAnswers.filter(answer => answer.extras.freeanswer || answer.extras.dropdown)
-    console.log('allAnswers', allAnswers);
     return buttons.length > 0
   })
   return ifThereAreNotJustButtons.length === 0
@@ -498,7 +497,8 @@ const findAnswers = (questions, model) => {
 
         `
   }).join('')}
-      ${canTrigger(questions, model) ? `` : `<button class="btn btn-lg w-100 btn-outline-secondary mb-4  mr-2 answerbutton" data-nextquestions="${nextQuestions.map(a => a.id)}" type="submit">Next</button>`}
+  ${nextQuestions.length === 0 ? `<p class="dataPrivacyLink"><label class="checkbox TermsofService text-muted">I have read and agree to the:<input type="checkbox" name="TermsofService" value="true" required="required"><span class="checkmark"></span></label><a class="ml-1" data-toggle="modal" data-target="#dataPrivacy">Data Privacy</a></p>` : ``}
+      ${canTrigger(questions, model) ? `` : `<button class="btn btn-lg w-100 btn-outline-secondary mb-4  mr-2 answerbutton" data-nextquestions="${nextQuestions.map(a => a.id)}" type="submit">${nextQuestions.length === 0 ? `Submit` : `Next`}</button>`}
       </form>
       </div>
     </div>`
