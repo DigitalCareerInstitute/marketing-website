@@ -138,7 +138,7 @@ function QuestionsDiagram() {
           onClick={() => {
             setloading(true)
             let itemMap = {};
-            model.getSelectedEntities().map(item => {
+            model.getSelectedEntities().filter(m => m.parent.options.type === "diagram-nodes").map(item => {
               let newItem = item.clone(itemMap)
               model.addNode(newItem)
               newItem.setPosition(newItem.getX() + 20, newItem.getY() + 20)
