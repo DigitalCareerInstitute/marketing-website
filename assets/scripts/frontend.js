@@ -517,6 +517,7 @@ const findAnswers = (questions, model) => {
   intlTelInput(input, {
     initialCountry: "de"
   });
+  _nb.fields.registerListener(document.querySelector('input[type="email"]'), true);
 }
 
 if (
