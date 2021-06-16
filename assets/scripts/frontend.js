@@ -445,7 +445,8 @@ const findAnswers = (question, model) => {
   // if (!!answers.filter(answer => answer.extras && !!answer.extras.freeanswer).length) {
 
   // }
-
+  const buttons = answers.filter(answer => !answer.extras.freeanswer)
+  const freeanswers = answers.filter(answer => answer.extras.freeanswer)
   questionroot.innerHTML = `
     <div class="w-100">
       <div id="popup" class="py-5 d-flex flex-column justify-content-between w-300px w-100 mt-n5 rounded-right-bottom rounded-bottom-left px-5">
@@ -453,12 +454,13 @@ const findAnswers = (question, model) => {
           <p class="">${question.name}</p>
         </div>
         <div class="w-100">
-          ${!answers.filter(answer => answer.extras && !!answer.extras.freeanswer).length ? answers.map(answer => {
+          ${buttons.map(answer => {
             return `<button class="btn btn-lg mb-4 btn-white blue-light-shadow answerbutton w-100 w-md-auto mb-3 mr-3" data-question="${question.extras.questionidentifier}" data-answer="${answer.id}">${answer.name}</button>`
-          }).join('') : `
-            <input class="form-control mb-4" name="freeanswer" type="text" data-type="question" id="freeanswer" />
-            <button class="btn btn-lg w-100 btn-outline-secondary mb-4  mr-2 answerbutton" data-answer="${answers[0].id}" data-question="${question.extras.questionidentifier}">Next</button>
-          `}
+          }).join('')}
+          ${freeanswers.map(answer => {
+            return `<input class="form-control mb-4" name="freeanswer" type="text" data-type="question" id="freeanswer" />
+            <button class="btn btn-lg w-100 btn-outline-secondary mb-4  mr-2 answerbutton" data-answer="${answers[0].id}" data-question="${question.extras.questionidentifier}">Next</button>`
+          }).join('')}
         </div>
       </div>
     </div>`
@@ -478,7 +480,7 @@ if (questionroot && !localStorage.getItem('dcianswers')) {
       document.addEventListener('click', (e) => {
         if (e.target.classList.contains("answerbutton")) {
           const freeanswer = document.getElementById('freeanswer')
-          localStorage.setItem('dcianswers', JSON.stringify({ ...JSON.parse(localStorage.getItem('dcianswers')), [e.target.dataset.question]: freeanswer ? freeanswer.value : e.target.innerText }))
+          localStorage.setItem('dcianswers', JSON.stringify({ ...JSON.parse(localStorage.getItem('dcianswers')), [e.target.dataset.question]: freeanswer.value !== '' ? freeanswer.value : e.target.innerText }))
 
           const currentAnswer = diagramNodes[e.target.dataset.answer]
           var linkToNext = links[currentAnswer.ports.find(port => port.name === "Out").links[0]]

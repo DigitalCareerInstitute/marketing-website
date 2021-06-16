@@ -50,6 +50,7 @@ const CanvasWrapper = styled.div`
 function QuestionsDiagram() {
   let [loading, setloading] = useState(true)
   let [answeravailable, setansweravailable] = useState(true)
+  let [error, seterror] = useState(undefined)
   useEffect(() => {
     fetch(`/admin/questions/fetch`, {
       headers: {
@@ -150,8 +151,33 @@ function QuestionsDiagram() {
           disabled={loading}
           onClick={() => {
             setloading(true)
-            console.log(`11111`, model);
-            console.log(`11111`, model.serialize());
+            var nodes = Object.values(model.layers.find(layer => layer.options.type === "diagram-nodes").models)
+            var filteredLinks = Object.values(model.layers.find(layer => layer.options.type === "diagram-links").models)
+
+            var beginningQuestion = nodes.find(n => {
+              return Object.values(n.portsIn[0].links).length === 0
+            })
+            let errorNodes = []
+
+            var checkQABalance = (question) => {
+              return Object.values(question.portsOut[0].links).map(link => {
+                if (link.targetPort.parent.options.extras.customType !== "answer") {
+                  engine.getModel().getNode(link.targetPort.parent.options.id).setSelected(true);
+                  engine.getModel().getNode(link.targetPort.parent.options.id).options.color = "rgb(255,0,0)"
+                  return link.targetPort.parent
+                }
+              }).filter(l => !!l)
+            }
+
+            const questions = nodes.filter(n => n.options.extras.customType !== "answer")
+            questions.map(q => {
+              errorNodes = [...errorNodes, ...checkQABalance(q)]
+            })
+            seterror(`Answer followes to answer for nodes: ${errorNodes.map(e => e.options.name + ', ')}`)
+            if (errorNodes.length === 0) {
+              seterror(undefined)
+            }
+
             // Model serialise has the EXTRAS
             fetch(`/admin/questions/update`, {
               method: "POST",
@@ -165,6 +191,12 @@ function QuestionsDiagram() {
               })
           }}>{loading ? "Loading" : "Save"}</button>
       </div>
+      {error && (
+        <div clase="flash m-0 mr-3 alert fade show alert-danger ">
+          Error: {error}
+          <button className="close ml-3" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+        </div>
+      )}
       <CanvasWrapper>
         <CanvasWidget id='canvas' engine={engine} />
       </CanvasWrapper>
