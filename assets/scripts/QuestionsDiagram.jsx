@@ -63,13 +63,14 @@ function QuestionsDiagram(props) {
   }, [])
 
   const addQuestion = (e) => {
+    console.log(e.target);
     e.preventDefault()
     const node = new DefaultNodeModel({
-      name: !!e.target.elements.freequestion && !!e.target.elements.freequestion.checked ? "Freequestion" : e.target.elements.input.value,
-      color: !!e.target.elements.freequestion && !!e.target.elements.freequestion.checked ? "rgb(0, 128, 229)" : e.target.elements.input.dataset.color,
+      name: !!e.target.elements.freeanswer && !!e.target.elements.freeanswer.checked ? "Freeanswer" : e.target.elements.input.value,
+      color: !!e.target.elements.freeanswer && !!e.target.elements.freeanswer.checked ? "rgb(0, 128, 229)" : e.target.elements.input.dataset.color,
       customType: e.target.elements.input.dataset.type,
       extras: {
-        freequestion: !!e.target.elements.freequestion && !!e.target.elements.freequestion.checked
+        freeanswer: !!e.target.elements.freeanswer && !!e.target.elements.freeanswer.checked
       }
     });
     node.setPosition(600, 100);
@@ -101,8 +102,8 @@ function QuestionsDiagram(props) {
           </div>
           <div className="form-group w-100">
             <div className="form-group form-check  mb-3">
-              <input type="checkbox" name="freequestion" className="form-check-input" style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="freequestion" onChange={() => setansweravailable(!answeravailable)} />
-              <label className="form-check-label" htmlFor="freequestion">Free answer</label>
+              <input type="checkbox" name="freeanswer" className="form-check-input" style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="freeanswer" onChange={() => setansweravailable(!answeravailable)} />
+              <label className="form-check-label" htmlFor="freeanswer">Free answer</label>
             </div>
           </div>
         </form>

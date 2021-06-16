@@ -436,13 +436,13 @@ const findAnswers = (question, model) => {
     .filter(links => Object.values(model.layers.find(layer => layer.type === "diagram-links").models)
       .filter(layer => layer.source === question.id).map(l => l.target).includes(links.id))
 
-  answers.filter(answer => answer.extras && !!answer.extras.freequestion)
-  if (!!answers.filter(answer => answer.extras && !!answer.extras.freequestion).length) {
+  answers.filter(answer => answer.extras && !!answer.extras.freeanswer)
+  if (!!answers.filter(answer => answer.extras && !!answer.extras.freeanswer).length) {
 
   }
-  // answers.filter(answer => answer.extras && !!answer.extras.freequestion)
+  // answers.filter(answer => answer.extras && !!answer.extras.freeanswer)
   console.log(answers);
-  // if (!!answers.filter(answer => answer.extras && !!answer.extras.freequestion).length) {
+  // if (!!answers.filter(answer => answer.extras && !!answer.extras.freeanswer).length) {
 
   // }
 
@@ -453,10 +453,10 @@ const findAnswers = (question, model) => {
           <h4 class="mr-3">${question.name}</h4>
         </div>
         <div class="">
-          ${!answers.filter(answer => answer.extras && !!answer.extras.freequestion).length ? answers.map(answer => {
+          ${!answers.filter(answer => answer.extras && !!answer.extras.freeanswer).length ? answers.map(answer => {
             return `<button class="btn btn-primary answerbutton w-100 w-md-auto mb-3" data-question="${question.name}" data-answer="${answer.id}">${answer.name}</button>`
           }).join('') : `
-            <input class="form-control" name="freequestion" type="text" data-type="question" id="freequestion" />
+            <input class="form-control" name="freeanswer" type="text" data-type="question" id="freeanswer" />
             <button class="btn btn-primary mr-2 answerbutton" data-answer="${answers[0].id}" data-question="${question.name}">Next</button>
           `}
         </div>
@@ -477,8 +477,8 @@ if (questionroot && !localStorage.getItem('dcianswers')) {
       const startquestion = Object.values(diagramNodes).find(model => model.ports.find(port => port.label === "In").links.length === 0)
       document.addEventListener('click', (e) => {
         if (e.target.classList.contains("answerbutton")) {
-          const freequestion = document.getElementById('freequestion')
-          localStorage.setItem('dcianswers', JSON.stringify({ ...JSON.parse(localStorage.getItem('dcianswers')), [e.target.dataset.question]: freequestion ? freequestion.value : e.target.innerText }))
+          const freeanswer = document.getElementById('freeanswer')
+          localStorage.setItem('dcianswers', JSON.stringify({ ...JSON.parse(localStorage.getItem('dcianswers')), [e.target.dataset.question]: freeanswer ? freeanswer.value : e.target.innerText }))
 
           const currentAnswer = diagramNodes[e.target.dataset.answer]
           var linkToNext = links[currentAnswer.ports.find(port => port.name === "Out").links[0]]
