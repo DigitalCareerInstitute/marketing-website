@@ -46,6 +46,7 @@ const CanvasWrapper = styled.div`
     width: 100vw;
   }
 `
+const questioncolor = "rgb(0, 128, 129)"
 function QuestionsDiagram() {
   let [loading, setloading] = useState(true)
   let [form, setForm] = useState({})
@@ -182,6 +183,23 @@ function QuestionsDiagram() {
       setloading(false)
     })
   }
+  const createPredefinedButton = (e) => {
+    e.preventDefault()
+    const node = new CustomNodeModel({
+      name: `${e.target.dataset.field}`,
+      color: questioncolor,
+      extras: {
+        customType: "question",
+        questionidentifier: e.target.dataset.field
+      }
+    });
+    console.log('Enginesize', engine.canvas.offsetWidth, engine.canvas.offsetHeight);
+    node.setPosition(engine.canvas.offsetWidth / 2, engine.canvas.offsetHeight / 2);
+    node.addInPort('In');
+    node.addOutPort('Out');
+    model.addAll(node);
+    engine.setModel(model);
+  }
   return (
     <div className="h-100 d-flex flex-column">
       <div>
@@ -192,15 +210,30 @@ function QuestionsDiagram() {
               onChange={(e) => {
                 e.stopPropagation();
                 setForm({ ...form, [e.target.name]: e.target.value })
-              }} data-type="question" data-color="rgb(0, 128, 129)" style={{ borderColor: "rgb(0, 128, 129)", borderStyle: "solid" }} id="addquestion" required />
+              }} data-type="question" data-color={questioncolor} style={{ borderColor: { questioncolor }, borderStyle: "solid" }} id="addquestion" required />
             <label htmlFor="addquestionidentifier">Questionidentifier</label>
             <input className="form-control" name="questionidentifier" type="text" value={form['questionidentifier']}
               onChange={(e) => {
                 e.stopPropagation();
                 setForm({ ...form, [e.target.name]: e.target.value })
-              }} data-type="questionidentifier" data-color="rgb(0, 128, 129)" style={{ borderColor: "rgb(0, 128, 129)", borderStyle: "solid" }} id="addquestionidentifier" required />
+              }} data-type="questionidentifier" data-color={questioncolor} style={{ borderColor: { questioncolor }, borderStyle: "solid" }} id="addquestionidentifier" required />
           </div>
+          <div classNamed="d-flex">
           <button className="btn btn-primary" type="submit">{button}</button>
+            <span className="mx-2">Or add predefined Hubspot keys:</span>
+            <button className="btn btn-primary" onClick={(e) => {
+              createPredefinedButton(e)
+            }} data-field="firstname">Firstname</button>
+            <button className="btn btn-primary" onClick={(e) => {
+              createPredefinedButton(e)
+            }} data-field="lastname">Lastname</button>
+            <button className="btn btn-primary" onClick={(e) => {
+              createPredefinedButton(e)
+            }} data-field="email">Email</button>
+            <button className="btn btn-primary" onClick={(e) => {
+              createPredefinedButton(e)
+            }} data-field="phone">Phone</button>
+          </div>
         </form>
 
         <form className="" onSubmit={addAnswer}>
@@ -218,7 +251,7 @@ function QuestionsDiagram() {
               onChange={(e) => {
                 e.stopPropagation();
                 setForm({ ...form, [e.target.name]: e.target.value })
-              }} data-type="answeridentifier" data-color="rgb(0, 128, 129)" style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="answeridentifier" required />
+              }} data-type="answeridentifier" data-color={questioncolor} style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="answeridentifier" required />
 
           </div>
           <button className="btn btn-primary" type="submit">{button}</button>
