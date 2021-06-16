@@ -474,39 +474,42 @@ const findAnswers = (questions, model) => {
     });
   questionroot.innerHTML = `
     <div class="w-100">
-    <div id="popup" class="py-5 d-flex flex-column justify-content-between w-300px w-100 px-5">
-    <form onSubmit="return false;" class="dynamicinputform">
-    ${questions.map((question, index) => {
-      const answers = getAnswers(question, model);
-      const buttons = answers.filter(answer => !answer.extras.freeanswer && !answer.extras.dropdown);
-      const freeanswers = answers.filter(answer => answer.extras.freeanswer && !answer.extras.dropdown);
-      const dropdowns = answers.filter(answer => answer.extras.dropdown);
-    return `
-        <div class="d-flex justify-content-center mb-5">
-          <p class="">${isGerman && question.extras.questiontranslation ? question.extras.questiontranslation : question.name}</p>
-        </div>
-        <div class="w-100">
-        ${freeanswers.length > 0 ? "<div class='row'>" + freeanswers.map(answer => {
-          return `<div class="${freeanswers.length === 1 ? "col-md-12" : "col-md-6"}"><label for="freeanswer_${answer.extras.answeridentifier}" >${isGerman && answer.extras.answertranslation ? answer.extras.answertranslation : answer.name}</label>
-          <input class="form-control mb-4 freeanswer dynamicinput" name="${answer.extras.answeridentifier}" type="text" data-type="question" type="text"  id="freeanswer_${answer.extras.answeridentifier}" required/> </div>`
-        }).join('') + "</div>" : ""}
-        ${dropdowns.length > 0 ? dropdowns.map(answer => (`<label for="dropdown_${answer.extras.answeridentifier}" >${isGerman && answer.extras.answertranslation ? answer.extras.answertranslation.split(":")[0] : answer.name.split(":")[0]}</label><select id="dropdown_${answer.extras.answeridentifier}" name="${answer.extras.answeridentifier}" class='form-select mb-3' class="dynamicinput dropdown" required="required"><option class="form-control mb-4" name="button" type="text" data-type="question" placeholder="${isGerman ? "Auswählen..." : "Select..."}" type="text" value="" disabled selected>${isGerman ? "Auswählen..." : "Select..."}</option>` +
-          (isGerman && answer.extras.answertranslation ? answer.extras.answertranslation : answer.name).split(":").reverse()[0].split(',').map(dropdownItem => `<option class="form-control mb-4" name="button" type="text" data-type="question" placeholder="${answer.extras.answeridentifier}" type="text" > ${dropdownItem}`).join('')
-          + `</select>`)).join("") : ""}
-        ${buttons.map(answer => {
-          return `<div class="form-group">
-          <input type="radio" data-trigger="${canTrigger(questions, model)}" id="${answer.name}" name="${question.extras.questionidentifier}" class="btn-check dynamicinputradio" data-question="${question.extras.questionidentifier}" data-nextquestions="${nextQuestions.map(a => a.id)}" value="${answer.name}" required/>
-          <label class=" btn btn-lg mb-4 btn-white blue-light-shadow answerbutton w-100 mb-3 mr-3" for="${answer.name}">${isGerman && answer.extras.answertranslation ? answer.extras.answertranslation : answer.name}</label>
-          </div>`
-        }).join('')}
-        ${canTrigger(questions, model) ? `<button class="d-none fakebutton btn btn-lg w-100 btn-outline-secondary mb-4  mr-2 answerbutton" data-nextquestions="${nextQuestions.map(a => a.id)}" type="submit">${isGerman ? `Weiter` : `Next`}</button>` : ``}
-        </div>
-
-        `
-  }).join('')}
-  ${nextQuestions.length === 0 ? `<p class="dataPrivacyLink"><label class="checkbox TermsofService text-muted">${isGerman ? `Gelesen und akzeptiert` : `I have read and agree to the`}:<input type="checkbox" name="TermsofService" value="true" required="required"><span class="checkmark"></span></label><a class="ml-1" data-toggle="modal" data-target="#dataPrivacy">${isGerman ? `Datenschutz` : `Data privacy`}</a></p>` : ``}
-      ${canTrigger(questions, model) ? `` : `<button class="btn btn-lg w-100 btn-outline-secondary mb-4  mr-2 answerbutton" data-nextquestions="${nextQuestions.map(a => a.id)}" type="submit">${nextQuestions.length === 0 ? (isGerman ? `Abschicken` : `Submit`) : (isGerman ? `Weiter` : `Next`)}`}</button>
-      </form>
+    <div id="popup" class="py-5 d-flex flex-column justify-content-between w-300px w-100">
+      <form onSubmit="return false;" class="dynamicinputform">
+        ${questions.map((question, index) => {
+          const answers = getAnswers(question, model);
+          const buttons = answers.filter(answer => !answer.extras.freeanswer && !answer.extras.dropdown);
+          const freeanswers = answers.filter(answer => answer.extras.freeanswer && !answer.extras.dropdown);
+          const dropdowns = answers.filter(answer => answer.extras.dropdown);
+          return `
+            <div class="d-flex justify-content-center mb-5 px-3">
+              <p class="text-center">${isGerman && question.extras.questiontranslation ? question.extras.questiontranslation : question.name}</p>
+            </div>
+            <div class="px-lg-5">
+              <div class="w-100 px-5 px-lg-3 px-xl-5">
+              ${freeanswers.length > 0 ? "<div class='row'>" + freeanswers.map(answer => {
+                return `<div class="${freeanswers.length === 1 ? "col-md-12" : "col-md-6"}"><label for="freeanswer_${answer.extras.answeridentifier}" >${isGerman && answer.extras.answertranslation ? answer.extras.answertranslation : answer.name}</label>
+                <input class="form-control mb-4 freeanswer dynamicinput" name="${answer.extras.answeridentifier}" data-type="question" type="${answer.extras.answeridentifier.includes("email") ? "email" : "text"}"  id="freeanswer_${answer.extras.answeridentifier}" required/> </div>`
+              }).join('') + "</div>" : ""}
+              ${dropdowns.length > 0 ? dropdowns.map(answer => (`<label for="dropdown_${answer.extras.answeridentifier}" >${isGerman && answer.extras.answertranslation ? answer.extras.answertranslation.split(":")[0] : answer.name.split(":")[0]}</label><select id="dropdown_${answer.extras.answeridentifier}" name="${answer.extras.answeridentifier}" class='form-select mb-3' class="dynamicinput dropdown" required="required"><option class="form-control mb-4" name="button" type="text" data-type="question" placeholder="${isGerman ? "Auswählen..." : "Select..."}" type="text" value="" disabled selected>${isGerman ? "Auswählen..." : "Select..."}</option>` +
+                (isGerman && answer.extras.answertranslation ? answer.extras.answertranslation : answer.name).split(":").reverse()[0].split(',').map(dropdownItem => `<option class="form-control mb-4" name="button" type="text" data-type="question" placeholder="${answer.extras.answeridentifier}" type="text" > ${dropdownItem}`).join('')
+                + `</select>`)).join("") : ""}
+              ${buttons.map(answer => {
+                  return `<div class="form-group">
+                <input type="radio" data-trigger="${canTrigger(questions, model)}" id="${answer.name}" name="${question.extras.questionidentifier}" class="btn-check dynamicinputradio" data-question="${question.extras.questionidentifier}" data-nextquestions="${nextQuestions.map(a => a.id)}" value="${answer.name}" required/>
+                <label class=" btn btn-lg mb-4 btn-white blue-light-shadow answerbutton w-100 mb-3 mr-3" for="${answer.name}">${isGerman && answer.extras.answertranslation ? answer.extras.answertranslation : answer.name}</label>
+                </div>`
+                }).join('')}
+              ${canTrigger(questions, model) ? `<button class="d-none fakebutton btn btn-lg w-100 btn-outline-secondary mb-4  mr-2 answerbutton" data-nextquestions="${nextQuestions.map(a => a.id)}" type="submit">${isGerman ? `Weiter` : `Next`}</button>` : ``}
+                  </div>
+                </div>` }).join('')}
+              <div class="px-5 px-lg-3 px-xl-5 mt-5">
+              <div class="px-lg-5">
+                ${nextQuestions.length === 0 ? `<p class="dataPrivacyLink"><label class="checkbox TermsofService text-muted">${isGerman ? `Gelesen und akzeptiert` : `I have read and agree to the`}:<input type="checkbox" name="TermsofService" value="true" required="required"><span class="checkmark"></span></label><a class="ml-1" data-toggle="modal" data-target="#dataPrivacy">${isGerman ? `Datenschutz` : `Data privacy`}</a></p>` : ``}
+                ${canTrigger(questions, model) ? `` : `<button class="btn btn-lg btn-outline-secondary mb-4  mr-2 answerbutton ${nextQuestions.length === 0 ? "w-50 w-md-100 float-right" : "w-100"}" data-nextquestions="${nextQuestions.map(a => a.id)}" type="submit">${nextQuestions.length === 0 ? (isGerman ? `Abschicken` : `Submit`) : (isGerman ? `Weiter` : `Next`)}`}</button>
+              </div>
+            </div>
+        </form>
       </div>
     </div>`
 
