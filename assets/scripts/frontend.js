@@ -447,17 +447,17 @@ const findAnswers = (question, model) => {
   // }
 
   questionroot.innerHTML = `
-    <div>
-      <div id="popup" class="py-3 d-flex flex-column justify-content-between w-300px align-items-center">
-        <div class="d-flex align-items-start">
-          <h4 class="mr-3">${question.name}</h4>
+    <div class="w-100">
+      <div id="popup" class="py-5 d-flex flex-column justify-content-between w-300px w-100 mt-n5 rounded-right-bottom rounded-bottom-left px-5">
+        <div class="d-flex justify-content-center mb-5">
+          <p class="">${question.name}</p>
         </div>
-        <div class="">
+        <div class="w-100">
           ${!answers.filter(answer => answer.extras && !!answer.extras.freeanswer).length ? answers.map(answer => {
-            return `<button class="btn btn-primary answerbutton w-100 w-md-auto mb-3 mr-3" data-question="${question.extras.questionidentifier}" data-answer="${answer.id}">${answer.name}</button>`
+            return `<button class="btn btn-lg mb-4 btn-white blue-light-shadow answerbutton w-100 w-md-auto mb-3 mr-3" data-question="${question.extras.questionidentifier}" data-answer="${answer.id}">${answer.name}</button>`
           }).join('') : `
-            <input class="form-control mb-3" name="freeanswer" type="text" data-type="question" id="freeanswer" />
-            <button class="btn btn-primary mr-2 answerbutton" data-answer="${answers[0].id}" data-question="${question.extras.questionidentifier}">Next</button>
+            <input class="form-control mb-4" name="freeanswer" type="text" data-type="question" id="freeanswer" />
+            <button class="btn btn-lg w-100 btn-outline-secondary mb-4  mr-2 answerbutton" data-answer="${answers[0].id}" data-question="${question.extras.questionidentifier}">Next</button>
           `}
         </div>
       </div>

@@ -1,14 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import createEngine, {
-  DefaultLinkModel,
-  DefaultNodeModel,
-  DiagramModel
+  DiagramModel,
+  DefaultNodeModel
 } from '@projectstorm/react-diagrams';
 import {
   CanvasWidget
 } from '@projectstorm/react-canvas-core';
 import styled from '@emotion/styled';
-
+import { CustomNodeModel } from './CustomNode/CustomNodeModel';
+import { CustomNodeFactory } from './CustomNode/CustomNodeFactory';
+import { CustomPortFactory } from './CustomNode/CustomPortFactory';
+import { CustomPortModel } from './CustomNode/CustomPortModel';
 const engine = createEngine();
 class StartNodeModel extends DiagramModel {
   serialize() {
@@ -28,8 +30,13 @@ class StartNodeModel extends DiagramModel {
 }
 
 const model = new StartNodeModel();
-engine.setModel(model);
+// register some other factories as well
+engine
+  .getPortFactories()
+  .registerFactory(new CustomPortFactory('tommy', config => new CustomPortModel(PortModelAlignment.LEFT)));
+engine.getNodeFactories().registerFactory(new CustomNodeFactory());
 
+engine.setModel(model);
 
 const CanvasWrapper = styled.div`
   flex-grow: 1;
@@ -40,8 +47,7 @@ const CanvasWrapper = styled.div`
   }
 `
 
-function QuestionsDiagram(props) {
-  let questionRef = useRef(null)
+function QuestionsDiagram() {
   let [loading, setloading] = useState(true)
   let [answeravailable, setansweravailable] = useState(true)
   useEffect(() => {
@@ -63,27 +69,24 @@ function QuestionsDiagram(props) {
   }, [])
 
   const addQuestion = (e) => {
-    console.log(e.target);
     e.preventDefault()
-    const node = new DefaultNodeModel({
-      name: `${e.target.elements.addquestion.value} - \r\n key: ${e.target.elements.addquestionidentifier.value}`,
+    const node = new CustomNodeModel({
+      name: `${e.target.elements.addquestion.value}`,
       color: e.target.elements.addquestion.dataset.color,
       extras: {
         customType: e.target.elements.addquestion.dataset.type,
         questionidentifier: e.target.elements.addquestionidentifier.value
       }
     });
-    node.setPosition(600, 100);
+    node.setPosition(engine.canvas.offsetWidth / 2, engine.canvas.offsetHeight / 2);
 
     let port1 = node.addInPort('In');
     let port2 = node.addOutPort('Out');
 
-    console.log(node);
     model.addAll(node);
     engine.setModel(model);
   }
   const addAnswer = (e) => {
-    console.log(e.target);
     e.preventDefault()
     const node = new DefaultNodeModel({
       name: !!e.target.elements.freeanswer && !!e.target.elements.freeanswer.checked ? "Freeanswer" : e.target.elements.input.value,
@@ -93,7 +96,7 @@ function QuestionsDiagram(props) {
         freeanswer: !!e.target.elements.freeanswer && !!e.target.elements.freeanswer.checked
       }
     });
-    node.setPosition(600, 100);
+    node.setPosition(engine.canvas.offsetWidth / 2, engine.canvas.offsetHeight / 2);
 
     let port1 = node.addInPort('In');
     let port2 = node.addOutPort('Out');
@@ -105,13 +108,12 @@ function QuestionsDiagram(props) {
   return (
     <div className="h-100 d-flex flex-column">
       <div>
-
         <form onSubmit={addQuestion}>
           <div className="form-group">
             <label htmlFor="addquestion">Add Question</label>
-            <input className="form-control" name="input" type="text" data-type="question" data-color="rgb(0, 128, 129)" style={{ borderColor: "rgb(0, 128, 129)", borderStyle: "solid" }} id="addquestion" />
+            <input className="form-control" name="input" type="text" data-type="question" data-color="rgb(0, 128, 129)" style={{ borderColor: "rgb(0, 128, 129)", borderStyle: "solid" }} id="addquestion" required />
             <label htmlFor="addquestionidentifier">Questionidentifier</label>
-            <input className="form-control" name="input" type="text" data-type="questionidentifier" data-color="rgb(0, 128, 129)" style={{ borderColor: "rgb(0, 128, 129)", borderStyle: "solid" }} id="addquestionidentifier" />
+            <input className="form-control" name="input" type="text" data-type="questionidentifier" data-color="rgb(0, 128, 129)" style={{ borderColor: "rgb(0, 128, 129)", borderStyle: "solid" }} id="addquestionidentifier" required />
           </div>
           <button className="btn btn-primary" type="submit">Add</button>
         </form>
@@ -148,6 +150,9 @@ function QuestionsDiagram(props) {
           disabled={loading}
           onClick={() => {
             setloading(true)
+            console.log(`11111`, model);
+            console.log(`11111`, model.serialize());
+            // Model serialise has the EXTRAS
             fetch(`/admin/questions/update`, {
               method: "POST",
               headers: {
