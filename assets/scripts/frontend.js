@@ -468,10 +468,10 @@ const findAnswers = (questions, model) => {
           <p class="">${question.name !== "Freeanswer" ? question.name : ""}</p>
         </div>
         <div class="w-100">
-        ${freeanswers.map(answer => {
-          return `<label for="freeanswer_${answer.extras.answeridentifier}" >${answer.extras.answeridentifier}</label>
-          <input class="form-control mb-4 freeanswer dynamicinput" name="${answer.extras.answeridentifier}" type="text" data-type="question" placeholder="${answer.extras.answeridentifier}" type="text"  id="freeanswer_${answer.extras.answeridentifier}" required/>`
-        }).join('')}
+        ${freeanswers.length > 0 ? "<div class='row'>" + freeanswers.map(answer => {
+          return `<div class="${freeanswers.length === 1 ? "col-md-12" : "col-md-6"}"><label for="freeanswer_${answer.extras.answeridentifier}" >${answer.extras.answeridentifier[0].toUpperCase() + answer.extras.answeridentifier.slice(1)}</label>
+          <input class="form-control mb-4 freeanswer dynamicinput" name="${answer.extras.answeridentifier}" type="text" data-type="question" type="text"  id="freeanswer_${answer.extras.answeridentifier}" required/> </div>`
+        }).join('') + "</div>" : ""}
         ${dropdowns.length > 0 ? `<select name="${question.extras.questionidentifier}" class='form-select mb-3' class="dynamicinput dropdown">` +
         dropdowns.map(answer => {
           return answer.name.split(',').map(dropdownItem => `<option class="form-control mb-4" name="button" type="text" data-type="question" placeholder="${answer.extras.answeridentifier}" type="text" > ${dropdownItem}`).join('')
