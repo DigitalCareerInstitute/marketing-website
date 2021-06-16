@@ -1058,7 +1058,7 @@ body:not(.admin) {
 .mw-150 {
   max-width: 150px;
 }
-.w-300 {
+.w-300px {
   width: 300px;
 }
 
@@ -1835,7 +1835,8 @@ body[class*="pages-"] {
 }
 .hidden {
   display: none;
-#questionroot > div {
+}
+#questionroot > div > div {
   position: fixed;
   bottom: 0;
   right: 0;
@@ -1844,6 +1845,9 @@ body[class*="pages-"] {
   padding: 1em;
   box-shadow: 0 0 15px 10px #00000029;
   height: 30vh;
+  .loggedin & {
+    bottom: 50px;
+  }
 }
 
 .adminnote {
