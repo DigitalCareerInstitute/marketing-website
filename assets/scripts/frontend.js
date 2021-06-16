@@ -434,7 +434,7 @@ const findAnswers = (question, model) => {
     <div class="py-3 mb-3">
       <h2>${question.name}</h2>
       ${answers.map(answer => {
-        return `<button class="btn btn-primary mr-2 answerbutton" data-question="${question.id}" data-answer="${answer.id}">${answer.name}</button>`
+        return `<button class="btn btn-primary mr-2 answerbutton" data-question="${question.name}" data-answer="${answer.id}">${answer.name}</button>`
       }).join('')}
     </div>`
 }
@@ -452,12 +452,12 @@ if (questionroot) {
       const startquestion = Object.values(diagramNodes).find(model => model.ports.find(port => port.label === "In").links.length === 0)
       document.addEventListener('click', (e) => {
         if (e.target.classList.contains("answerbutton")) {
+          localStorage.setItem('answers', JSON.stringify({ ...JSON.parse(localStorage.getItem('answers')), [e.target.dataset.question]: e.target.innerText }))
           const currentAnswer = diagramNodes[e.target.dataset.answer]
           var linkToNext = links[currentAnswer.ports.find(port => port.name === "Out").links[0]]
           if (linkToNext) {
             const nextQuestion = Object.values(diagramNodes).find(model => model.id === linkToNext[linkToNext.target === currentAnswer.id ? "source" : "target"])
             findAnswers(nextQuestion, res.payload.model)
-            localStorage.setItem('answers', JSON.stringify({ ...JSON.parse(localStorage.getItem('answers')), [e.target.dataset.question]: e.target.innerText }))
           } else {
             // TODO post to hubspot
 
