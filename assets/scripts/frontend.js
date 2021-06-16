@@ -454,10 +454,10 @@ const findAnswers = (question, model) => {
         </div>
         <div class="">
           ${!answers.filter(answer => answer.extras && !!answer.extras.freeanswer).length ? answers.map(answer => {
-            return `<button class="btn btn-primary answerbutton w-100 w-md-auto mb-3" data-question="${question.name}" data-answer="${answer.id}">${answer.name}</button>`
+            return `<button class="btn btn-primary answerbutton w-100 w-md-auto mb-3 mr-3" data-question="${question.extras.questionidentifier}" data-answer="${answer.id}">${answer.name}</button>`
           }).join('') : `
-            <input class="form-control" name="freeanswer" type="text" data-type="question" id="freeanswer" />
-            <button class="btn btn-primary mr-2 answerbutton" data-answer="${answers[0].id}" data-question="${question.name}">Next</button>
+            <input class="form-control mb-3" name="freeanswer" type="text" data-type="question" id="freeanswer" />
+            <button class="btn btn-primary mr-2 answerbutton" data-answer="${answers[0].id}" data-question="${question.extras.questionidentifier}">Next</button>
           `}
         </div>
       </div>
