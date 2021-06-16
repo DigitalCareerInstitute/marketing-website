@@ -117,7 +117,8 @@ function QuestionsDiagram() {
         extras: {
           customType: e.target.elements.answer.dataset.type,
           freeanswer: !!e.target.elements.freeanswer && !!e.target.elements.freeanswer.checked,
-          dropdown: !!e.target.elements.dropdown && !!e.target.elements.dropdown.checked
+          dropdown: !!e.target.elements.dropdown && !!e.target.elements.dropdown.checked,
+          answeridentifier: e.target.elements.answeridentifier.value
         }
       });
       node.setPosition(engine.canvas.offsetWidth / 2, engine.canvas.offsetHeight / 2);
@@ -202,16 +203,25 @@ function QuestionsDiagram() {
           <button className="btn btn-primary" type="submit">{button}</button>
         </form>
 
-        <label htmlFor="addanswer">Add Answer</label>
-        <form className="form-inline" onSubmit={addAnswer}>
+        <form className="" onSubmit={addAnswer}>
           <div className="form-group w-100">
+
+            <label htmlFor="addanswer">Add Answer</label>
             <input className="form-control w-100" name="answer" value={form['answer']}
               onChange={(e) => {
                 e.stopPropagation();
                 setForm({ ...form, [e.target.name]: e.target.value })
               }} type="text" data-type="answer" data-color="rgb(255, 204, 1)" style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="addanswer" disabled={!answeravailable} />
-            <button className="btn btn-primary" type="submit">{button}</button>
+
+            <label htmlFor="answeridentifier">Questionidentifier</label>
+            <input className="form-control w-100" name="answeridentifier" type="text" value={form['answeridentifier']}
+              onChange={(e) => {
+                e.stopPropagation();
+                setForm({ ...form, [e.target.name]: e.target.value })
+              }} data-type="answeridentifier" data-color="rgb(0, 128, 129)" style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="answeridentifier" required />
+
           </div>
+          <button className="btn btn-primary" type="submit">{button}</button>
           <div className="form-group w-100">
             <div className="form-group form-check  mb-3">
               <input type="checkbox" name="freeanswer" className="form-check-input"
