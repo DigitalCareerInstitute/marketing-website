@@ -803,13 +803,14 @@ body:not(.admin) {
     height: 42px;
     border-radius: 5px !important;
     border: none;
-    border: 1px solid lighten($dark, 10);
+    border: 1px solid lighten($dark, 70);
 
     &:focus,
     &:focus-within,
     &:hover,
     &:active {
       background-color: white;
+      border-color: $primary-light;
     }
   }
   select {
