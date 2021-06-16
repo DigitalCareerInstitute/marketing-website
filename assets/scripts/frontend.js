@@ -440,18 +440,32 @@ const findAnswers = (question, model) => {
   }
 
   questionroot.innerHTML = `
-    <div class="py-3 mb-3">
-      <h2>${question.name}</h2>
-      ${!answers.filter(answer => answer.extras && !!answer.extras.freequestion).length ? answers.map(answer => {
+    <div class="py-3 d-flex flex-column justify-content-between w-300 align-items-center">
+      <div class="d-flex align-items-start">
+        <h4 class="mr-3">${question.name}</h4>
+        <button class="close ml-3" type='button' data-dismiss='alert' aria-label='Close'>
+          <span class="pointer-events-none" aria-hidden='true'>
+            ×
+          </span>
+        </button>
+      </div>
+      <div class="">
+        ${!answers.filter(answer => answer.extras && !!answer.extras.freequestion).length ? answers.map(answer => {
     return `<button class="btn btn-primary mr-2 answerbutton" data-question="${question.name}" data-answer="${answer.id}">${answer.name}</button>`
   }).join('') : `
-        <input class="form-control" name="freequestion" type="text" data-type="question" id="freequestion" />
-        <button class="btn btn-primary mr-2 answerbutton" data-answer="${answers[0].id}" data-question="${question.name}">Next</button>
-      `}
+          <input class="form-control" name="freequestion" type="text" data-type="question" id="freequestion" />
+          <button class="btn btn-primary mr-2 answerbutton" data-answer="${answers[0].id}" data-question="${question.name}">Next</button>
+        `}
+      </div>
     </div>`
 }
 
-if (questionroot) {
+if (questionroot && !localStorage.getItem('dcianswers')) {
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains("close")) {
+      questionroot.innerHTML = ""
+    }
+  })
   fetch(`/admin/questions/fetch`, {
     headers: {
       "content-type": "application/json"
@@ -481,8 +495,11 @@ if (questionroot) {
               body: JSON.stringify(payload)
             }).then(res => res.json())
               .then(res => {
-                questionroot.innerHTML = `<h2>Thanks</h2>`
-                localStorage.clear('dcianswers')
+                questionroot.querySelector('div').innerHTML = `<h2>Thanks</h2>`
+                setTimeout(() => {
+                  questionroot.innerHTML = ``
+                }, 2000);
+                // localStorage.clear('dcianswers')
               })
           }
         }

@@ -1058,6 +1058,9 @@ body:not(.admin) {
 .mw-150 {
   max-width: 150px;
 }
+.w-300 {
+  width: 300px;
+}
 
 @include media-breakpoint-up(md) {
   .mw-md-150 {
@@ -1832,6 +1835,15 @@ body[class*="pages-"] {
 }
 .hidden {
   display: none;
+#questionroot > div {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  background: white;
+  height: 33vh;
+  padding: 1em;
+  box-shadow: 0 0 15px 10px #00000029;
+  height: 30vh;
 }
 
 .adminnote {

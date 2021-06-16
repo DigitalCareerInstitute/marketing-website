@@ -609,14 +609,13 @@ module.exports.submitAnswers = async (req, res, next) => {
       body: {
         properties:
           [
-            { property: 'firstname', value: Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("name"))[0][1].split(' ')[0] || "" },
+            { property: 'firstname', value: Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("name"))[0] ? Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("name"))[0][1].split(' ')[0] : "" },
             {
-              property: 'lastname', value: Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("name"))[0][1].split(" ").length > 1 ?
-                Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("name"))[0][1].split(' ').slice(1).join(' ') :
-                ""
+              property: 'lastname', value: Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("name"))[0] && Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("name"))[0][1].split(" ").length > 1 ?
+                Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("name"))[0][1].split(' ').slice(1).join(' ') : ""
             },
-            { property: 'email', value: Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("email"))[0][1] || "" },
-            { property: 'phone', value: Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("phone"))[0][1] || "" },
+            { property: 'email', value: Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("email"))[0] ? Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("email"))[0][1] : "" },
+            { property: 'phone', value: Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("phone"))[0] ? Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("phone"))[0][1] : "" },
             { property: 'utm_source', value: req.session.utmParams ? JSON.stringify(req.session.utmParams.utm_source) : "" },
             { property: 'utm_medium', value: req.session.utmParams ? JSON.stringify(req.session.utmParams.utm_medium) : "" },
             { property: 'utm_campaign', value: req.session.utmParams ? JSON.stringify(req.session.utmParams.utm_campaign) : "" },
