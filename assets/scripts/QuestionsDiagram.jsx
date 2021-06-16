@@ -105,7 +105,60 @@ function QuestionsDiagram() {
     model.addAll(node);
     engine.setModel(model);
   }
+  const saveModel = () => {
+    setloading(true)
+    var nodes = Object.values(model.layers.find(layer => layer.options.type === "diagram-nodes").models)
+    var filteredLinks = Object.values(model.layers.find(layer => layer.options.type === "diagram-links").models)
 
+    var beginningQuestion = nodes.find(n => {
+      return Object.values(n.portsIn[0].links).length === 0
+    })
+    let errorNodes = []
+
+    var checkQABalance = (question) => {
+      return Object.values(question.portsOut[0].links).map(link => {
+        if (link.targetPort.parent.options.extras.customType !== "answer") {
+          engine.getModel().getNode(link.targetPort.parent.options.id).setSelected(true);
+          engine.getModel().getNode(link.targetPort.parent.options.id).options.color = "rgb(255,0,0)"
+          return link.targetPort.parent
+        }
+      }).filter(l => !!l)
+    }
+
+    const questions = nodes.filter(n => n.options.extras.customType !== "answer")
+    questions.map(q => {
+      errorNodes = [...errorNodes, ...checkQABalance(q)]
+    })
+    seterror(`Answer followes to answer for nodes: ${errorNodes.map(e => e.options.name + ', ')}`)
+    if (errorNodes.length === 0) {
+      seterror(undefined)
+    }
+
+    // Model serialise has the EXTRAS
+    fetch(`/admin/questions/update`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify(model.serialize())
+    }).then(res => res.json())
+      .then(res => {
+        setloading(false)
+      })
+  }
+
+  const cloneSelected = () => {
+    setloading(true)
+    let itemMap = {};
+    model.getSelectedEntities().filter(m => m.parent.options.type === "diagram-nodes").map(item => {
+      let newItem = item.clone(itemMap)
+      model.addNode(newItem)
+      newItem.setPosition(newItem.getX() + 20, newItem.getY() + 20)
+      engine.setModel(model);
+      item.setSelected(!1)
+      setloading(false)
+    })
+  }
   return (
     <div className="h-100 d-flex flex-column">
       <div>
@@ -136,59 +189,12 @@ function QuestionsDiagram() {
         <button className="btn btn-primary btn-sm mr-2"
           disabled={loading}
           onClick={() => {
-            setloading(true)
-            let itemMap = {};
-            model.getSelectedEntities().filter(m => m.parent.options.type === "diagram-nodes").map(item => {
-              let newItem = item.clone(itemMap)
-              model.addNode(newItem)
-              newItem.setPosition(newItem.getX() + 20, newItem.getY() + 20)
-              engine.setModel(model);
-              item.setSelected(!1)
-              setloading(false)
-            })
+            cloneSelected()
           }}>{loading ? "Loading" : "Clone selected"}</button>
         <button className="btn btn-success btn-sm"
           disabled={loading}
           onClick={() => {
-            setloading(true)
-            var nodes = Object.values(model.layers.find(layer => layer.options.type === "diagram-nodes").models)
-            var filteredLinks = Object.values(model.layers.find(layer => layer.options.type === "diagram-links").models)
-
-            var beginningQuestion = nodes.find(n => {
-              return Object.values(n.portsIn[0].links).length === 0
-            })
-            let errorNodes = []
-
-            var checkQABalance = (question) => {
-              return Object.values(question.portsOut[0].links).map(link => {
-                if (link.targetPort.parent.options.extras.customType !== "answer") {
-                  engine.getModel().getNode(link.targetPort.parent.options.id).setSelected(true);
-                  engine.getModel().getNode(link.targetPort.parent.options.id).options.color = "rgb(255,0,0)"
-                  return link.targetPort.parent
-                }
-              }).filter(l => !!l)
-            }
-
-            const questions = nodes.filter(n => n.options.extras.customType !== "answer")
-            questions.map(q => {
-              errorNodes = [...errorNodes, ...checkQABalance(q)]
-            })
-            seterror(`Answer followes to answer for nodes: ${errorNodes.map(e => e.options.name + ', ')}`)
-            if (errorNodes.length === 0) {
-              seterror(undefined)
-            }
-
-            // Model serialise has the EXTRAS
-            fetch(`/admin/questions/update`, {
-              method: "POST",
-              headers: {
-                "content-type": "application/json"
-              },
-              body: JSON.stringify(model.serialize())
-            }).then(res => res.json())
-              .then(res => {
-                setloading(false)
-              })
+            saveModel()
           }}>{loading ? "Loading" : "Save"}</button>
       </div>
       {error && (
