@@ -102,7 +102,8 @@ html.h-100(lang=locale === "de" ? 'de': 'en')
             color: var(--dark) !important;
           }
         }
-  body.h-100.d-flex.flex-column(data-spy='scroll', data-target='#courseScrollspy', data-offset='1', class=`${pathclass+(currentPath && currentPath.includes('/admin') ? ' admin' : currentPath == "/" ? "index" : "" )}`)
+  body.h-100.d-flex.flex-column(data-spy='scroll', data-target='#courseScrollspy', data-offset='1', class=`${pathclass+(currentPath && currentPath.includes('/admin') ? ' admin' : currentPath == "/" ? "index" : "" )} ${user ? `loggedin` : ``}`)
+
 
     if live
       noscript
