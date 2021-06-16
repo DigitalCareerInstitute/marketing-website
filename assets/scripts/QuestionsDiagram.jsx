@@ -66,10 +66,30 @@ function QuestionsDiagram(props) {
     console.log(e.target);
     e.preventDefault()
     const node = new DefaultNodeModel({
+      name: `${e.target.elements.addquestion.value} - \r\n key: ${e.target.elements.addquestionidentifier.value}`,
+      color: e.target.elements.addquestion.dataset.color,
+      extras: {
+        customType: e.target.elements.addquestion.dataset.type,
+        questionidentifier: e.target.elements.addquestionidentifier.value
+      }
+    });
+    node.setPosition(600, 100);
+
+    let port1 = node.addInPort('In');
+    let port2 = node.addOutPort('Out');
+
+    console.log(node);
+    model.addAll(node);
+    engine.setModel(model);
+  }
+  const addAnswer = (e) => {
+    console.log(e.target);
+    e.preventDefault()
+    const node = new DefaultNodeModel({
       name: !!e.target.elements.freeanswer && !!e.target.elements.freeanswer.checked ? "Freeanswer" : e.target.elements.input.value,
       color: !!e.target.elements.freeanswer && !!e.target.elements.freeanswer.checked ? "rgb(0, 128, 229)" : e.target.elements.input.dataset.color,
-      customType: e.target.elements.input.dataset.type,
       extras: {
+        customType: e.target.elements.input.dataset.type,
         freeanswer: !!e.target.elements.freeanswer && !!e.target.elements.freeanswer.checked
       }
     });
@@ -90,12 +110,14 @@ function QuestionsDiagram(props) {
           <div className="form-group">
             <label htmlFor="addquestion">Add Question</label>
             <input className="form-control" name="input" type="text" data-type="question" data-color="rgb(0, 128, 129)" style={{ borderColor: "rgb(0, 128, 129)", borderStyle: "solid" }} id="addquestion" />
+            <label htmlFor="addquestionidentifier">Questionidentifier</label>
+            <input className="form-control" name="input" type="text" data-type="questionidentifier" data-color="rgb(0, 128, 129)" style={{ borderColor: "rgb(0, 128, 129)", borderStyle: "solid" }} id="addquestionidentifier" />
           </div>
           <button className="btn btn-primary" type="submit">Add</button>
         </form>
 
         <label htmlFor="addanswer">Add Answer</label>
-        <form className="form-inline" onSubmit={addQuestion}>
+        <form className="form-inline" onSubmit={addAnswer}>
           <div className="form-group w-100">
             <input className="form-control w-100" name="input" type="text" data-type="answer" data-color="rgb(255, 204, 1)" style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="addanswer" disabled={!answeravailable} />
             <button className="btn btn-primary" type="submit">Add</button>
