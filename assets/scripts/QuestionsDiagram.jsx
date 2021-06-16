@@ -220,27 +220,37 @@ function QuestionsDiagram() {
     <div className="h-100 d-flex flex-column">
       <div>
         <form onSubmit={addQuestion}>
-          <div className="form-group">
-            <label htmlFor="addquestion">Add Question</label>
-            <input className="form-control" name="question" type="text" value={form['question']}
-              onChange={(e) => {
-                e.stopPropagation();
-                setForm({ ...form, [e.target.name]: e.target.value })
-              }} data-type="question" data-color={questioncolor} style={{ borderColor: { questioncolor }, borderStyle: "solid" }} id="addquestion" required />
-            <label htmlFor="addquestionidentifier">Questionidentifier</label>
-            <input className="form-control" name="questionidentifier" type="text" value={form['questionidentifier']}
-              onChange={(e) => {
-                e.stopPropagation();
-                setForm({ ...form, [e.target.name]: e.target.value })
-              }} data-type="questionidentifier" data-color={questioncolor} style={{ borderColor: { questioncolor }, borderStyle: "solid" }} id="addquestionidentifier" required />
-            <label htmlFor="addquestiontranslation">DE Questiontranslation</label>
-            <input className="form-control" name="questiontranslation" type="text" value={form['questiontranslation']}
-              onChange={(e) => {
-                e.stopPropagation();
-                setForm({ ...form, [e.target.name]: e.target.value })
-              }} data-type="questiontranslation" data-color={questioncolor} style={{ borderColor: { questioncolor }, borderStyle: "solid" }} id="addquestiontranslation" required />
+          <div className=" row">
+            <div className="col-md-4">
+              <label htmlFor="addquestion">Add Question</label>
+              <input className="form-control" name="question" type="text" value={form['question']}
+                onChange={(e) => {
+                  e.stopPropagation();
+                  setForm({ ...form, [e.target.name]: e.target.value })
+                }} data-type="question" data-color={questioncolor} style={{ borderColor: { questioncolor }, borderStyle: "solid" }} id="addquestion" required />
+            </div>
+            <div className="col-md-4">
+              <label htmlFor="addquestiontranslation">DE Questiontranslation</label>
+              <input className="form-control" name="questiontranslation" type="text" value={form['questiontranslation']}
+                onChange={(e) => {
+                  e.stopPropagation();
+                  setForm({ ...form, [e.target.name]: e.target.value })
+                }} data-type="questiontranslation" data-color={questioncolor} style={{ borderColor: { questioncolor }, borderStyle: "solid" }} id="addquestiontranslation" required />
+            </div>
+            <div className="col-md-4">
+              <div className='d-flex align-items-end'>
+                <div className="w-100">
+                  <label htmlFor="addquestionidentifier">Questionidentifier</label>
+                  <input className="form-control" name="questionidentifier" type="text" value={form['questionidentifier']}
+                    onChange={(e) => {
+                      e.stopPropagation();
+                      setForm({ ...form, [e.target.name]: e.target.value })
+                    }} data-type="questionidentifier" data-color={questioncolor} style={{ borderColor: { questioncolor }, borderStyle: "solid" }} id="addquestionidentifier" required />
+                </div>
+                <button className="btn btn-primary ml-1" type="submit">{button}</button>
+              </div>
+            </div>
           </div>
-          <button className="btn btn-primary" type="submit">{button}</button>
           {/* <div classNamed="d-flex">
             <span className="mx-2">Or add predefined Hubspot keys:</span>
             <button className="btn btn-primary" onClick={(e) => {
@@ -259,46 +269,54 @@ function QuestionsDiagram() {
         </form>
 
         <form className="" onSubmit={addAnswer}>
-          <div className="form-group w-100">
-
-            <label htmlFor="addanswer">Add Answer</label>
-            <input className="form-control w-100" name="answer" value={form['answer']}
-              onChange={(e) => {
-                e.stopPropagation();
-                setForm({ ...form, [e.target.name]: e.target.value })
-              }} type="text" data-type="answer" data-color="rgb(255, 204, 1)" style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="addanswer" />
-
-            <label htmlFor="answeridentifier">Questionidentifier</label>
-            <input className="form-control w-100" name="answeridentifier" type="text" value={form['answeridentifier']}
-              onChange={(e) => {
-                e.stopPropagation();
-                setForm({ ...form, [e.target.name]: e.target.value })
-              }} data-type="answeridentifier" data-color={questioncolor} style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="answeridentifier" required />
-
-            <label htmlFor="answertranslation">Questitranslation</label>
-            <input className="form-control w-100" name="answertranslation" type="text" value={form['answertranslation']}
-              onChange={(e) => {
-                e.stopPropagation();
-                setForm({ ...form, [e.target.name]: e.target.value })
-              }} data-type="answertranslation" data-color={questioncolor} style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="answertranslation" required />
-
+          <div className=" row">
+            <div className="col-md-4">
+              <label htmlFor="addanswer">Add Answer</label>
+              <input className="form-control w-100" name="answer" value={form['answer']}
+                onChange={(e) => {
+                  e.stopPropagation();
+                  setForm({ ...form, [e.target.name]: e.target.value })
+                }} type="text" data-type="answer" data-color="rgb(255, 204, 1)" style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="addanswer" />
+            </div>
+            <div className="col-md-4">
+              <label htmlFor="answertranslation">Questitranslation</label>
+              <input className="form-control w-100" name="answertranslation" type="text" value={form['answertranslation']}
+                onChange={(e) => {
+                  e.stopPropagation();
+                  setForm({ ...form, [e.target.name]: e.target.value })
+                }} data-type="answertranslation" data-color={questioncolor} style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="answertranslation" required />
+            </div>
+            <div className="col-md-4">
+              <div className='d-flex align-items-end'>
+                <div className="w-100">
+                  <label htmlFor="answeridentifier">Questionidentifier</label>
+                  <input className="form-control w-100" name="answeridentifier" type="text" value={form['answeridentifier']}
+                    onChange={(e) => {
+                      e.stopPropagation();
+                      setForm({ ...form, [e.target.name]: e.target.value })
+                    }} data-type="answeridentifier" data-color={questioncolor} style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="answeridentifier" required />
+                </div>
+                <button className="btn btn-primary ml-1" type="submit">{button}</button>
+              </div>
+            </div>
           </div>
-          <button className="btn btn-primary" type="submit">{button}</button>
-          <div className="form-group w-100">
-            <div className="form-group form-check  mb-3">
+          <div className="d-flex w-100 mt-2">
+            <div className="form-check d-flex align-items-center mr-3 mb-3">
               <input type="checkbox" name="freeanswer" className="form-check-input"
                 onChange={(e) => {
                   e.stopPropagation();
                   setForm({ ...form, [e.target.name]: e.target.value })
                 }} style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="freeanswer" />
               <label className="form-check-label" htmlFor="freeanswer">Free answer</label>
+            </div>
+            <div className="form-group form-check d-flex align-items-center mr-3 mb-3">
               <input type="checkbox" name="dropdown" className="form-check-input"
                 onChange={(e) => {
                   e.stopPropagation();
                   setForm({ ...form, [e.target.name]: e.target.value })
                 }} style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="dropdown" />
               <label className="form-check-label" htmlFor="dropdown">Is dropdown</label>
-              <button className="btn btn-secondary badge ml-2" type="button" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="comma seperated list build the dropdown" data-original-title="" title=""> ? </button>
+              <button className="btn btn-secondary badge ml-2" type="button" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="If checked, use a comma seperated list to define the list items: 'Option 1, Option 2, Option 3'" data-original-title="" title=""> ? </button>
             </div>
           </div>
         </form>
