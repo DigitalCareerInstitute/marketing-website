@@ -458,7 +458,6 @@ if (questionroot) {
     },
   }).then(res => res.json())
     .then(res => {
-      // console.log('res', res);
       const diagramNodes = res.payload.model.layers.find(layer => layer.type === "diagram-nodes").models
       const links = res.payload.model.layers.find(layer => layer.type === "diagram-links").models
       const startquestion = Object.values(diagramNodes).find(model => model.ports.find(port => port.label === "In").links.length === 0)
@@ -473,8 +472,18 @@ if (questionroot) {
             const nextQuestion = Object.values(diagramNodes).find(model => model.id === linkToNext[linkToNext.target === currentAnswer.id ? "source" : "target"])
             findAnswers(nextQuestion, res.payload.model)
           } else {
-            $('#contactFormModal').modal('show')
-            questionroot.innerHTML = `<h2>Thanks</h2>`
+            let payload = JSON.parse(localStorage.getItem('dcianswers'))
+            fetch(`/submitanswers`, {
+              method: "POST",
+              headers: {
+                "content-type": "application/json"
+              },
+              body: JSON.stringify(payload)
+            }).then(res => res.json())
+              .then(res => {
+                questionroot.innerHTML = `<h2>Thanks</h2>`
+                localStorage.clear('dcianswers')
+              })
           }
         }
       })
