@@ -6,6 +6,7 @@ import "bootstrap/js/dist/collapse";
 import "bootstrap/js/dist/carousel";
 import "bootstrap/js/dist/alert";
 import intlTelInput from 'intl-tel-input';
+import utilsScript from "./intl-tel-input-utils.min.js"
 import { alertTimeout } from "./helper.js"
 require("../css/style.scss");
 
@@ -490,16 +491,16 @@ const findAnswers = (questions, model) => {
               ${freeanswers.length > 0 ? "<div class='row'>" + freeanswers.map(answer => {
                 return `<div class="${freeanswers.length === 1 ? "col-md-12" : "col-md-6"}"><label for="freeanswer_${answer.extras.answeridentifier}" >${isGerman && answer.extras.answertranslation ? answer.extras.answertranslation : answer.name}</label>
                 <input class="form-control mb-4 freeanswer dynamicinput" name="${answer.extras.answeridentifier}" data-type="question" type="${answer.extras.answeridentifier.includes("email") ? "email" : "text"}"  id="freeanswer_${answer.extras.answeridentifier}" required/> </div>`
-              }).join('') + "</div>" : ""}
+              }).join('') + "</div><span id='error-msg' class='text-danger'></span>" : ""}
               ${dropdowns.length > 0 ? dropdowns.map(answer => (`<label for="dropdown_${answer.extras.answeridentifier}" >${isGerman && answer.extras.answertranslation ? answer.extras.answertranslation.split(":")[0] : answer.name.split(":")[0]}</label><select id="dropdown_${answer.extras.answeridentifier}" name="${answer.extras.answeridentifier}" class='form-select mb-3' class="dynamicinput dropdown" required="required"><option class="form-control mb-4" name="button" type="text" data-type="question" placeholder="${isGerman ? "Auswählen..." : "Select..."}" type="text" value="" disabled selected>${isGerman ? "Auswählen..." : "Select..."}</option>` +
                 (isGerman && answer.extras.answertranslation ? answer.extras.answertranslation : answer.name).split(":").reverse()[0].split(',').map(dropdownItem => `<option class="form-control mb-4" name="button" type="text" data-type="question" placeholder="${answer.extras.answeridentifier}" type="text" > ${dropdownItem}`).join('')
                 + `</select>`)).join("") : ""}
               ${buttons.map(answer => {
-                  return `<div class="form-group">
+                return `<div class="form-group">
                 <input type="radio" data-trigger="${canTrigger(questions, model)}" id="${answer.name}" name="${question.extras.questionidentifier}" class="btn-check dynamicinputradio" data-question="${question.extras.questionidentifier}" data-nextquestions="${nextQuestions.map(a => a.id)}" value="${answer.name}" required/>
                 <label class=" btn btn-lg mb-4 btn-white blue-light-shadow answerbutton w-100 mb-3 mr-3" for="${answer.name}">${isGerman && answer.extras.answertranslation ? answer.extras.answertranslation : answer.name}</label>
                 </div>`
-                }).join('')}
+              }).join('')}
               ${canTrigger(questions, model) ? `<button class="d-none fakebutton btn btn-lg w-100 btn-outline-secondary mb-4  mr-2 answerbutton" data-nextquestions="${nextQuestions.map(a => a.id)}" type="submit">${isGerman ? `Weiter` : `Next`}</button>` : ``}
                   </div>
                 </div>` }).join('')}
@@ -514,9 +515,25 @@ const findAnswers = (questions, model) => {
     </div>`
 
   const input = document.querySelector('input[name*="phone"]')
-  intlTelInput(input, {
-    initialCountry: "de"
+  const iti = intlTelInput(input, {
+    initialCountry: "de",
+    utilsScript: utilsScript
   });
+  input.addEventListener('blur', (e) => {
+    var errorCode = iti.getValidationError();
+    if (errorCode !== 0) {
+      var errorMap = []
+      errorMap[-99] = "Invalid number"
+      errorMap[1] = "Invalid country code"
+      errorMap[2] = "Too short"
+      errorMap[3] = "Too long"
+      errorMap[4] = "Might be a local number only"
+      errorMap[5] = "Invalid length";
+      document.querySelector('#error-msg').innerHTML = errorMap[errorCode];
+    } else {
+      document.querySelector('#error-msg').innerHTML = "";
+    }
+  })
   _nb.fields.registerListener(document.querySelector('input[type="email"]'), true);
 }
 
