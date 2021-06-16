@@ -1,5 +1,12 @@
 extends ../layout.pug
 block content
   .container-fluid.mt-5.text-left.h-100.d-flex.flex-column
+    h1 Answers
+    each answer, key in answers
+      table
+        tr
+          td
+          td=answer
+
     h2 Questions
     #questionsdiagramroot.flex-grow-1
