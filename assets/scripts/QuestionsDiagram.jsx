@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import createEngine, {
-  DiagramModel,
-  DefaultNodeModel
+  DiagramModel
 } from '@projectstorm/react-diagrams';
 import {
   CanvasWidget,
@@ -31,7 +30,6 @@ class StartNodeModel extends DiagramModel {
 }
 
 const model = new StartNodeModel();
-// register some other factories as well
 engine
   .getPortFactories()
   .registerFactory(new CustomPortFactory('tommy', config => new CustomPortModel(PortModelAlignment.LEFT)));
@@ -53,7 +51,6 @@ function QuestionsDiagram() {
   let [form, setForm] = useState({})
   let formRef = useRef(form)
   let [button, setbutton] = useState('Add')
-  let [answeravailable, setansweravailable] = useState(true)
   let [error, seterror] = useState(undefined)
   useEffect(() => {
     formRef.current = form
@@ -161,11 +158,6 @@ function QuestionsDiagram() {
   const saveModel = () => {
     setloading(true)
     var nodes = Object.values(model.layers.find(layer => layer.options.type === "diagram-nodes").models)
-    var filteredLinks = Object.values(model.layers.find(layer => layer.options.type === "diagram-links").models)
-
-    var beginningQuestion = nodes.find(n => {
-      return Object.values(n.portsIn[0].links).length === 0
-    })
     let errorNodes = []
 
     var checkQABalance = (question) => {
@@ -186,8 +178,6 @@ function QuestionsDiagram() {
     if (errorNodes.length === 0) {
       seterror(undefined)
     }
-
-    // Model serialise has the EXTRAS
     fetch(`/admin/questions/update`, {
       method: "POST",
       headers: {
@@ -212,23 +202,6 @@ function QuestionsDiagram() {
       setloading(false)
     })
   }
-  // const createPredefinedButton = (e) => {
-  //   e.preventDefault()
-  //   const node = new CustomNodeModel({
-  //     name: `${e.target.dataset.field}`,
-  //     color: questioncolor,
-  //     extras: {
-  //       customType: "question",
-  //       questionidentifier: e.target.dataset.field
-  //     }
-  //   });
-  //   console.log('Enginesize', engine.canvas.offsetWidth, engine.canvas.offsetHeight);
-  //   node.setPosition(engine.canvas.offsetWidth / 2, engine.canvas.offsetHeight / 2);
-  //   node.addInPort('In');
-  //   node.addOutPort('Out');
-  //   model.addAll(node);
-  //   engine.setModel(model);
-  // }
   engine.getActionEventBus().registerAction(new DeleteItemsAction({ keyCodes: [8], modifiers: { shiftKey: true } }));
   return (
     <div className="h-100 d-flex flex-column">
@@ -265,21 +238,7 @@ function QuestionsDiagram() {
               </div>
             </div>
           </div>
-          {/* <div classNamed="d-flex">
-            <span className="mx-2">Or add predefined Hubspot keys:</span>
-            <button className="btn btn-primary" onClick={(e) => {
-              createPredefinedButton(e)
-            }} data-field="firstname">Firstname</button>
-            <button className="btn btn-primary" onClick={(e) => {
-              createPredefinedButton(e)
-            }} data-field="lastname">Lastname</button>
-            <button className="btn btn-primary" onClick={(e) => {
-              createPredefinedButton(e)
-            }} data-field="email">Email</button>
-            <button className="btn btn-primary" onClick={(e) => {
-              createPredefinedButton(e)
-            }} data-field="phone">Phone</button>
-          </div> */}
+
         </form>
 
         <form className="" onSubmit={addAnswer}>
