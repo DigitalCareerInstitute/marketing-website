@@ -434,6 +434,7 @@ Array.from(document.querySelectorAll('.dropdown-custom')).map(dropdown => {
 // setObserver(document.querySelector('.intersection_observed'))
 
 const questionroot = document.getElementById("questionroot")
+const isGerman = window.location.pathname.indexOf('/de') !== -1
 
 const getAnswers = (question, model) => Object.values(model.layers.find(layer => layer.type === "diagram-nodes").models)
   .filter(links => Object.values(model.layers.find(layer => layer.type === "diagram-links").models)
@@ -469,16 +470,17 @@ const findAnswers = (questions, model) => {
     <form onSubmit="return false;" class="dynamicinputform">
     ${questions.map((question, index) => {
       const answers = getAnswers(question, model);
-    const buttons = answers.filter(answer => !answer.extras.freeanswer && !answer.extras.dropdown)
-    const freeanswers = answers.filter(answer => answer.extras.freeanswer && !answer.extras.dropdown)
-    const dropdowns = answers.filter(answer => answer.extras.dropdown)
+      const buttons = answers.filter(answer => !answer.extras.freeanswer && !answer.extras.dropdown);
+      const freeanswers = answers.filter(answer => answer.extras.freeanswer && !answer.extras.dropdown);
+      const dropdowns = answers.filter(answer => answer.extras.dropdown);
+      console.log(question);
     return `
         <div class="d-flex justify-content-center mb-5">
-          <p class="">${question.name !== "Freeanswer" ? question.name : ""}</p>
+          <p class="">${isGerman ? question.extras.questiontranslation : question.name}</p>
         </div>
         <div class="w-100">
         ${freeanswers.length > 0 ? "<div class='row'>" + freeanswers.map(answer => {
-          return `<div class="${freeanswers.length === 1 ? "col-md-12" : "col-md-6"}"><label for="freeanswer_${answer.extras.answeridentifier}" >${answer.extras.answeridentifier[0].toUpperCase() + answer.extras.answeridentifier.slice(1)}</label>
+          return `<div class="${freeanswers.length === 1 ? "col-md-12" : "col-md-6"}"><label for="freeanswer_${answer.extras.answeridentifier}" >${isGerman ? answer.extras.answertranslation : answer.name}</label>
           <input class="form-control mb-4 freeanswer dynamicinput" name="${answer.extras.answeridentifier}" type="text" data-type="question" type="text"  id="freeanswer_${answer.extras.answeridentifier}" required/> </div>`
         }).join('') + "</div>" : ""}
         ${dropdowns.length > 0 ? `<select name="${question.extras.questionidentifier}" class='form-select mb-3' class="dynamicinput dropdown">` +
@@ -489,16 +491,16 @@ const findAnswers = (questions, model) => {
         ${buttons.map(answer => {
           return `<div class="form-group">
           <input type="radio" id="${answer.name}" name="${question.extras.questionidentifier}" class="btn-check dynamicinputradio" data-question="${question.extras.questionidentifier}" data-nextquestions="${nextQuestions.map(a => a.id)}" value="${answer.name}" required/>
-          <label class=" btn btn-lg mb-4 btn-white blue-light-shadow answerbutton w-100 mb-3 mr-3" for="${answer.name}">${answer.name}</label>
+          <label class=" btn btn-lg mb-4 btn-white blue-light-shadow answerbutton w-100 mb-3 mr-3" for="${answer.name}">${answer.extras.answertranslation ? answer.extras.answertranslation : answer.name}</label>
           </div>`
         }).join('')}
-        ${canTrigger(questions, model) ? `<button class="d-none fakebutton btn btn-lg w-100 btn-outline-secondary mb-4  mr-2 answerbutton" data-nextquestions="${nextQuestions.map(a => a.id)}" type="submit">Next</button>` : ``}
+        ${canTrigger(questions, model) ? `<button class="d-none fakebutton btn btn-lg w-100 btn-outline-secondary mb-4  mr-2 answerbutton" data-nextquestions="${nextQuestions.map(a => a.id)}" type="submit">${isGerman ? `Weiter` : `Next`}</button>` : ``}
         </div>
 
         `
   }).join('')}
-  ${nextQuestions.length === 0 ? `<p class="dataPrivacyLink"><label class="checkbox TermsofService text-muted">${window.location.pathname.indexOf('/de') !== -1 ? `Gelesen und akzeptiert` : `I have read and agree to the`}:<input type="checkbox" name="TermsofService" value="true" required="required"><span class="checkmark"></span></label><a class="ml-1" data-toggle="modal" data-target="#dataPrivacy">${window.location.pathname.indexOf('/de') !== -1 ? `Datenschutz` : `Data privacy`}</a></p>` : ``}
-      ${canTrigger(questions, model) ? `` : `<button class="btn btn-lg w-100 btn-outline-secondary mb-4  mr-2 answerbutton" data-nextquestions="${nextQuestions.map(a => a.id)}" type="submit">${nextQuestions.length === 0 ? `Submit` : `Next`}</button>`}
+  ${nextQuestions.length === 0 ? `<p class="dataPrivacyLink"><label class="checkbox TermsofService text-muted">${isGerman ? `Gelesen und akzeptiert` : `I have read and agree to the`}:<input type="checkbox" name="TermsofService" value="true" required="required"><span class="checkmark"></span></label><a class="ml-1" data-toggle="modal" data-target="#dataPrivacy">${isGerman ? `Datenschutz` : `Data privacy`}</a></p>` : ``}
+      ${canTrigger(questions, model) ? `` : `<button class="btn btn-lg w-100 btn-outline-secondary mb-4  mr-2 answerbutton" data-nextquestions="${nextQuestions.map(a => a.id)}" type="submit">${nextQuestions.length === 0 ? (isGerman ? `Abschicken` : `Submit`) : (isGerman ? `Weiter` : `Next`)}`}</button>
       </form>
       </div>
     </div>`

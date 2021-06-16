@@ -25,12 +25,13 @@ export const Node = styled.div`
 		overflow: visible;
 		font-size: 11px;
 		border: solid 2px ${(p) => (p.selected ? 'rgb(0,192,255)' : 'black')};
+		max-width: 120px;
 	`;
 
 export const Title = styled.div`
 		background: rgba(0, 0, 0, 0.3);
 		display: flex;
-		white-space: nowrap;
+		white-space: normal;
 		justify-items: center;
 	`;
 
@@ -71,11 +72,17 @@ export class CustomNodeWidget extends DefaultNodeWidget {
 				{this.props.node.options.extras.customType === "question" && (
 					<TitleName>Key: {this.props.node.options.extras.questionidentifier}</TitleName>
 				)}
+				{this.props.node.options.extras.customType === "question" && (
+					<TitleName>DE trans: {this.props.node.options.extras.questiontranslation}</TitleName>
+				)}
 				{this.props.node.options.extras.customType === "answer" && this.props.node.options.extras.dropdown && (
 					<TitleName>Type: dropdown</TitleName>
 				)}
 				{this.props.node.options.extras.customType === "answer" && this.props.node.options.extras.answeridentifier && (
 					<TitleName>Key: {this.props.node.options.extras.answeridentifier}</TitleName>
+				)}
+				{this.props.node.options.extras.customType === "answer" && this.props.node.options.extras.answertranslation && (
+					<TitleName>DE trans: {this.props.node.options.extras.answertranslation}</TitleName>
 				)}
 				<Ports>
 					<PortsContainer>{_.map(this.props.node.getInPorts(), this.generatePort)}</PortsContainer>
