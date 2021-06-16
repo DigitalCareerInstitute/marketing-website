@@ -1,10 +1,15 @@
 require("dotenv").config({ path: __dirname + "/../.env" });
 const Question = require("../../models/question");
+const Answer = require("../../models/answer");
 const { getAsyncRedis, jsonResponseObject } = require("../../helpers/helper");
 
 module.exports.renderQuestions = async (req, res) => {
   try {
+    const answers = await Answer
+      .find()
+      .exec()
     res.render("admin/adminQuestions", {
+      answers
     });
   } catch (err) {
     console.log(err);
