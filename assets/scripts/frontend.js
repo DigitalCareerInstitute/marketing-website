@@ -402,58 +402,60 @@ function normalizeSlideHeights() {
 $(window).on(
   'load resize orientationchange',
   throttle(normalizeSlideHeights, 300));
+
+Array.from(document.querySelectorAll('.dropdown-custom')).map(dropdown => {
+  dropdown.addEventListener('click', function (e) {
+    dropdown.classList.toggle("show")
+    dropdown.querySelector('.dropdown-menu').classList.toggle('show')
+  })
+})
+
+// const setObserver = (ref) => {
+//   let options = {
+//     threshold: 0.9
+//   }
+//   let observer = new IntersectionObserver(handler, options);
+//   observer.observe(ref);
+// }
+// function handler(entries, observer) {
+//   entries.map(entry => {
+//     console.log('entry', Date.now());
+//     if (entry.isIntersecting) {
+//       console.log("Hey", entry);
+//       entry.target.style.transform = `translateY(${window.scrollY}px)`
+//     } else {
+//       console.log("Ho");
+//     }
+//   })
+// }
+// setObserver(document.querySelector('.intersection_observed'))
+
 const questionroot = document.getElementById("questionroot")
 const findAnswers = (question, model) => {
   const answers = Object.values(model.layers.find(layer => layer.type === "diagram-nodes").models)
     .filter(links => Object.values(model.layers.find(layer => layer.type === "diagram-links").models)
       .filter(layer => layer.source === question.id).map(l => l.target).includes(links.id))
 
-  Array.from(document.querySelectorAll('.dropdown-custom')).map(dropdown => {
-    dropdown.addEventListener('click', function (e) {
-      dropdown.classList.toggle("show")
-      dropdown.querySelector('.dropdown-menu').classList.toggle('show')
-    })
-  })
-
-  // const setObserver = (ref) => {
-  //   let options = {
-  //     threshold: 0.9
-  //   }
-  //   let observer = new IntersectionObserver(handler, options);
-  //   observer.observe(ref);
-  // }
-  // function handler(entries, observer) {
-  //   entries.map(entry => {
-  //     console.log('entry', Date.now());
-  //     if (entry.isIntersecting) {
-  //       console.log("Hey", entry);
-  //       entry.target.style.transform = `translateY(${window.scrollY}px)`
-  //     } else {
-  //       console.log("Ho");
-  //     }
-  //   })
-  // }
-  // setObserver(document.querySelector('.intersection_observed'))
   answers.filter(answer => answer.extras && !!answer.extras.freequestion)
   if (!!answers.filter(answer => answer.extras && !!answer.extras.freequestion).length) {
 
   }
+  // answers.filter(answer => answer.extras && !!answer.extras.freequestion)
+  console.log(answers);
+  // if (!!answers.filter(answer => answer.extras && !!answer.extras.freequestion).length) {
+
+  // }
 
   questionroot.innerHTML = `
     <div>
       <div id="popup" class="py-3 d-flex flex-column justify-content-between w-300px align-items-center">
         <div class="d-flex align-items-start">
           <h4 class="mr-3">${question.name}</h4>
-          <button class="close ml-3" type='button' data-dismiss='alert' aria-label='Close'>
-            <span class="pointer-events-none" aria-hidden='true'>
-              ×
-            </span>
-          </button>
         </div>
         <div class="">
           ${!answers.filter(answer => answer.extras && !!answer.extras.freequestion).length ? answers.map(answer => {
-      return `<button class="btn btn-primary mr-2 answerbutton" data-question="${question.name}" data-answer="${answer.id}">${answer.name}</button>`
-    }).join('') : `
+            return `<button class="btn btn-primary answerbutton w-100 w-md-auto mb-3" data-question="${question.name}" data-answer="${answer.id}">${answer.name}</button>`
+          }).join('') : `
             <input class="form-control" name="freequestion" type="text" data-type="question" id="freequestion" />
             <button class="btn btn-primary mr-2 answerbutton" data-answer="${answers[0].id}" data-question="${question.name}">Next</button>
           `}
@@ -463,11 +465,7 @@ const findAnswers = (question, model) => {
 }
 
 if (questionroot && !localStorage.getItem('dcianswers')) {
-  document.addEventListener('click', (e) => {
-    if (e.target.classList.contains("close")) {
-      questionroot.innerHTML = ""
-    }
-  })
+
   fetch(`/admin/questions/fetch`, {
     headers: {
       "content-type": "application/json"
@@ -498,10 +496,10 @@ if (questionroot && !localStorage.getItem('dcianswers')) {
             }).then(res => res.json())
               .then(res => {
                 questionroot.querySelector('#popup').innerHTML = `<h2>Thanks</h2>`
-                setTimeout(() => {
-                  questionroot.innerHTML = ``
-                }, 2000);
-                localStorage.clear('dcianswers')
+                // setTimeout(() => {
+                //   questionroot.innerHTML = ``
+                // }, 2000);
+                localStorage.removeItem('dcianswers')
               })
           }
         }

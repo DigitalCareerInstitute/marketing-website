@@ -1837,14 +1837,8 @@ body[class*="pages-"] {
   display: none;
 }
 #questionroot > div > div {
-  position: fixed;
-  bottom: 0;
-  right: 0;
   background: white;
-  height: 33vh;
   padding: 1em;
-  box-shadow: 0 0 15px 10px #00000029;
-  height: 30vh;
   .loggedin & {
     bottom: 50px;
   }
