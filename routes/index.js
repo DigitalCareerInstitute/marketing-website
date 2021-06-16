@@ -29,6 +29,8 @@ router.get("/jobcenter", IndexController.jobcenter);
 
 router.get("/thank-you/:id", IndexController.thankYou);
 
+router.get("/signup", IndexController.signupCourse);
+
 router.get("/robots.txt", function (req, res) {
   res.type("text/plain");
   res.send("User-agent: *");

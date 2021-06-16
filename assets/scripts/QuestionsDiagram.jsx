@@ -64,7 +64,6 @@ function QuestionsDiagram(props) {
 
   const addQuestion = (e) => {
     e.preventDefault()
-    console.log('e.target.elements', e.target.elements);
     const node = new DefaultNodeModel({
       name: !!e.target.elements.freequestion && !!e.target.elements.freequestion.checked ? "Freequestion" : e.target.elements.input.value,
       color: !!e.target.elements.freequestion && !!e.target.elements.freequestion.checked ? "rgb(0, 128, 229)" : e.target.elements.input.dataset.color,
@@ -82,10 +81,10 @@ function QuestionsDiagram(props) {
     engine.setModel(model);
   }
 
-  console.log(answeravailable);
   return (
     <div className="h-100 d-flex flex-column">
       <div>
+
         <form onSubmit={addQuestion}>
           <div className="form-group">
             <label htmlFor="addquestion">Add Question</label>
@@ -93,6 +92,7 @@ function QuestionsDiagram(props) {
           </div>
           <button className="btn btn-primary" type="submit">Add</button>
         </form>
+
         <label htmlFor="addanswer">Add Answer</label>
         <form className="form-inline" onSubmit={addQuestion}>
           <div className="form-group w-100">
@@ -106,6 +106,7 @@ function QuestionsDiagram(props) {
             </div>
           </div>
         </form>
+
         <button className="btn btn-primary btn-sm mr-2"
           disabled={loading}
           onClick={() => {
