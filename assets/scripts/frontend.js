@@ -497,7 +497,7 @@ const findAnswers = (questions, model) => {
 
         `
   }).join('')}
-  ${nextQuestions.length === 0 ? `<p class="dataPrivacyLink"><label class="checkbox TermsofService text-muted">I have read and agree to the:<input type="checkbox" name="TermsofService" value="true" required="required"><span class="checkmark"></span></label><a class="ml-1" data-toggle="modal" data-target="#dataPrivacy">Data Privacy</a></p>` : ``}
+  ${nextQuestions.length === 0 ? `<p class="dataPrivacyLink"><label class="checkbox TermsofService text-muted">${window.location.pathname.indexOf('/de') !== -1 ? `Gelesen und akzeptiert` : `I have read and agree to the`}:<input type="checkbox" name="TermsofService" value="true" required="required"><span class="checkmark"></span></label><a class="ml-1" data-toggle="modal" data-target="#dataPrivacy">${window.location.pathname.indexOf('/de') !== -1 ? `Datenschutz` : `Data privacy`}</a></p>` : ``}
       ${canTrigger(questions, model) ? `` : `<button class="btn btn-lg w-100 btn-outline-secondary mb-4  mr-2 answerbutton" data-nextquestions="${nextQuestions.map(a => a.id)}" type="submit">${nextQuestions.length === 0 ? `Submit` : `Next`}</button>`}
       </form>
       </div>
