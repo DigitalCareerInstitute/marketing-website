@@ -1,6 +1,17 @@
 extends layout.pug
 block content
-  .pb-200
-    .py-5
-      #questionroot.d-flex.justify-content-center
-        div
+  div.position-relative.pt-4
+    .dotted.red.w-7.h-7.position-absolute.left.top.ml-3.mb-5.z-minus
+    .container
+      .bg-white.shadow-sm.rounded.overflow-hidden
+        .bg-light-blue.p-5
+          .pb-5
+            h1=__("Apply to DCI")
+            p=__("Answer a few short questions and our admissions team will contact you to discuss our course details and your goals.")
+    .pb-5.position-relative
+      .container
+        #questionroot.d-flex.justify-content-center.shadow-sm.rounded
+          div.w-100
+        .bg-primary.h-100.w-100.position-absolute.top.left.z-minus
+  .pb-200.position-relative
+    .bg-primary.h-100.w-100.position-absolute.top.left.z-minus
