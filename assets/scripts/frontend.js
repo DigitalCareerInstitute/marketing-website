@@ -9,9 +9,16 @@ import { alertTimeout } from "./helper.js"
 require("../css/style.scss");
 
 const get_form_payload = (elements) => {
-  return Array.from(elements)
+  const notUnselectedInputs = [...elements].filter(e => e.type === 'radio' && e.checked || e.type != 'radio')
     .filter(i => i.type !== "submit")
-    .reduce((acc, el) => ({ ...acc, [el.name]: el.type === "checkbox" ? el.checked : el.name === "jobcenter" ? !!Number(el.value) : el.value }), {})
+  return notUnselectedInputs
+    .reduce((acc, el) => {
+      const inputValue = el.type === "checkbox" ? el.checked : el.name === "jobcenter" ? !!Number(el.value) : el.value
+      return {
+        ...acc,
+        [el.name]: inputValue
+      }
+    }, {})
 }
 const toggleNL = (remove = false) => {
   document.getElementById("nlbtn").disabled = remove ? "" : "disabled";
@@ -473,14 +480,13 @@ const findAnswers = (questions, model) => {
       const buttons = answers.filter(answer => !answer.extras.freeanswer && !answer.extras.dropdown);
       const freeanswers = answers.filter(answer => answer.extras.freeanswer && !answer.extras.dropdown);
       const dropdowns = answers.filter(answer => answer.extras.dropdown);
-      console.log(question);
     return `
         <div class="d-flex justify-content-center mb-5">
-          <p class="">${isGerman ? question.extras.questiontranslation : question.name}</p>
+          <p class="">${isGerman && question.extras.questiontranslation ? question.extras.questiontranslation : question.name}</p>
         </div>
         <div class="w-100">
         ${freeanswers.length > 0 ? "<div class='row'>" + freeanswers.map(answer => {
-          return `<div class="${freeanswers.length === 1 ? "col-md-12" : "col-md-6"}"><label for="freeanswer_${answer.extras.answeridentifier}" >${isGerman ? answer.extras.answertranslation : answer.name}</label>
+          return `<div class="${freeanswers.length === 1 ? "col-md-12" : "col-md-6"}"><label for="freeanswer_${answer.extras.answeridentifier}" >${isGerman && answer.extras.answertranslation ? answer.extras.answertranslation : answer.name}</label>
           <input class="form-control mb-4 freeanswer dynamicinput" name="${answer.extras.answeridentifier}" type="text" data-type="question" type="text"  id="freeanswer_${answer.extras.answeridentifier}" required/> </div>`
         }).join('') + "</div>" : ""}
         ${dropdowns.length > 0 ? `<select name="${question.extras.questionidentifier}" class='form-select mb-3' class="dynamicinput dropdown">` +
@@ -490,7 +496,7 @@ const findAnswers = (questions, model) => {
         + `</select>` : ""}
         ${buttons.map(answer => {
           return `<div class="form-group">
-          <input type="radio" id="${answer.name}" name="${question.extras.questionidentifier}" class="btn-check dynamicinputradio" data-question="${question.extras.questionidentifier}" data-nextquestions="${nextQuestions.map(a => a.id)}" value="${answer.name}" required/>
+          <input type="radio" data-trigger="${canTrigger(questions, model)}" id="${answer.name}" name="${question.extras.questionidentifier}" class="btn-check dynamicinputradio" data-question="${question.extras.questionidentifier}" data-nextquestions="${nextQuestions.map(a => a.id)}" value="${answer.name}" required/>
           <label class=" btn btn-lg mb-4 btn-white blue-light-shadow answerbutton w-100 mb-3 mr-3" for="${answer.name}">${answer.extras.answertranslation ? answer.extras.answertranslation : answer.name}</label>
           </div>`
         }).join('')}
@@ -525,7 +531,7 @@ if (
         }
       })
       document.addEventListener('change', (e) => {
-        if (e.target.classList.contains("dynamicinputradio")) {
+        if (e.target.classList.contains("dynamicinputradio") && e.target.dataset.trigger === "true") {
           e.target.elements = [e.target, [...e.target.closest('form').elements].find(i => i.type === "submit")]
           jumpToNextQuestion(e, diagramNodes, res.payload.model)
         }
