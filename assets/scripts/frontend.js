@@ -454,7 +454,7 @@ const findAnswers = (questions, model) => {
     })
   questionroot.innerHTML = `
   <div class="w-100">
-  <div id="popup" class="py-5 d-flex flex-column justify-content-between w-300px w-100 mt-n5 rounded-right-bottom rounded-bottom-left px-5">
+  <div id="popup" class="py-5 d-flex flex-column justify-content-between w-300px w-100 px-5">
   <form class="dynamicinputform">
   ${questions.map((question, index) => {
     const answers = Object.values(model.layers.find(layer => layer.type === "diagram-nodes").models)
@@ -480,7 +480,7 @@ const findAnswers = (questions, model) => {
         ${buttons.map(answer => {
           return `<div class="form-group">
           <input type="radio" id="${answer.name}" name="${question.extras.questionidentifier}" class="btn-check" data-question="${question.extras.questionidentifier}" data-nextquestions="${nextQuestions.map(a => a.id)}" value="${answer.name}" required/>
-          <label class=" btn btn-lg mb-4 btn-white blue-light-shadow answerbutton w-100 w-md-auto mb-3 mr-3" for="${answer.name}">${answer.name}</label>
+          <label class=" btn btn-lg mb-4 btn-white blue-light-shadow answerbutton w-100 mb-3 mr-3" for="${answer.name}">${answer.name}</label>
           </div>`
         }).join('')}
         </div>
