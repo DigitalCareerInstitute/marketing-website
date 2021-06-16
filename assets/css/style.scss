@@ -1965,15 +1965,7 @@ a[tabindex="0"]:focus {
 .iti input[type="tel"] {
   margin-bottom: 1.5rem !important;
 }
-.iti__flag {
-  background-image: url("../../node_modules/intl-tel-input/build/img/flags.png");
-}
 
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .iti__flag {
-    background-image: url("../../node_modules/intl-tel-input/build/img/flags@2x.png");
-  }
-}
 input[name*="phone"] {
   padding-left: 45px !important;
 }
