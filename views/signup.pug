@@ -1,17 +1,27 @@
 extends layout.pug
 block content
   div.position-relative.pt-4
-    .dotted.red.w-7.h-7.position-absolute.left.top.ml-3.mb-5.z-minus
-    .container
-      .bg-white.shadow-sm.rounded.overflow-hidden
-        .bg-light-blue.p-5
-          .pb-5
-            h1=__("Apply to DCI")
-            p=__("Answer a few short questions and our admissions team will contact you to discuss our course details and your goals.")
-    .pb-5.position-relative
-      .container
-        #questionroot.d-flex.justify-content-center.shadow-sm.rounded
-          div.w-100
-        .bg-primary.h-100.w-100.position-absolute.top.left.z-minus
-  .pb-200.position-relative
-    .bg-primary.h-100.w-100.position-absolute.top.left.z-minus
+    div.container-fluid.p-0.overflow-hidden.container-lg.pb-lg-5
+      .row
+        .col-lg-6.px-0
+          .px-5.px-lg-0.h-100
+            .dotted.red.w-7.h-7.position-absolute.left.top.ml-3.mb-5.z-minus
+            div.h-100.position-relative.h-100
+              .bottom-block
+              .bg-white.shadow-sm.rounded.overflow-hidden.h-100
+                .bg-light-blue.p-5.h-100
+                  .pb-5.pb-lg-0
+                    h1=__("Apply to DCI")
+                    p=__("Answer a few short questions and our admissions team will contact you to discuss our course details and your goals.")
+        .col-lg-6.px-0
+          
+          .position-absolute.bg-panel.bg-primary.w-100.d-lg-none.h-100
+          .px-5.px-lg-0.pb-5.pb-lg-0.position-relative.h-100
+            div.h-100
+              .px-lg-5.bg-white.shadow-sm.rounded-right-bottom.rounded-bottom-left.shift-top.shift-lg-reset.h-100
+                .px-lg-5
+                  #questionroot.d-flex.justify-content-center
+                    div.w-100
+    .bg-primary.position-relative
+      .pb-200.d-lg-none
+    .pb-200.d-none.d-lg-block
