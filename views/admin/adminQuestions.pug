@@ -1,12 +1,20 @@
 extends ../layout.pug
 block content
-  .container-fluid.mt-5.text-left.h-100.d-flex.flex-column
-    h1 Answers
-    each answer, key in answers
-      table
-        tr
-          td
-          td=answer
+  .container-fluid.text-left.h-100.d-flex.flex-column.overflow-hidden
+    #accordionExample.accordion.mb-3
+      .card
+        #headingOne.card-header
+          h2.mb-0
+            button.btn.btn-link.btn-block.text-left(type='button' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne')
+              | Answers
+        #collapseOne.collapse(aria-labelledby='headingOne' data-parent='#accordionExample')
+          .card-body
+            each answer, key in answers
+              pre=answer
 
-    h2 Questions
+
+
+    h2 
+      | Questions
+      button(class='btn btn-secondary badge ml-2' type='button' data-container='body' data-toggle='popover' data-trigger='hover' data-placement='top' data-content='Link questions to one or multiple answers. If a question is followed by a freeanswer, it should be the only anwer of that question')  ? 
     #questionsdiagramroot.flex-grow-1
