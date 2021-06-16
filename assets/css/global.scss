@@ -138,3 +138,13 @@ $theme-colors: (
 .border-radius-0 {
   border-radius: 0;
 }
+.btn-check {
+    position: absolute;
+    clip: rect(0,0,0,0);
+    pointer-events: none;
+}
+.btn-check:checked ~ label {
+  background-color: #1f3fc7 !important;
+  color: #fff !important;
+  border-color: #1f3fc7 !important;
+}

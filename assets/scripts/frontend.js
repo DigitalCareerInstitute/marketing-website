@@ -8,6 +8,11 @@ import "bootstrap/js/dist/alert";
 import { alertTimeout } from "./helper.js"
 require("../css/style.scss");
 
+const get_form_payload = (elements) => {
+  return Array.from(elements)
+    .filter(i => i.type !== "submit")
+    .reduce((acc, el) => ({ ...acc, [el.name]: el.type === "checkbox" ? el.checked : el.name === "jobcenter" ? !!Number(el.value) : el.value }), {})
+}
 const toggleNL = (remove = false) => {
   document.getElementById("nlbtn").disabled = remove ? "" : "disabled";
   document.getElementById("nlbtn").innerHTML = remove ? "Subscribe" : "Loading";
@@ -276,9 +281,7 @@ Array.from(document.querySelectorAll(".ajaxform")).map(form => {
     e.target.querySelector('button').disabled = true;
     e.target.querySelector('#contactform_text').classList.add("d-none")
     e.target.querySelector('#contactform_spinner').classList.remove("d-none")
-    let payload = Array.from(e.target.elements)
-      .filter(i => i.type !== "submit")
-      .reduce((acc, el) => ({ ...acc, [el.name]: el.type === "checkbox" ? el.checked : el.name === "jobcenter" ? !!Number(el.value) : el.value }), {})
+    get_form_payload(e.target.elements)
     payload = { ...payload, course: e.target.dataset.course }
 
     if (localStorage.getItem('dcianswers')) {
@@ -431,49 +434,69 @@ Array.from(document.querySelectorAll('.dropdown-custom')).map(dropdown => {
 // setObserver(document.querySelector('.intersection_observed'))
 
 const questionroot = document.getElementById("questionroot")
-const findAnswers = (question, model) => {
-  const answers = Object.values(model.layers.find(layer => layer.type === "diagram-nodes").models)
-    .filter(links => Object.values(model.layers.find(layer => layer.type === "diagram-links").models)
-      .filter(layer => layer.source === question.id).map(l => l.target).includes(links.id))
+const findAnswers = (questions, model) => {
 
-  answers.filter(answer => answer.extras && !!answer.extras.freeanswer)
-  if (!!answers.filter(answer => answer.extras && !!answer.extras.freeanswer).length) {
 
-  }
-  // answers.filter(answer => answer.extras && !!answer.extras.freeanswer)
-  console.log(answers);
-  // if (!!answers.filter(answer => answer.extras && !!answer.extras.freeanswer).length) {
+  var linksToNextQ = questions.map(q => {
+    return Object.values(model.layers.find(layer => layer.type === "diagram-nodes").models)
+      .filter(links => Object.values(model.layers.find(layer => layer.type === "diagram-links").models)
+        .filter(layer => layer.source === q.id).map(l => l.target).includes(links.id))
+  }).flat().map(a => a.ports[1].links).flat()
 
-  // }
-  const buttons = answers.filter(answer => !answer.extras.freeanswer && !answer.extras.dropdown)
-  const freeanswers = answers.filter(answer => answer.extras.freeanswer && !answer.extras.dropdown)
-  const dropdowns = answers.filter(answer => answer.extras.dropdown)
-  console.log('dropdowns', dropdowns);
+  var nextQuestions = Object.values(model.layers.find(layer => layer.type === "diagram-nodes").models)
+    .filter(node => {
+      return node.ports[0].links.find(l => {
+        if (linksToNextQ.includes(l)) {
+          console.log(linksToNextQ.includes(l))
+          return node
+        }
+      })
+    })
   questionroot.innerHTML = `
-    <div class="w-100">
-      <div id="popup" class="py-5 d-flex flex-column justify-content-between w-300px w-100 mt-n5 rounded-right-bottom rounded-bottom-left px-5">
+  <div class="w-100">
+  <div id="popup" class="py-5 d-flex flex-column justify-content-between w-300px w-100 mt-n5 rounded-right-bottom rounded-bottom-left px-5">
+  <form class="dynamicinputform">
+  ${questions.map((question, index) => {
+    const answers = Object.values(model.layers.find(layer => layer.type === "diagram-nodes").models)
+      .filter(links => Object.values(model.layers.find(layer => layer.type === "diagram-links").models)
+        .filter(layer => layer.source === question.id).map(l => l.target).includes(links.id))
+    const buttons = answers.filter(answer => !answer.extras.freeanswer && !answer.extras.dropdown)
+    const freeanswers = answers.filter(answer => answer.extras.freeanswer && !answer.extras.dropdown)
+    const dropdowns = answers.filter(answer => answer.extras.dropdown)
+    return `
         <div class="d-flex justify-content-center mb-5">
-          <p class="">${question.name}</p>
+          <p class="">${question.name !== "Freeanswer" ? question.name : ""}</p>
         </div>
         <div class="w-100">
-          ${buttons.map(answer => {
-            return `<button class="btn btn-lg mb-4 btn-white blue-light-shadow answerbutton w-100 w-md-auto mb-3 mr-3" data-question="${question.extras.questionidentifier}" data-answer="${answer.id}">${answer.name}</button>`
-          }).join('')}
-          ${freeanswers.map(answer => {
-            return `<input class="form-control mb-4" name="freeanswer" type="text" data-type="question" placeholder="Enter custom ${question.extras.questionidentifier}" type="text" id="freeanswer" />
-            <button class="btn btn-lg w-100 btn-outline-secondary mb-4  mr-2 answerbutton" data-answer="${answers[0].id}" data-question="${question.extras.questionidentifier}">Next</button>`
-          }).join('')}
-          ${dropdowns.length > 0 && `<select class='form-select mb-3' id="dropdown">` + dropdowns.map(answer => {
-            return answer.name.split(',').map(dropdownItem => `<option class="form-control mb-4" name="button" type="text" data-type="question" placeholder="Enter custom ${question.extras.questionidentifier}" type="text" > ${dropdownItem}`).join('')
-          }).join('')
-    + `</select><button class="btn btn-lg w-100 btn-outline-secondary mb-4  mr-2 answerbutton" data-answer="${answers[0].id}" data-question="${question.extras.questionidentifier}">Next</button>`}
+        ${freeanswers.map(answer => {
+          return `<label for="freeanswer_${answer.extras.answeridentifier}" >${answer.extras.answeridentifier}</label>
+          <input class="form-control mb-4 freeanswer dynamicinput" name="${answer.extras.answeridentifier}" type="text" data-type="question" placeholder="${answer.extras.answeridentifier}" type="text"  id="freeanswer_${answer.extras.answeridentifier}" required/>`
+        }).join('')}
+        ${dropdowns.length > 0 ? `<select name="${question.extras.questionidentifier}" class='form-select mb-3' class="dynamicinput dropdown">` +
+        dropdowns.map(answer => {
+          return answer.name.split(',').map(dropdownItem => `<option class="form-control mb-4" name="button" type="text" data-type="question" placeholder="${answer.extras.answeridentifier}" type="text" > ${dropdownItem}`).join('')
+        }).join('')
+        + `</select>` : ""}
+        ${buttons.map(answer => {
+          return `<div class="form-group">
+          <input type="radio" id="${answer.name}" name="${question.extras.questionidentifier}" class="btn-check" data-question="${question.extras.questionidentifier}" data-nextquestions="${nextQuestions.map(a => a.id)}" value="${answer.name}" required/>
+          <label class=" btn btn-lg mb-4 btn-white blue-light-shadow answerbutton w-100 w-md-auto mb-3 mr-3" for="${answer.name}">${answer.name}</label>
+          </div>`
+        }).join('')}
         </div>
+
+        `
+  }).join('')}
+      <button class="btn btn-lg w-100 btn-outline-secondary mb-4  mr-2 answerbutton" data-nextquestions="${nextQuestions.map(a => a.id)}" type="submit">Next</button>
+      </form>
       </div>
     </div>`
 }
 
-if (questionroot && !localStorage.getItem('dcianswers')) {
-
+if (
+  questionroot
+  // && !localStorage.getItem('dcianswers') 
+) {
   fetch(`/admin/questions/fetch`, {
     headers: {
       "content-type": "application/json"
@@ -482,18 +505,15 @@ if (questionroot && !localStorage.getItem('dcianswers')) {
     .then(res => {
       const diagramNodes = res.payload.model.layers.find(layer => layer.type === "diagram-nodes").models
       const links = res.payload.model.layers.find(layer => layer.type === "diagram-links").models
-      const startquestion = Object.values(diagramNodes).find(model => model.ports.find(port => port.label === "In").links.length === 0)
-      document.addEventListener('click', (e) => {
-        if (e.target.classList.contains("answerbutton")) {
-          const freeanswer = document.getElementById('freeanswer')
-          const dropdown = document.getElementById('dropdown')
-          localStorage.setItem('dcianswers', JSON.stringify({ ...JSON.parse(localStorage.getItem('dcianswers')), [e.target.dataset.question]: dropdown ? dropdown.selectedOptions[0].innerText : freeanswer && freeanswer.value !== '' ? freeanswer.value : e.target.innerText }))
-
-          const currentAnswer = diagramNodes[e.target.dataset.answer]
-          var linkToNext = links[currentAnswer.ports.find(port => port.name === "Out").links[0]]
-          if (linkToNext) {
-            const nextQuestion = Object.values(diagramNodes).find(model => model.id === linkToNext[linkToNext.target === currentAnswer.id ? "source" : "target"])
-            findAnswers(nextQuestion, res.payload.model)
+      const startquestion = Object.values(diagramNodes).filter(model => model.ports.find(port => port.label === "In").links.length === 0)
+      document.addEventListener('submit', (e) => {
+        if (e.target.classList.contains("dynamicinputform")) {
+          e.preventDefault()
+          const form_payload = get_form_payload(e.target.elements)
+          localStorage.setItem('dcianswers', JSON.stringify({ ...JSON.parse(localStorage.getItem('dcianswers')), ...form_payload }))
+          const nextQuestions = Object.values(diagramNodes).filter(n => [...e.target.elements].find(i => i.type === "submit").dataset.nextquestions.includes(n.id.split(',')))
+          if (nextQuestions.length > 0) {
+            findAnswers(nextQuestions, res.payload.model)
           } else {
             let payload = JSON.parse(localStorage.getItem('dcianswers'))
             fetch(`/submitanswers`, {
