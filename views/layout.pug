@@ -5,7 +5,6 @@ include mixins/joblist
 include mixins/singleEvent
 include mixins/singleEmployee
 include mixins/contactform
-include mixins/signupform
 include mixins/dataPrivacy
 include mixins/storyForm
 include mixins/courseForm
@@ -208,16 +207,6 @@ html.h-100(lang=locale === "de" ? 'de': 'en')
               h2.display-4.text-center.text-uppercase=__('Contact us')
               p.mb-3.text-center.text-muted=__("Let’s connect! We'll come back to you as soon as possible")
             +contactform
-
-    #signupFormModal.modal(tabindex='-1', role='dialog', aria-labelledby='contactFormModal', aria-hidden='true')
-      .modal-dialog.modal-dialog-centered
-        .modal-content.bg-light.border-radius-0
-          .p-4
-            .mb-2
-              h2.display-4.text-center.text-uppercase=__('Signup')
-              p.mb-3.text-center.text-muted=__("Let’s connect! Our admissions team will call you soon to chat about our courses and your goals")
-            +signupform
-
 
     if currentPath && !currentPath.includes('admin') && !currentPath.includes('users')
       .modal#dataPrivacy
