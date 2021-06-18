@@ -164,9 +164,11 @@ module.exports.contact = async (req, res, next) => {
 
     const mailOptions = {
       from: 'contact@digitalcareerinstitute.org',
-      to: companytour
-        ? settings.tourmailreceiver
-        : settings.mailreceiver,
+      to: !req.headers.host.includes('digitalcareerinstitute.org')
+        ? process.env.MAILRECEIVER
+        : companytour
+          ? settings.tourmailreceiver
+          : settings.mailreceiver,
       subject: companytour
         ? 'Company Tour request from website'
         : 'Message on website',
