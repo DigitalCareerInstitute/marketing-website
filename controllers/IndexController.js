@@ -84,7 +84,7 @@ module.exports.contactLocations = async (req, res) => {
 };
 module.exports.contact = async (req, res, next) => {
   try {
-    const { firstname, lastname, age, age_years, language_german, language_english, email, body, phone, locations, companytour, signup_form, TermsofService, afa_jc_registered_, form_are_you_currently_unemployed } = req.body
+    const { firstname, lastname, age, age_years, language_level_english, language_level_german, email, body, phone, locations, companytour, signup_form, TermsofService, afa_jc_registered_, form_are_you_currently_unemployed } = req.body
     if (age) {
       console.log('Bot stepped into honeypot!')
       if (req.headers['content-type'] === 'application/json') {
@@ -213,11 +213,11 @@ module.exports.contact = async (req, res, next) => {
       if (age_years) {
         properties.push({ property: 'age', value: age_years })
       }
-      if (language_german) {
-        properties.push({ property: 'language_level_english', value: language_german })
+      if (language_level_english) {
+        properties.push({ property: 'language_level_english', value: language_level_english })
       }
-      if (language_english) {
-        properties.push({ property: 'language_level_german', value: language_english })
+      if (language_level_german) {
+        properties.push({ property: 'language_level_german', value: language_level_german })
       }
       if (req.session.utmParams && req.session.utmParams.utm_source) {
         properties.push({ property: 'utm_source', value: req.session.utmParams.utm_source })
