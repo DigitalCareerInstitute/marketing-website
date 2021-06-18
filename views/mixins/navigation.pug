@@ -28,8 +28,7 @@ mixin navigation
             a.mx-0.mx-xl-3.mx-lg-2.nav-link.d-flex.align-items-center.h-100.z-1(class=currentPath && currentPath.includes('/events') && !currentPath.includes('/admin') ? "active" : "", href='/events')
               =__("Events")
           li.position-relative.nav-item
-            a.mx-0.mx-xl-3.mx-lg-2.nav-link.d-flex.align-items-center.h-100.z-1(class=currentPath && currentPath.includes("/stories") ? "active" : "", href='/stories')=__("Stories")
-
+            a.mx-0.mx-xl-3.mx-lg-2.nav-link.d-flex.align-items-center.h-100.z-1(href="/contact", class=currentPath == "/contact" ? "active" : "")=__("Campuses")
           li.position-relative.nav-item
             a.mx-0.mx-xl-3.mx-lg-2.nav-link.d-flex.align-items-center.h-100.z-1(class=currentPath && currentPath.includes("/jobcenter") ? "active" : "", href='/jobcenter')=__("Jobcenter")
 
@@ -57,13 +56,9 @@ mixin navigation
                 each page in headerPages
                   if page.metapage
                     a.dropdown-item.nav-link(class= currentPath === ("/pages/" + page.slug) ? "active" : "" href='/pages/'+ page.slug)=page.title
+
           li.position-relative.nav-item.dropdown-custom.z-foreground
-            a.contactlinktext.dropdown-toggle.mx-0.mx-xl-3.mx-lg-2.nav-link.d-flex.align-items-center.h-100( href="#", class=course && course.coloraccent ? `` : `text-white`  aria-haspopup="true" aria-expanded="false"  )=__("Contact")
-            .contactlink(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
-            .dropdown-menu.p-0.border-radius-0.shadow-sm(aria-labelledby='navbarDropdownMenuLink')
-              a.dropdown-item.nav-link(data-toggle='modal', data-target='#signupFormModal' aria-haspopup="true" aria-expanded="false" href="/signup")=__("Apply Now")
-              a.dropdown-item.nav-link(data-toggle='modal', data-target='#contactFormModal' aria-haspopup="true" aria-expanded="false" href="/contact")=__("Contact")
-              a.dropdown-item.nav-link(href="/contact", class=currentPath == "/contact" ? "active" : "")=__("Campuses")
+            a.ml-xl-3.ml-lg-2.nav-link.d-flex.align-items-center.h-100(href="/signup")=__("Apply Now")
 
           li.position-relative.nav-item.d-flex.align-items-center
             a.ml-xl-3.ml-lg-2.nav-link.d-flex.align-items-center.h-100(style=course && course.coloraccent && locale === "de" ? `color: ${course.coloraccent}!important` : `` class=locale === "de" ? "active cursor-default" : "" href=locale === "de" ? "#": "/i18n/de") DE

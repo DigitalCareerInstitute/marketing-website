@@ -16,7 +16,7 @@ mixin singleCourse
               span.font-weight-bold.text-uppercase.d-flex.align-items-center(style=`color: ${course.textColor}`)
                 ="Online"
           div.my-3.my-y-xl-5
-            a.btn.btn-white.px-4.mt-3.mt-y-xl-5(data-toggle='modal', data-target='#signupFormModal' class=course && course.coloraccent ? `` : `text-primary`, style=`color: --var(dark)!important` : `` ): +translate("Apply Now")
+            a.btn.btn-white.px-4.mt-3.mt-y-xl-5(href="/signup" class=course && course.coloraccent ? `` : `text-primary`, style=`color: --var(dark)!important` : `` ): +translate("Apply Now")
         .col-md-6.py-5.py-md-0
           .floatings.h-100
             .w-100.px-lg-5.align-items-end.h-100.justify-content-end.d-flex.flex-column
@@ -75,7 +75,7 @@ mixin singleCourse
             = course.joinTheTechDisruption
           else
             +translate("Join the tech disruption at DCI and launch your career in tech.")
-        a.btn.btn-lg.px-4.mb-5.text-white( data-toggle='modal', data-target='#signupFormModal' class=course && course.coloraccent ? `hover-transparent` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}!important` : `` ): +translate("Apply Now")
+        a.btn.btn-lg.px-4.mb-5.text-white(href="/signup" class=course && course.coloraccent ? `hover-transparent` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}!important` : `` ): +translate("Apply Now")
     .container.container-fluid-courses.position-relative
       if course.features.filter(t => !!t.title).length > 0   
         section.my-5.pt-5
@@ -268,11 +268,11 @@ mixin singleCourse
                     span= course.joinTheTechDisruption
                   else
                     +translate("Join the tech disruption at DCI and launch your career in tech.")
-                a.btn.btn-lg.px-4.mb-5.text-white( data-toggle='modal', data-target='#signupFormModal' class=course && course.coloraccent ? `hover-transparent` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}!important` : `` ): +translate("Apply Now")
+                a.btn.btn-lg.px-4.mb-5.text-white(href="/signup" class=course && course.coloraccent ? `hover-transparent` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}!important` : `` ): +translate("Apply Now")
                 .mb-3
                   h3: +translate("Have questions?")
                   +translate("Our education counselors are always there to advise you.")
-                a.btn.btn-lg.px-4.mb-5.text-white( data-toggle='modal', data-target='#signupFormModal' class=course && course.coloraccent ? `hover-transparent` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}!important` : `` ): +translate("Contact us")
+                a.btn.btn-lg.px-4.mb-5.text-white(href="/signup" class=course && course.coloraccent ? `hover-transparent` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}!important` : `` ): +translate("Contact us")
                 if course.curriculumPdf
                   .mb-3
                     h3: +translate("Download Course Overview")

@@ -42,29 +42,6 @@
 }
 
 #headernav > li {
-  > .contactlink {
-    content: "";
-    transition: transform 0.3s ease, color 0.3s ease, opacity 0.3s ease;
-    background: inherit;
-    top: 0;
-    display: block;
-    position: absolute;
-    z-index: -1;
-    opacity: 1;
-    color: white;
-    height: 2em;
-    transform: skew(-15deg) scale(1, 1);
-    left: -10px;
-    width: calc(100% + 20px);
-    @include media-breakpoint-up(lg) {
-      height: 100%;
-      transform: skew(-45deg) scale(1, 1);
-      left: -1px;
-      width: calc(100% + 2px);
-    }
-  }
-}
-#headernav > li {
   z-index: 0;
   a {
     font-weight: 500;
@@ -76,9 +53,7 @@
   > a:focus,
   > a:focus-within,
   > a:hover {
-    &:not(.contactlink) {
-      color: $primary;
-    }
+    color: $primary;
   }
 }
 @include media-breakpoint-up(lg) {
@@ -89,9 +64,7 @@
     > a:focus,
     > a:focus-within,
     > a:hover {
-      &:not(.contactlink) {
-        color: #040a3b;
-      }
+      color: #040a3b;
     }
   }
 }
@@ -101,9 +74,7 @@
   &:focus,
   &:focus-within,
   &:hover {
-    a.contactlinktext {
-      color: var(--dark);
-    }
+    color: var(--dark);
   }
 }
 .dropdown-custom {
@@ -182,17 +153,6 @@ body:not(.index) #nav-primary {
     color: $white !important;
   }
 }
-
-/* @include media-breakpoint-up(md) {
-  .not-set-active > li { a,
-  > a.active,
-  > a:active,
-  > a:focus,
-  > a:focus-within,
-  > a:hover &:not(.contactlink) {
-    color: #040a3b !important;
-  }
-} */
 
 body:not(.admin) .btn:not(.btn-lg) {
   padding: 0.375rem 1.5rem;
