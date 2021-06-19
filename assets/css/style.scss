@@ -1697,7 +1697,7 @@ body[class*="pages-"] {
   border-color: $red-light!important;
 }
 .border-light-blue {
-  border-color: $light-blue!important;
+  border-color: $primary-trans!important;
 }
 .border-md-0 {
   @include media-breakpoint-up(md) {
