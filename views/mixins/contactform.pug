@@ -27,7 +27,7 @@ mixin contactform
             each location in global_locations.filter(l => !l.isCampus)
               option(value=(location._id) selected=contact && contact.locations && contact.locations[0].toString() === location._id.toString() ?  "selected" :  false )=location.name
  
-        p.dataPrivacyLink
+        p
           label.checkbox.TermsofService.text-muted
             =__("I have read and agree to the")
             input(type='checkbox', name='TermsofService', value="true", required)
