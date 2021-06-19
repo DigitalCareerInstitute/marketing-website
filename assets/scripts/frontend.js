@@ -476,7 +476,7 @@ const findAnswers = (questions, model) => {
             <div class="d-flex justify-content-center mb-5 px-3">
               <p class="text-center">${isGerman && question.extras.questiontranslation ? question.extras.questiontranslation : question.name}</p>
             </div>
-            <div class="px-lg-5">
+            <div class="">
               <div class="w-100 px-5 px-lg-3 px-xl-5">
               ${freeanswers.length > 0 ? "<div class='row'>" + freeanswers.map(answer => {
                 return `<div class="${freeanswers.length === 1 ? "col-md-12" : "col-md-6"}"><label for="freeanswer_${answer.extras.answeridentifier}" >${isGerman && answer.extras.answertranslation ? answer.extras.answertranslation : answer.name}</label>
@@ -495,9 +495,12 @@ const findAnswers = (questions, model) => {
                   </div>
                 </div>` }).join('')}
               <div class="px-5 px-lg-3 px-xl-5 mt-5">
-              <div class="px-lg-5">
-                ${nextQuestions.length === 0 ? `<p class="dataPrivacyLink"><label class="checkbox TermsofService text-muted">${isGerman ? `Gelesen und akzeptiert` : `I have read and agree to the`}:<input type="checkbox" name="TermsofService" value="true" required="required"><span class="checkmark"></span></label><a class="ml-1" data-toggle="modal" data-target="#dataPrivacy">${isGerman ? `Datenschutz` : `Data privacy`}</a></p>` : ``}
-                ${canTrigger(questions, model) ? `` : `<button class="btn btn-lg btn-outline-secondary mb-4  mr-2 answerbutton ${nextQuestions.length === 0 ? "w-50 w-md-100 float-right" : "w-100"}" data-nextquestions="${nextQuestions.map(a => a.id)}" type="submit">${nextQuestions.length === 0 ? (isGerman ? `Abschicken` : `Submit`) : (isGerman ? `Weiter` : `Next`)}`}</button>
+              <div class="">
+                ${nextQuestions.length === 0 ? `<p><label class="checkbox TermsofService text-muted">${isGerman ? `Gelesen und akzeptiert` : `I have read and agree to the`}<input type="checkbox" name="TermsofService" value="true" required="required"><span class="checkmark"></span></label><a href="#" class="ml-1 font-weight-normal text-dark text-decoration-none" data-toggle="modal" data-target="#dataPrivacy">${isGerman ? `Datenschutz` : `Data privacy`}</a></p>` : ``}
+                ${canTrigger(questions, model) ? `` : `<div class="d-flex justify-content-end"><button class="btn btn-lg mb-4  mr-2 answerbutton ${nextQuestions.length === 0 ? "w-md-50 w-100 btn-secondary" : "btn-outline-secondary w-100"}" data-nextquestions="${nextQuestions.map(a => a.id)}" type="submit">${nextQuestions.length === 0 ? (isGerman ? `Abschicken` : `Submit`) : (isGerman ? `Weiter` : `Next`)}`}</button></div>
+                <p class='text-muted small asterix'>
+                  With this registration you agree with the storage of your data. These data will be used by Digital Career Institute gGmbH to contact you. You have the right to access, modify, rectify and delete these data.
+                </p>
               </div>
             </div>
         </form>

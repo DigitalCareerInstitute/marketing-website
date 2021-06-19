@@ -783,10 +783,6 @@ body:not(.admin) {
   color: $gray-800;
 }
 
-.dataPrivacyLink {
-  text-decoration: underline;
-}
-
 /******************************************/
 
 .checkbox {
@@ -821,7 +817,7 @@ body:not(.admin) {
 /* Create a custom checkbox */
 .checkmark {
   position: absolute;
-  top: 4px;
+  top: 7px;
   left: 0;
   height: 15px;
   width: 15px;
@@ -1464,7 +1460,7 @@ body:not(.admin) {
 }
 .w-md-100 {
   @include media-breakpoint-up(md) {
-    width: 100%;
+    width: 100% !important;
   }
 }
 .w-md-auto {
@@ -1928,4 +1924,13 @@ a[tabindex="0"]:focus {
 
 input[name*="phone"] {
   padding-left: 45px !important;
+}
+.asterix{ 
+  position: relative;
+  &:before {
+    content: "*";
+    position: absolute;
+    top: 0;
+    left: -1em;
+  }
 }
