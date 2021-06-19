@@ -13,7 +13,6 @@ $bluedark: #04083c;
 $polygonbackground: #0032ff;
 $bluepale: #3d4269;
 $bluetrans: #f4f5f7;
-$light-blue: #E6EFFF;
 $muted: #868686;
 
 $green: #7aff29;
@@ -62,12 +61,12 @@ $theme-colors: (
 }
 
 .bg-light-blue {
-  background-color: $light-blue;
+  background-color: $primary-trans;
 }
 
 .bg-md-light-blue {
   @include media-breakpoint-up(md) {
-    background-color: $light-blue;
+    background-color: $primary-trans;
   }
 }
 
