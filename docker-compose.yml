@@ -1,13 +1,12 @@
 version: '3'
 services:
-
   mongo:
     container_name: mongo
     image: mongo
     volumes:
       - /data:/data/db
     ports:
-      - "27018:27017"
+      - '27018:27017'
 
   marketing-website:
     container_name: marketing-website
@@ -15,8 +14,7 @@ services:
     build: .
     depends_on:
       - mongo
-    ports:
-      -3000:3000
+    ports: -3000:3000
     links:
       - mongo
     environment:
