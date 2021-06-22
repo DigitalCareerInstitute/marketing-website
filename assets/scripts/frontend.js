@@ -585,3 +585,11 @@ const jumpToNextQuestion = (e, diagramNodes, model) => {
       })
   }
 }
+
+const input = document.querySelector('input[name*="phone"]')
+if (input) {
+  const iti = intlTelInput(input, {
+    initialCountry: "de",
+    utilsScript: utilsScript
+  });
+}
