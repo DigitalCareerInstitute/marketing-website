@@ -42,6 +42,27 @@
 }
 
 #headernav > li {
+  > .contactlink {
+    content: "";
+    transition: transform 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+    background: inherit;
+    top: 0;
+    display: block;
+    position: absolute;
+    z-index: -1;
+    opacity: 1;
+    color: white;
+    height: 2em;
+    transform: skew(-15deg) scale(1, 1);
+    left: -10px;
+    width: calc(100% + 20px);
+    @include media-breakpoint-up(lg) {
+      height: 100%;
+      transform: skew(-45deg) scale(1, 1);
+      left: -1px;
+      width: calc(100% + 2px);
+    }
+  }
   z-index: 0;
   a {
     font-weight: 500;
@@ -53,7 +74,9 @@
   > a:focus,
   > a:focus-within,
   > a:hover {
-    color: $primary;
+    &:not(.contactlink) {
+      color: $primary;
+    }
   }
 }
 @include media-breakpoint-up(lg) {
@@ -64,7 +87,9 @@
     > a:focus,
     > a:focus-within,
     > a:hover {
-      color: #040a3b;
+      &:not(.contactlink) {
+        color: #040a3b;
+      }
     }
   }
 }
@@ -74,7 +99,9 @@
   &:focus,
   &:focus-within,
   &:hover {
-    color: var(--dark);
+    a.contactlinktext {
+      color: var(--dark);
+    }
   }
 }
 .dropdown-custom {
