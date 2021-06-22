@@ -15,7 +15,7 @@ mixin navigation
         span.navbar-toggler-icon
         span.sr-only="Toggle menu"
       #collapsingNavbar3.navbar-collapse.collapse.w-100.mt-4.mt-md-0.align-items-stretch
-        ul.nav.navbar-nav.my-3.my-lg-0.ml-auto.w-100.justify-content-end#headernav(class=currentPath && currentPath.includes('/courses') && currentPath.lastIndexOf('/') > 0 ? 'not-set-active' : ' ' )
+        ul.nav.navbar-nav.my-3.my-lg-0.ml-auto.w-100.justify-content-end.flex-nowrap#headernav(class=currentPath && currentPath.includes('/courses') && currentPath.lastIndexOf('/') > 0 ? 'not-set-active' : ' ' )
           li.position-relative.nav-item.dropdown-custom
             a.courseslink.dropdown-toggle.mx-0.mx-xl-3.mx-lg-1.nav-link.d-flex.align-items-center.h-100.z-1( class=currentPath === "/courses" || ( currentPath.includes("/courses") && course && course.coloraccent ) ? `active` : ``  href="#" aria-haspopup="true" aria-expanded="false")
               =__("Courses")
@@ -58,7 +58,8 @@ mixin navigation
                     a.dropdown-item.nav-link(class= currentPath === ("/pages/" + page.slug) ? "active" : "" href='/pages/'+ page.slug)=page.title
 
           li.position-relative.nav-item.dropdown-custom.z-foreground
-            a.ml-xl-3.ml-lg-2.nav-link.d-flex.align-items-center.h-100(href="/signup")=__("Apply Now")
+            a.contactlinktext.dropdown-toggle.mx-0.mx-xl-3.mx-lg-2.nav-link.d-flex.align-items-center.h-100(href="/signup" class=course && course.coloraccent ? `` : `text-white` )=__("Apply Now")
+            .contactlink(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
 
           li.position-relative.nav-item.d-flex.align-items-center
             a.ml-xl-3.ml-lg-2.nav-link.d-flex.align-items-center.h-100(style=course && course.coloraccent && locale === "de" ? `color: ${course.coloraccent}!important` : `` class=locale === "de" ? "active cursor-default" : "" href=locale === "de" ? "#": "/i18n/de") DE
