@@ -498,8 +498,8 @@ const findAnswers = (questions, model) => {
               <div class="">
                 ${nextQuestions.length === 0 ? `<p><label class="checkbox TermsofService text-muted">${isGerman ? `Gelesen und akzeptiert` : `I have read and agree to the`}<input type="checkbox" name="TermsofService" value="true" required="required"><span class="checkmark"></span></label><a href="#" class="ml-1 font-weight-normal text-dark text-decoration-none" data-toggle="modal" data-target="#dataPrivacy">${isGerman ? `Datenschutz` : `Data privacy`}</a></p>` : ``}
                 ${canTrigger(questions, model) ? `` : `<div class="d-flex justify-content-end"><button class="btn btn-lg mb-4  mr-2 answerbutton ${nextQuestions.length === 0 ? "w-md-50 w-100 btn-secondary" : "btn-outline-secondary w-100"}" data-nextquestions="${nextQuestions.map(a => a.id)}" type="submit">${nextQuestions.length === 0 ? (isGerman ? `Abschicken` : `Submit`) : (isGerman ? `Weiter` : `Next`)}`}</button></div>
-                <p class='text-muted small asterix'>
-                  With this registration you agree with the storage of your data. These data will be used by Digital Career Institute gGmbH to contact you. You have the right to access, modify, rectify and delete these data.
+                ${nextQuestions.length === 0 ? `<p class='text-muted small asterix'>
+                  With this registration you agree with the storage of your data. These data will be used by Digital Career Institute gGmbH to contact you. You have the right to access, modify, rectify and delete these data.` : ``}
                 </p>
               </div>
             </div>
