@@ -1,8 +1,8 @@
-require('dotenv').config({path: __dirname + '/../.env'});
+require('dotenv').config({ path: __dirname + '/../.env' });
 const mongoose = require('mongoose')
 mongoose.Promise = global.Promise
 const Story = require("../../models/story");
-const {isAdmin} = require("../../helpers/helper");
+const { isAdmin } = require("../../helpers/helper");
 const multer = require('multer');
 const path = require("path");
 const jimp = require('jimp');
@@ -18,7 +18,7 @@ if (process.env.NODE_ENV !== "test" && !process.env.IMAGE_UPLOAD_DIR) {
 
 module.exports.getStories = async function (req, res) {
   //here we get the whole collection and sort by order
-  const query = !isAdmin(req) ? {userId: req.user._id} : {}
+  const query = !isAdmin(req) ? { userId: req.user._id } : {}
 
   let stories = await Story.find(query)
     .sort("order")
@@ -32,7 +32,7 @@ module.exports.getStories = async function (req, res) {
 }
 
 module.exports.editStory = async function (req, res) {
-  const query = !isAdmin(req) ? {userId: req.user._id, slug: req.params.slug} : {slug: req.params.slug}
+  const query = !isAdmin(req) ? { userId: req.user._id, slug: req.params.slug } : { slug: req.params.slug }
   let stories = await Story.find({})
     .sort("order")
     .exec();
@@ -64,6 +64,8 @@ module.exports.createStory = async (req, res) => {
     story.order = req.body.order; // set the stories order (comes from the
     story.isCompanyStory = !!req.body.isCompanyStory; // set the stories order (comes from the
     story.avatar = req.files.avatar ? req.body.avatar : story.avatar;
+    story.avatarSmall = req.files.avatar ? req.body.avatar : story.avatarSmall;
+    story.avatarMedium = req.files.avatar ? req.body.avatar : story.avatarMedium;
     story.companylogo = req.files.companylogo ? req.body.companylogo : story.companylogo;
 
     story.userId = !isAdmin(req) ? req.user.id : null
@@ -83,7 +85,7 @@ module.exports.createStory = async (req, res) => {
 }
 module.exports.deleteStory = async (req, res, next) => {
   try {
-    const query = !isAdmin(req) ? {userId: req.user._id, slug: req.params.slug} : {slug: req.params.slug}
+    const query = !isAdmin(req) ? { userId: req.user._id, slug: req.params.slug } : { slug: req.params.slug }
     Story.findOne(query)
       .populate('language')
       .populate('languageVersion')
@@ -101,7 +103,7 @@ module.exports.deleteStory = async (req, res, next) => {
 }
 
 module.exports.updateStory = async function (req, res) {
-  const query = !isAdmin(req) ? {userId: req.user._id, slug: req.params.slug} : {slug: req.params.slug}
+  const query = !isAdmin(req) ? { userId: req.user._id, slug: req.params.slug } : { slug: req.params.slug }
   let story = await Story.findOne(query).populate('languageVersion').exec()
   try {
     if (req.body.avatar && story.avatar && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, story.avatar))) {
@@ -120,11 +122,22 @@ module.exports.updateStory = async function (req, res) {
     story.isCompanyStory = !!req.body.isCompanyStory;
 
     story.avatar = req.files.avatar ? req.body.avatar : story.avatar;
+    story.avatarSmall = req.files.avatar ? `${req.body.avatar.split('.').join('-small.')}` : story.avatarSmall;
+    story.avatarMedium = req.files.avatar ? `${req.body.avatar.split('.').join('-medium.')}` : story.avatarMedium;
     story.companylogo = req.files.companylogo ? req.body.companylogo : story.companylogo;
 
-    if(story.languageVersion){
+    if (story.languageVersion) {
       story.languageVersion.isCompanyStory = story.isCompanyStory;
       await story.languageVersion.save();
+    }
+    if (story.avatar && fs.existsSync(`${story.avatar}.jpg`)) {
+      await fs.unlinkSync(`${process.env.IMAGE_UPLOAD_DIR}${story.avatar}`)
+    }
+    if (story.avatarSmall && fs.existsSync(`${story.avatarSmall}.jpg`)) {
+      await fs.unlinkSync(`${process.env.IMAGE_UPLOAD_DIR}${story.avatarSmall}`)
+    }
+    if (story.avatarMedium && fs.existsSync(`${story.avatarMedium}.jpg`)) {
+      await fs.unlinkSync(`${process.env.IMAGE_UPLOAD_DIR}${story.avatarMedium}`)
     }
     await story.save();
     req.flash("success", `Successfully updated ${story.title}`);
@@ -145,7 +158,7 @@ const storage = multer.diskStorage({
     next(null, './temp')
   },
   filename: function (request, file, next) {
-    next(null, uuid(4))
+    next(null, `${uuid(4)}.jpg`)
   }
 })
 
@@ -160,12 +173,12 @@ module.exports.uploadImages = multer({
     if (file.mimetype.startsWith('image/')) {
       next(null, true)
     } else {
-      next({message: 'That filetype is not allowed!'}, false)
+      next({ message: 'That filetype is not allowed!' }, false)
     }
   }
 }).fields([
-  {name: "avatar", maxCount: 1},
-  {name: "companylogo", maxCount: 1}
+  { name: "avatar", maxCount: 1 },
+  { name: "companylogo", maxCount: 1 }
 ]);
 
 // Resize the images with different thumbnail sizes
@@ -177,16 +190,25 @@ exports.resizeImages = async (request, response, next) => {
   }
   for await (const singleFile of Object.values(request.files)) {
     const extension = singleFile[0].mimetype.split("/")[1];
-    request.body[singleFile[0].fieldname] = `${
-      singleFile[0].filename
-    }.${extension}`;
+    request.body[singleFile[0].fieldname] = `${singleFile[0].filename
+      }`;
     try {
 
       const image = await jimp.read(singleFile[0].path);
-      // await image.cover(350, 180);
-      await image.write(
-        path.resolve(process.env.IMAGE_UPLOAD_DIR, request.body[singleFile[0].fieldname])
-      );
+      const imageSmall = await jimp.read(singleFile[0].path);
+      const imageMedium = await jimp.read(singleFile[0].path);
+      console.log(image.hash());
+      await image
+        // .quality(90)
+        .write(`${process.env.IMAGE_UPLOAD_DIR}${request.body[singleFile[0].fieldname]}`);
+      await imageSmall
+        .scaleToFit(160, 160, jimp.RESIZE_NEAREST_NEIGHBOR)
+        // .quality(90)
+        .write(`${process.env.IMAGE_UPLOAD_DIR}${request.body[singleFile[0].fieldname].split('.').join('-small.')}`);
+      await imageMedium
+        .scaleToFit(400, 400)
+        // .quality(80)
+        .write(`${process.env.IMAGE_UPLOAD_DIR}${request.body[singleFile[0].fieldname].split('.').join('-medium.')}`);
       fs.unlinkSync(singleFile[0].path);
     } catch (error) {
       console.log(error);
@@ -198,7 +220,7 @@ exports.resizeImages = async (request, response, next) => {
 // Validate profile data and save
 exports.updateProfile = async (request, response) => {
   await User.findOneAndUpdate(
-    {_id: request.story.slug},
+    { _id: request.story.slug },
     request.body,
     {
       new: true,

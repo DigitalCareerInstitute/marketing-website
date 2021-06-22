@@ -14,7 +14,7 @@ block content
                   .p-3.bg-white.hover-shadow(href="/stories/"+story.slug)
                     .row.position-relative
                       .col-12.align-items-center
-                        img.object-fit-cover.img-fluid.rounded-circle.square(alt=story.subtitle src="/media/pixel.gif" style="background-image: url('/images/"+story.avatar+"')")
+                        img.object-fit-cover.img-fluid.rounded-circle.square(alt=story.subtitle src="/media/pixel.gif" style="background-image: url('/images/"+(story.avatarMedium ? story.avatarMedium : story.avatar) +"')")
                       .col-5.position-absolute.align-items-center.bottom.right
                         img.object-fit-cover.img-fluid.rounded-circle.square(alt=story.subtitle src="/media/pixel.gif" style="background-image: url('/images/"+story.companylogo+"')")
                     div

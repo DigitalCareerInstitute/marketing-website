@@ -12,7 +12,8 @@ block content
                     .col-12.align-items-center.my-4
                       .square.position-relative
                         .position-absolute.top.left.bottom.right.d-flex.justify-content-center
-                          img.object-fit-contain.img-fluid(src=`${course.icon ? `/images/` + course.icon : `/media/circuit-board.svg`}` alt=course.headline)
+                          img.object-fit-contain.img-fluid(src=`${course.icon ? `/images/` + course.icon : `/media/circuit-board.svg`}` srcset=`/images/${course.iconSmall} 350w, /images/${course.icon} 1644w` sizes="70vmin" alt=course.headline)
+
                   h3.text-dark= course.headline
                   p.text-dark=course.subheading
                 div

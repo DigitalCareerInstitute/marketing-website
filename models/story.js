@@ -12,6 +12,8 @@ var StorySchema = new Schema({
   content: Object,
   order: Number,
   avatar: String,
+  avatarSmall: String,
+  avatarMedium: String,
   companylogo: String,
   userId: String,
   isCompanyStory: {

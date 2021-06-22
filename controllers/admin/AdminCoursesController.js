@@ -11,7 +11,7 @@ const AbstractController = require("./AbstractController");
 const Course = require("../../models/course");
 const Story = require("../../models/story");
 
-module.exports.getCourses = async function(req, res) {
+module.exports.getCourses = async function (req, res) {
   let courses = await Course.find({})
     .sort({ order: 1 })
     .populate("language")
@@ -28,8 +28,8 @@ module.exports.getCourses = async function(req, res) {
   });
 };
 
-module.exports.getSingleCourse = function(req, res) {
-  Course.findOne({ slug: req.params.slug }, function(err, course) {
+module.exports.getSingleCourse = function (req, res) {
+  Course.findOne({ slug: req.params.slug }, function (err, course) {
     if (course) {
       res.render("course", {
         course,
@@ -39,9 +39,9 @@ module.exports.getSingleCourse = function(req, res) {
     res.redirect("/admin/courses");
   });
 };
-module.exports.editCourse = async function(req, res) {
+module.exports.editCourse = async function (req, res) {
   try {
-    const course = await Course.findOne({slug: req.params.slug})
+    const course = await Course.findOne({ slug: req.params.slug })
       .populate("successStory")
       .populate("language")
       .populate("languageVersion")
@@ -50,7 +50,7 @@ module.exports.editCourse = async function(req, res) {
       .select("title slug")
       .populate("language")
       .exec();
-    let alllocations = await Location.find({isCampus: true}).exec();
+    let alllocations = await Location.find({ isCampus: true }).exec();
     const all = alllocations.map(loc => {
       let match = course.locations
         .map(pcat => pcat.toString())
@@ -73,7 +73,7 @@ module.exports.editCourse = async function(req, res) {
     res.redirect("/admin/courses");
   }
 };
-module.exports.createCourse = async function(req, res) {
+module.exports.createCourse = async function (req, res) {
   const curriculumPdf = req.body.curriculumPdf ? `${req.body.curriculumPdf.split('.')[0]}_${uuid(4)}.${req.body.curriculumPdf.split('.').reverse()[0]}` : undefined
   const storys = await Story.find()
     .select("title slug")
@@ -86,6 +86,7 @@ module.exports.createCourse = async function(req, res) {
   course.order = req.body.order;
   course.locations = req.body.locations;
   course.icon = req.body.icon;
+  course.iconSmall = req.files.avatar ? `${req.body.avatar.split('.').join('-small.')}` : course.iconSmall;
   course.subicon = req.body.subicon;
   course.coloraccent = req.body.coloraccent;
   course.massnahmeNumber = req.body.massnahmenummer;
@@ -105,7 +106,7 @@ module.exports.createCourse = async function(req, res) {
   course.curriculumPdf = req.body.curriculumPdf ? req.body.curriculumPdf : undefined;
   course.feature_on_companies_page = !!req.body.feature_on_companies_page ? true : false;
 
-  if(!!req.body.successStory) {
+  if (!!req.body.successStory) {
     course.successStory = req.body.successStory;
   }
 
@@ -135,7 +136,7 @@ module.exports.createCourse = async function(req, res) {
 
 
   // save the course and check for errors
-  course.save(async function(err) {
+  course.save(async function (err) {
     if (err) {
       console.log("error", err);
 
@@ -155,12 +156,12 @@ module.exports.createCourse = async function(req, res) {
     res.redirect("/admin/courses");
   });
 };
-module.exports.deleteCourse = function(req, res, next) {
+module.exports.deleteCourse = function (req, res, next) {
   Course.remove(
     {
       slug: req.params.slug
     },
-    function(err, doc) {
+    function (err, doc) {
       if (err) res.send(err);
       req.flash("success", `Successfully deleted ${doc.name}`);
       res.redirect("/admin/courses");
@@ -169,11 +170,11 @@ module.exports.deleteCourse = function(req, res, next) {
 };
 // Storage settings for project images
 const storage = multer.diskStorage({
-  destination: function(request, file, next) {
+  destination: function (request, file, next) {
     next(null, "./temp");
   },
-  filename: function(request, file, next) {
-    next(null, file.originalname);
+  filename: function (request, file, next) {
+    next(null, `${file.originalname}.jpg`);
   }
 });
 module.exports.uploadImages = multer({
@@ -233,17 +234,26 @@ exports.resizeImages = async (request, response, next) => {
       }
       if (singleFile[0].mimetype.startsWith("image/")) {
         const image = await jimp.read(singleFile[0].path);
+        const imageSmall = await jimp.read(singleFile[0].path);
+        await image
+          .quality(60)
+          .write(`${process.env.IMAGE_UPLOAD_DIR}/${request.body[singleFile[0].fieldname]}`
+          );
+        await imageSmall
+          .scaleToFit(350, 350)
+          .quality(60)
+          .write(`${process.env.IMAGE_UPLOAD_DIR}${request.body[singleFile[0].fieldname].split('.').join('-small.')}`);
         await image.cover(500, 500);
         await image.write(
-            path.resolve(
-              process.env.IMAGE_UPLOAD_DIR,
-              request.body[singleFile[0].fieldname]
-            )
+          path.resolve(
+            process.env.IMAGE_UPLOAD_DIR,
+            request.body[singleFile[0].fieldname]
+          )
         );
         await image.write(
           path.resolve(process.env.IMAGE_UPLOAD_DIR, request.body[singleFile[0].fieldname])
         );
-        if(fs.existsSync(singleFile[0].path)){
+        if (fs.existsSync(singleFile[0].path)) {
           fs.unlinkSync(singleFile[0].path);
         }
       }
@@ -254,57 +264,58 @@ exports.resizeImages = async (request, response, next) => {
   next();
 };
 
-module.exports.updateCourse = async function(req, res) {
+module.exports.updateCourse = async function (req, res) {
   let course = await Course.findOne({ slug: req.params.slug });
 
-  if(req.body.curriculumPdf && course.curriculumPdf && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.curriculumPdf))) {
+  if (req.body.curriculumPdf && course.curriculumPdf && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.curriculumPdf))) {
     await fs.unlinkSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.curriculumPdf));
   }
-  if(req.body.icon && course.icon && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.icon))) {
+  if (req.body.icon && course.icon && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.icon))) {
     await fs.unlinkSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.icon));
   }
-  if(req.body.subicon && course.subicon && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.subicon))) {
+  if (req.body.subicon && course.subicon && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.subicon))) {
     await fs.unlinkSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.subicon));
   }
-  if(req.body.archivement_icon_1 && course.archivement_icon_1 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.archivement_icon_1))) {
+  if (req.body.archivement_icon_1 && course.archivement_icon_1 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.archivement_icon_1))) {
     await fs.unlinkSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.archivement_icon_1));
   }
-  if(req.body.archivement_icon_2 && course.archivement_icon_2 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.archivement_icon_2))) {
+  if (req.body.archivement_icon_2 && course.archivement_icon_2 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.archivement_icon_2))) {
     await fs.unlinkSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.archivement_icon_2));
   }
-  if(req.body.archivement_icon_3 && course.archivement_icon_3 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.archivement_icon_3))) {
+  if (req.body.archivement_icon_3 && course.archivement_icon_3 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.archivement_icon_3))) {
     await fs.unlinkSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.archivement_icon_3));
   }
-  if(req.body.archivement_icon_4 && course.archivement_icon_4 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.archivement_icon_4))) {
+  if (req.body.archivement_icon_4 && course.archivement_icon_4 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.archivement_icon_4))) {
     await fs.unlinkSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.archivement_icon_4));
   }
-  if(req.body.archivement_icon_5 && course.archivement_icon_5 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.archivement_icon_5))) {
+  if (req.body.archivement_icon_5 && course.archivement_icon_5 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.archivement_icon_5))) {
     await fs.unlinkSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.archivement_icon_5));
   }
-  if(req.body.archivement_icon_6 && course.archivement_icon_6 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.archivement_icon_6))) {
+  if (req.body.archivement_icon_6 && course.archivement_icon_6 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.archivement_icon_6))) {
     await fs.unlinkSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.archivement_icon_6));
   }
-  if(req.body.features_icon_1 && course.features_icon_1 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.features_icon_1))) {
+  if (req.body.features_icon_1 && course.features_icon_1 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.features_icon_1))) {
     await fs.unlinkSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.features_icon_1));
   }
-  if(req.body.features_icon_2 && course.features_icon_2 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.features_icon_2))) {
+  if (req.body.features_icon_2 && course.features_icon_2 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.features_icon_2))) {
     await fs.unlinkSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.features_icon_2));
   }
-  if(req.body.features_icon_3 && course.features_icon_3 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.features_icon_3))) {
+  if (req.body.features_icon_3 && course.features_icon_3 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.features_icon_3))) {
     await fs.unlinkSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.features_icon_3));
   }
-  if(req.body.features_icon_4 && course.features_icon_4 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.features_icon_4))) {
+  if (req.body.features_icon_4 && course.features_icon_4 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.features_icon_4))) {
     await fs.unlinkSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.features_icon_4));
   }
-  if(req.body.features_icon_5 && course.features_icon_5 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.features_icon_5))) {
+  if (req.body.features_icon_5 && course.features_icon_5 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.features_icon_5))) {
     await fs.unlinkSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.features_icon_5));
   }
-  if(req.body.features_icon_6 && course.features_icon_6 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.features_icon_6))) {
+  if (req.body.features_icon_6 && course.features_icon_6 && await fs.existsSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.features_icon_6))) {
     await fs.unlinkSync(path.resolve(process.env.IMAGE_UPLOAD_DIR, course.features_icon_6));
   }
-  
+
   course.slug = req.body.slug;
   course.icon = req.body.icon ? req.body.icon : course.icon;
+  course.iconSmall = req.files.avatar ? req.body.avatar : course.iconSmall;
   course.coloraccent = req.body.coloraccent ? req.body.coloraccent : "";
   course.headline = req.body.headline;
   course.subheading = req.body.subheading;
@@ -348,7 +359,7 @@ module.exports.updateCourse = async function(req, res) {
               description: ""
             };
           }
-          if (req.body[`${title.reqChild}${i + 1}`] === ""){
+          if (req.body[`${title.reqChild}${i + 1}`] === "") {
             course[model][i][`title`] = ""
             course[model][i][`icon`] = ""
             course[model][i][`subtitle`] = ""
@@ -356,11 +367,11 @@ module.exports.updateCourse = async function(req, res) {
           } else {
             course[model][i][title.dbChild] = req[
               model == "archivements" && title.dbChild == "icon"
-              ? "files"
-              : "body"
+                ? "files"
+                : "body"
             ][`${title.reqChild}${i + 1}`]
-            ? req.body[`${title.reqChild}${i + 1}`]
-            : course[model][i][title.dbChild];
+              ? req.body[`${title.reqChild}${i + 1}`]
+              : course[model][i][title.dbChild];
           }
         });
       });
