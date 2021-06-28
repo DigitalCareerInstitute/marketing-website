@@ -10,13 +10,16 @@ jobs:
       - name: Event Information
         run: |
           echo "Event '${{ github.event.action }}' received from '${{ github.event.client_payload.repository }}'"
+      - name: Git branch name
+        id: git-branch-name
+        uses: EthanSK/git-branch-name-action@v1
       - name: Trigger Deploy - Dispatch initiating repository event for infrastructure repo to trigger a deployment
         if: github.event.action != 'deploy_successful'
         run: |
           curl -X POST https://api.github.com/repos/DigitalCareerInstitute/infrastructure/dispatches \
           -H 'Accept: application/vnd.github.everest-preview+json' \
           -u ${{ secrets.ACCESS_TOKEN }} \
-          --data '{"event_type": "trigger_deploy", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
+          --data '{"event_type": "trigger_deploy", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'", "branch_name": "'"$GIT_BRANCH_NAME"'"  }}'
       - name: ACK - Acknowledge deploy_successful from remote infrastructure repository
         if: github.event.action == 'deploy_successful'
         run: |
