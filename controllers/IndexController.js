@@ -183,7 +183,7 @@ module.exports.contact = async (req, res, next) => {
 
     if (!!process.env.HUBSPOT_API_KEY) {
       let fbclid = getFbClid(req, res, next);
-      var properties = [
+      properties = [
         { property: 'firstname', value: firstname },
         { property: 'lastname', value: lastname },
         { property: 'email', value: email },
@@ -251,9 +251,14 @@ module.exports.contact = async (req, res, next) => {
       };
       hubspotPromise = requestPromise(options)
     }
+    contact.properties = properties
+    const contactSavepromise = contact.save()
+    // TODO remove logging statement
+    console.log("+++++>>>>", req.session);
+    console.log("========>>>>>", options.body.properties);
     // to save time, mail get send out without waiting for the response
     const info = sendMail(res, req, mailOptions)
-    const result = await Promise.all([hubspotPromise])
+    const result = await Promise.all([hubspotPromise, contactSavepromise])
 
     if (req.headers['content-type'] === 'application/json') {
       const response = {
@@ -394,9 +399,7 @@ module.exports.downloadCourseCurriculum = async (req, res, next) => {
     Object.keys(remainingUtmParams).map(q => q.startsWith('utm_') && delete remainingUtmParams[q])
     let properties
     if (!!process.env.HUBSPOT_API_KEY) {
-
-
-      var properties = [
+      properties = [
         { property: 'email', value: email },
         { property: 'last_touchpoint', value: 'curriculum_download' },
         {
@@ -422,8 +425,25 @@ module.exports.downloadCourseCurriculum = async (req, res, next) => {
       }
 
     }
+      if (req.session.utmParams && req.session.utmParams.utm_term) {
+        properties.push({ property: 'utm_term', value: req.session.utmParams.utm_term })
+      }
     contact.properties = properties
+      var options = {
+        method: 'POST',
+        url: `https://api.hubapi.com/contacts/v1/contact/createOrUpdate/email/${email}`,
+        qs: { hapikey: process.env.HUBSPOT_API_KEY },
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: {
+          properties: properties,
+        },
+        json: true
+      };
+      hubspotPromise = request(options)
     const contactSavepromise = contact.save()
+
     const resolved = await Promise.all([hubspotPromise, contactSavepromise])
     console.log('resolved', resolved);
 
