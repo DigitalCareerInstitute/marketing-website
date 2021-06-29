@@ -538,54 +538,6 @@ module.exports.thankYou = async (req, res) => {
     res.redirect('/')
   }
 }
-module.exports.submitAnswers = async (req, res, next) => {
-  const createdAnswer = await Answer.create({ answers: req.body })
-  let hubspotPromise = new Promise(() => { })
-
-  let remainingUtmParams = req.session.utmParams ? { ...req.session.utmParams } : []
-  Object.keys(remainingUtmParams).map(q => q.startsWith('utm_') && delete remainingUtmParams[q])
-
-  if (!!process.env.HUBSPOT_API_KEY) {
-    let form_payload = {
-      'track': req.headers.referer,
-      'utm_params': remainingUtmParams,
-      'answers': req.body
-    }
-    var options = {
-      method: 'POST',
-      url: `https://api.hubapi.com/contacts/v1/contact/`,
-      qs: { hapikey: process.env.HUBSPOT_API_KEY },
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: {
-        properties:
-          [
-            { property: 'firstname', value: Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("name"))[0] ? Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("name"))[0][1].split(' ')[0] : "" },
-            {
-              property: 'lastname', value: Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("name"))[0] && Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("name"))[0][1].split(" ").length > 1 ?
-                Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("name"))[0][1].split(' ').slice(1).join(' ') : ""
-            },
-            { property: 'email', value: Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("email"))[0] ? Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("email"))[0][1] : "" },
-            { property: 'phone', value: Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("phone"))[0] ? Object.entries(req.body).filter(([key, value]) => key.toLowerCase().includes("phone"))[0][1] : "" },
-            { property: 'utm_source', value: req.session.utmParams ? JSON.stringify(req.session.utmParams.utm_source) : "" },
-            { property: 'utm_medium', value: req.session.utmParams ? JSON.stringify(req.session.utmParams.utm_medium) : "" },
-            { property: 'utm_campaign', value: req.session.utmParams ? JSON.stringify(req.session.utmParams.utm_campaign) : "" },
-            { property: 'utm_content', value: req.session.utmParams ? JSON.stringify(req.session.utmParams.utm_content) : "" },
-            { property: 'utm_term', value: req.session.utmParams ? JSON.stringify(req.session.utmParams.utm_term) : "" },
-            {
-              property: 'form_payload',
-              value: JSON.stringify(form_payload)
-            }
-          ],
-      },
-      json: true
-    };
-    hubspotPromise = request(options)
-  }
-  const resolved = await Promise.all([hubspotPromise])
-  res.json({ success: true })
-}
 
 module.exports.signupCourse = async (req, res, next) => {
   return res.render('signup', {
