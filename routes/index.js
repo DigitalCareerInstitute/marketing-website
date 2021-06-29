@@ -17,8 +17,6 @@ router.get("/contact", IndexController.contactLocations);
 
 router.post("/contact", IndexController.contact);
 
-router.post("/submitanswers", IndexController.submitAnswers);
-
 router.post("/downloadcurriculum", IndexController.downloadCourseCurriculum);
 
 router.get("/tour", IndexController.tour);

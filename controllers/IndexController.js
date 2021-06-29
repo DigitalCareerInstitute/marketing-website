@@ -423,12 +423,9 @@ module.exports.downloadCourseCurriculum = async (req, res, next) => {
       if (req.session.utmParams && req.session.utmParams.utm_content) {
         properties.push({ property: 'utm_content', value: req.session.utmParams.utm_content })
       }
-
-    }
       if (req.session.utmParams && req.session.utmParams.utm_term) {
         properties.push({ property: 'utm_term', value: req.session.utmParams.utm_term })
       }
-    contact.properties = properties
       var options = {
         method: 'POST',
         url: `https://api.hubapi.com/contacts/v1/contact/createOrUpdate/email/${email}`,
@@ -442,8 +439,10 @@ module.exports.downloadCourseCurriculum = async (req, res, next) => {
         json: true
       };
       hubspotPromise = request(options)
-    const contactSavepromise = contact.save()
+    }
 
+    contact.properties = properties
+    const contactSavepromise = contact.save()
     const resolved = await Promise.all([hubspotPromise, contactSavepromise])
     console.log('resolved', resolved);
 
