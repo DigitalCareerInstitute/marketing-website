@@ -527,7 +527,9 @@ const findAnswers = (questions, model) => {
       document.querySelector('#error-msg').innerHTML = "";
     }
   })
-  _nb.fields.registerListener(document.querySelector('input[type="email"]'), true);
+  if (window._nb !== undefined) {
+    _nb.fields.registerListener(document.querySelector('input[type="email"]'), true);
+  }
 }
 
 if (
