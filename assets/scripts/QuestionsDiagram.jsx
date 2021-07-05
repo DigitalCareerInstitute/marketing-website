@@ -329,6 +329,7 @@ function QuestionsDiagram() {
                   setForm({ ...form, [e.target.name]: e.target.checked })
                 }} style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="freeanswer" />
               <label className="form-check-label" htmlFor="freeanswer">Free answer</label>
+              <button className="btn btn-secondary badge ml-2" type="button" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="If checked you can split by a ':' between the fieldlabel and the placeholder. Eg: fieldlabel:placeholder or Phone:+490987654321" data-original-title="" title=""> ? </button>
             </div>
             <div className="form-group form-check d-flex align-items-center mr-3 mb-3">
               <input
