@@ -43,9 +43,14 @@ const CanvasWrapper = styled.div`
   & > div {
     height: 100%;
     width: 100vw;
+    background: white;
   }
 `
+const colorDropdown = "rgb(170, 182, 1)"
+const colorFreeanswer = "rgb(182, 133, 1)"
+const colorError = "rgb(255,0,0)"
 const questioncolor = "rgb(0, 128, 129)"
+let availableFields = []
 function QuestionsDiagram() {
   let [loading, setloading] = useState(true)
   let [form, setForm] = useState({})
@@ -62,15 +67,16 @@ function QuestionsDiagram() {
       },
     }).then(res => res.json())
       .then(res => {
-        if (res.payload.model) {
-          model.deserializeModel(res.payload.model, engine);
+        if (res.payload.questions.model) {
+          availableFields = res.payload.hb_fields
+          model.deserializeModel(res.payload.questions.model, engine);
           Object.values(model.activeNodeLayer.models).forEach((item) => {
             item.registerListener({
               eventDidFire: (e) => {
                 e.stopPropagation();
                 e.isSelected ? setbutton('update') : setbutton('add')
                 if (e.isSelected) {
-                  const newForm = {
+                  const formFromClickedNode = {
                     "question": e.isSelected && item.options.extras.customType === "question" ? item.options.name : "",
                     'questionidentifier': e.isSelected ? item.options.extras.questionidentifier : "",
                     'questiontranslation': e.isSelected ? item.options.extras.questiontranslation : "",
@@ -80,7 +86,7 @@ function QuestionsDiagram() {
                     "freeanswer": e.isSelected ? item.options.extras.freeanswer : "",
                     "dropdown": e.isSelected ? item.options.extras.dropdown : "",
                   }
-                  setForm({ ...form, ...newForm })
+                  setForm({ ...form, ...formFromClickedNode })
                 } else {
                   let formClone = { ...formRef.current }
                   Object.keys(formClone).map(a => {
@@ -125,6 +131,7 @@ function QuestionsDiagram() {
     }
     model.addAll(node);
     engine.setModel(model);
+    parseAllNodesForHubspotFields()
   }
   const addAnswer = (e) => {
     e.preventDefault()
@@ -139,7 +146,7 @@ function QuestionsDiagram() {
     } else {
       node = new CustomNodeModel({
         name: e.target.elements.answer.value,
-        color: !!e.target.elements.freeanswer && !!e.target.elements.freeanswer.checked ? "rgb(182, 133, 1)" : e.target.elements.answer.dataset.color,
+        color: !!e.target.elements.freeanswer && !!e.target.elements.freeanswer.checked ? colorFreeanswer : !!e.target.elements.dropdown.checked ? colorDropdown : e.target.elements.answer.dataset.color,
         extras: {
           customType: e.target.elements.answer.dataset.type,
           freeanswer: !!e.target.elements.freeanswer && !!e.target.elements.freeanswer.checked,
@@ -154,30 +161,67 @@ function QuestionsDiagram() {
     }
     model.addAll(node);
     engine.setModel(model);
+    parseAllNodesForHubspotFields()
   }
-  const saveModel = () => {
-    setloading(true)
-    var nodes = Object.values(model.layers.find(layer => layer.options.type === "diagram-nodes").models)
-    let errorNodes = []
 
-    var checkQABalance = (question) => {
-      return Object.values(question.portsOut[0].links).map(link => {
-        if (link.targetPort.parent.options.extras.customType !== "answer") {
-          engine.getModel().getNode(link.targetPort.parent.options.id).setSelected(true);
-          engine.getModel().getNode(link.targetPort.parent.options.id).options.color = "rgb(255,0,0)"
-          return link.targetPort.parent
+  var checkIfQuestionsMatchWithAnswersAndSyncWithHubspot = (question) => {
+    let errors = []
+    var hbField = availableFields.find(a => a.name === question.options.extras.questionidentifier)
+    var As = Object.values(model.layers[1].models).filter(m => m.options.extras.customType === "answer")
+    const answers = As.filter(a => {
+      return Object.keys(question.ports.Out.links).includes(Object.values(a.ports.In.links)[0].options.id)
+    })
+    //TODO `state_de_` is not `state` - overlapping between question and dropdown
+    if (answers.filter(a => !a.options.extras.dropdown).length === 0) {
+      answers.map(aI => {
+        const subHbFields = availableFields.find(aF => aF.name === aI.options.extras.answeridentifier)
+        const rawAnswers = aI.options.name.split(":").reverse()[0].split(',').map(a => a.trim())
+        const notExistingAnswers = rawAnswers.filter(rA => {
+          return !subHbFields.options.map(s => s.value).includes(rA)
+        })
+        if (notExistingAnswers.length == 0) {
+          aI.setSelected(false)
+          aI.options.color = colorDropdown
+        } else {
+          console.log('notExistingAnswers', notExistingAnswers);
+          aI.setSelected(true)
+          aI.options.color = colorError
+          errors.push(`'${notExistingAnswers.join(", ")}' doesnt exist on '${aI.options.name}'`)
+        }
+        // return { answer: aI.options.name, notExistingAnswers }
+      })
+    } else {
+      Object.values(question.portsOut[0].links).map(link => {
+        if (answers.filter(a => !a.options.extras.freeanswer).length > 0) {
+          const matchingQuestions = hbField.options.filter(f => f.value === link.targetPort.parent.options.extras.answeridentifier)
+          if (link.targetPort.parent.options.extras.customType !== "answer" || matchingQuestions.length === 0) {
+            if (matchingQuestions.length === 0) {
+              errors.push(`This answer is not present on Hubspot: "${link.targetPort.parent.options.name}"\n\r`)
+            }
+            engine.getModel().getNode(link.targetPort.parent.options.id).setSelected(true);
+            engine.getModel().getNode(link.targetPort.parent.options.id).options.color = colorError
+            return link.targetPort.parent
+          }
         }
       }).filter(l => !!l)
     }
+    return errors
+  }
+  const parseAllNodesForHubspotFields = () => {
+    var nodes = Object.values(model.layers.find(layer => layer.options.type === "diagram-nodes").models)
+    let errorNodes = []
 
     const questions = nodes.filter(n => n.options.extras.customType !== "answer")
     questions.map(q => {
-      errorNodes = [...errorNodes, ...checkQABalance(q)]
+      errorNodes = [...errorNodes, ...checkIfQuestionsMatchWithAnswersAndSyncWithHubspot(q)]
     })
-    seterror(`Answer followes to answer for nodes: ${errorNodes.map(e => e.options.name + ', ')}`)
+    seterror(errorNodes)
     if (errorNodes.length === 0) {
       seterror(undefined)
     }
+  }
+  const saveModel = () => {
+    setloading(true)
     fetch(`/admin/questions/update`, {
       method: "POST",
       headers: {
@@ -314,8 +358,7 @@ function QuestionsDiagram() {
       </div>
       {error && (
         <div claseName="flash m-0 mr-3 alert fade show alert-danger ">
-          Error: {error}
-          <button className="close ml-3" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+          Errors: {error.map(e => <div>{e}</div>)}
         </div>
       )}
       <CanvasWrapper>

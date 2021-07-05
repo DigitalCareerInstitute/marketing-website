@@ -19,7 +19,30 @@ module.exports.renderQuestions = async (req, res) => {
 module.exports.getQuestions = async (req, res) => {
   try {
     let questions = await Question.findOne({})
-    return jsonResponseObject(res, questions)
+    const response = {
+      questions
+    }
+    if (req.session.passport.user && req.baseUrl.indexOf('/admin') === -1) {
+      var options = {
+        method: 'GET',
+        url: `https://api.hubapi.com/properties/v1/contacts/properties`,
+        qs: { hapikey: process.env.HUBSPOT_API_KEY },
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        json: true
+      };
+      try {
+        const hubspotCache = await requestPromise(options)
+        response.hb_fields = hubspotCache
+      } catch (error) {
+        console.log('error', error);
+      } finally {
+        return jsonResponseObject(res, response)
+      }
+    } else {
+      return jsonResponseObject(res, response)
+    }
   } catch (err) {
     console.log(err);
   }
