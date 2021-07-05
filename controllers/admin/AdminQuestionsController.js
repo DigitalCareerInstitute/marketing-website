@@ -1,7 +1,8 @@
 require("dotenv").config({ path: __dirname + "/../.env" });
 const Question = require("../../models/question");
 const Answer = require("../../models/answer");
-const { getAsyncRedis, jsonResponseObject } = require("../../helpers/helper");
+const requestPromise = require("request-promise");
+const { jsonResponseObject } = require("../../helpers/helper");
 
 module.exports.renderQuestions = async (req, res) => {
   try {
@@ -22,7 +23,7 @@ module.exports.getQuestions = async (req, res) => {
     const response = {
       questions
     }
-    if (req.session.passport.user && req.baseUrl.indexOf('/admin') === -1) {
+    if (req.session.passport.user && req.headers.referer.indexOf('/admin') !== -1) {
       var options = {
         method: 'GET',
         url: `https://api.hubapi.com/properties/v1/contacts/properties`,
