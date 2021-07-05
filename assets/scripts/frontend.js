@@ -542,21 +542,20 @@ if (
     },
   }).then(res => res.json())
     .then(res => {
-      const diagramNodes = res.payload.model.layers.find(layer => layer.type === "diagram-nodes").models
-      const links = res.payload.model.layers.find(layer => layer.type === "diagram-links").models
+      const diagramNodes = res.payload.questions.model.layers.find(layer => layer.type === "diagram-nodes").models
       const startquestion = Object.values(diagramNodes).filter(model => model.ports.find(port => port.label === "In").links.length === 0)
       document.addEventListener('submit', (e) => {
         if (e.target.classList.contains("dynamicinputform")) {
-          jumpToNextQuestion(e, diagramNodes, res.payload.model)
+          jumpToNextQuestion(e, diagramNodes, res.payload.questions.model)
         }
       })
       document.addEventListener('change', (e) => {
         if (e.target.classList.contains("dynamicinputradio") && e.target.dataset.trigger === "true") {
           e.target.elements = [e.target, [...e.target.closest('form').elements].find(i => i.type === "submit")]
-          jumpToNextQuestion(e, diagramNodes, res.payload.model)
+          jumpToNextQuestion(e, diagramNodes, res.payload.questions.model)
         }
       })
-      findAnswers(startquestion, res.payload.model)
+      findAnswers(startquestion, res.payload.questions.model)
     })
 }
 
