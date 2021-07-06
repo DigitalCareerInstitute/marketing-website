@@ -23,7 +23,7 @@ module.exports.getQuestions = async (req, res) => {
     const response = {
       questions
     }
-    if (req.session.passport.user && req.headers.referer.indexOf('/admin') !== -1) {
+    if (req.session.passport && req.session.passport.user && req.headers.referer.indexOf('/admin') !== -1) {
       var options = {
         method: 'GET',
         url: `https://api.hubapi.com/properties/v1/contacts/properties`,
