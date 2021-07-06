@@ -1956,3 +1956,7 @@ input[name*="phone"] {
     left: -1em;
   }
 }
+
+input:not(:focus):not(:placeholder-shown):invalid  {
+  border-color: red !important;
+}
