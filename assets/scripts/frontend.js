@@ -449,21 +449,23 @@ const canTrigger = (questions, model) => {
 }
 
 const findAnswers = (questions, model) => {
-  var linksToNextQ = questions.map(q => {
-    return Object.values(model.layers.find(layer => layer.type === "diagram-nodes").models)
-      .filter(links => Object.values(model.layers.find(layer => layer.type === "diagram-links").models)
-        .filter(layer => layer.source === q.id).map(l => l.target).includes(links.id))
-  }).flat().map(a => a.ports[1].links).flat()
+  const diagramLinks = model.layers.find(layer => layer.type === "diagram-links").models
+  if (diagramLinks) {
+    var linksToNextQ = questions.map(q => {
+      return Object.values(model.layers.find(layer => layer.type === "diagram-nodes").models)
+        .filter(links => Object.values(diagramLinks)
+          .filter(layer => layer.source === q.id).map(l => l.target).includes(links.id))
+    }).flat().map(a => a.ports[1].links).flat()
 
-  var nextQuestions = Object.values(model.layers.find(layer => layer.type === "diagram-nodes").models)
-    .filter(node => {
-      return node.ports[0].links.find(l => {
-        if (linksToNextQ.includes(l)) {
-          return node
-        }
-      })
-    });
-  questionroot.innerHTML = `
+    var nextQuestions = Object.values(model.layers.find(layer => layer.type === "diagram-nodes").models)
+      .filter(node => {
+        return node.ports[0].links.find(l => {
+          if (linksToNextQ.includes(l)) {
+            return node
+          }
+        })
+      });
+    questionroot.innerHTML = `
     <div class="w-100">
     <div id="popup" class="py-5 d-flex flex-column justify-content-between w-300px w-100">
       <form onSubmit="return false;" class="dynamicinputform">
@@ -507,28 +509,29 @@ const findAnswers = (questions, model) => {
       </div>
     </div>`
 
-  const input = document.querySelector('input[name*="phone"]')
-  const iti = intlTelInput(input, {
-    initialCountry: "de",
-    utilsScript: utilsScript
-  });
-  input.addEventListener('blur', (e) => {
-    var errorCode = iti.getValidationError();
-    if (errorCode !== 0) {
-      var errorMap = []
-      errorMap[-99] = "Invalid number"
-      errorMap[1] = "Invalid country code"
-      errorMap[2] = "Too short"
-      errorMap[3] = "Too long"
-      errorMap[4] = "Might be a local number only"
-      errorMap[5] = "Invalid length";
-      document.querySelector('#error-msg').innerHTML = errorMap[errorCode];
-    } else {
-      document.querySelector('#error-msg').innerHTML = "";
+    const input = document.querySelector('input[name*="phone"]')
+    const iti = intlTelInput(input, {
+      initialCountry: "de",
+      utilsScript: utilsScript
+    });
+    input.addEventListener('blur', (e) => {
+      var errorCode = iti.getValidationError();
+      if (errorCode !== 0) {
+        var errorMap = []
+        errorMap[-99] = "Invalid number"
+        errorMap[1] = "Invalid country code"
+        errorMap[2] = "Too short"
+        errorMap[3] = "Too long"
+        errorMap[4] = "Might be a local number only"
+        errorMap[5] = "Invalid length";
+        document.querySelector('#error-msg').innerHTML = errorMap[errorCode];
+      } else {
+        document.querySelector('#error-msg').innerHTML = "";
+      }
+    })
+    if (window._nb !== undefined) {
+      _nb.fields.registerListener(document.querySelector('input[type="email"]'), true);
     }
-  })
-  if (window._nb !== undefined) {
-    _nb.fields.registerListener(document.querySelector('input[type="email"]'), true);
   }
 }
 
@@ -536,26 +539,27 @@ if (
   questionroot
   // && !localStorage.getItem('dcianswers') 
 ) {
-  fetch(`/admin/questions/fetch`, {
+  fetch(`/admin/questions/fetch/student`, {
     headers: {
       "content-type": "application/json"
     },
   }).then(res => res.json())
     .then(res => {
-      const diagramNodes = res.payload.questions.model.layers.find(layer => layer.type === "diagram-nodes").models
+      const question = res.payload.questions
+      const diagramNodes = question.model.layers.find(layer => layer.type === "diagram-nodes").models
       const startquestion = Object.values(diagramNodes).filter(model => model.ports.find(port => port.label === "In").links.length === 0)
       document.addEventListener('submit', (e) => {
         if (e.target.classList.contains("dynamicinputform")) {
-          jumpToNextQuestion(e, diagramNodes, res.payload.questions.model)
+          jumpToNextQuestion(e, diagramNodes, question.model)
         }
       })
       document.addEventListener('change', (e) => {
         if (e.target.classList.contains("dynamicinputradio") && e.target.dataset.trigger === "true") {
           e.target.elements = [e.target, [...e.target.closest('form').elements].find(i => i.type === "submit")]
-          jumpToNextQuestion(e, diagramNodes, res.payload.questions.model)
+          jumpToNextQuestion(e, diagramNodes, question.model)
         }
       })
-      findAnswers(startquestion, res.payload.questions.model)
+      findAnswers(startquestion, question.model)
     })
 }
 

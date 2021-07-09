@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import createEngine, {
-  DiagramModel
-} from '@projectstorm/react-diagrams';
-import {
-  CanvasWidget,
-  DeleteItemsAction
-} from '@projectstorm/react-canvas-core';
+import createEngine, { DiagramModel } from '@projectstorm/react-diagrams';
+import { CanvasWidget, DeleteItemsAction } from '@projectstorm/react-canvas-core';
 import styled from '@emotion/styled';
 import { CustomNodeModel } from './CustomNode/CustomNodeModel';
 import { CustomNodeFactory } from './CustomNode/CustomNodeFactory';
@@ -34,7 +29,6 @@ engine
   .getPortFactories()
   .registerFactory(new CustomPortFactory('tommy', config => new CustomPortModel(PortModelAlignment.LEFT)));
 engine.getNodeFactories().registerFactory(new CustomNodeFactory());
-
 engine.setModel(model);
 
 const CanvasWrapper = styled.div`
@@ -56,10 +50,43 @@ function QuestionsDiagram() {
   let [form, setForm] = useState({})
   let formRef = useRef(form)
   let [button, setbutton] = useState('Add')
-  let [error, seterror] = useState(undefined)
+  let [nodevisibility, setnodevisibility] = useState(true)
+  let [allFlows, setallFlows] = useState([])
+  let [currentModelId, setmodelState] = useState("")
+  let [error, seterror] = useState([])
   useEffect(() => {
     formRef.current = form
   }, [form])
+  const addEventListeners = (name) => {
+    Object.values(model.activeNodeLayer.models).forEach((item) => {
+      item.registerListener({
+        eventDidFire: (e) => {
+          e.stopPropagation();
+          e.isSelected ? setbutton('update') : setbutton('add')
+          if (e.isSelected) {
+            const formFromClickedNode = {
+              "question": e.isSelected && item.options.extras.customType === "question" ? item.options.name : "",
+              'questionidentifier': e.isSelected ? item.options.extras.questionidentifier : "",
+              'questiontranslation': e.isSelected ? item.options.extras.questiontranslation : "",
+              "answer": e.isSelected && item.options.extras.customType === "answer" ? item.options.name : "",
+              "answeridentifier": e.isSelected ? item.options.extras.answeridentifier : "",
+              "answertranslation": e.isSelected ? item.options.extras.answertranslation : "",
+              "freeanswer": e.isSelected ? item.options.extras.freeanswer : "",
+              "dropdown": e.isSelected ? item.options.extras.dropdown : "",
+              "flowname": name
+            }
+            setForm({ ...form, ...formFromClickedNode })
+          } else {
+            let formClone = { ...formRef.current }
+            Object.keys(formClone).map(a => {
+              formClone = { ...formClone, [a]: "", flowname: name }
+            })
+            setForm(formClone)
+          }
+        }
+      });
+    });
+  }
   useEffect(() => {
     fetch(`/admin/questions/fetch`, {
       headers: {
@@ -67,36 +94,15 @@ function QuestionsDiagram() {
       },
     }).then(res => res.json())
       .then(res => {
-        if (res.payload.questions.model) {
+        if (res.payload.questions.length > 0) {
           availableFields = res.payload.hb_fields
-          model.deserializeModel(res.payload.questions.model, engine);
-          Object.values(model.activeNodeLayer.models).forEach((item) => {
-            item.registerListener({
-              eventDidFire: (e) => {
-                e.stopPropagation();
-                e.isSelected ? setbutton('update') : setbutton('add')
-                if (e.isSelected) {
-                  const formFromClickedNode = {
-                    "question": e.isSelected && item.options.extras.customType === "question" ? item.options.name : "",
-                    'questionidentifier': e.isSelected ? item.options.extras.questionidentifier : "",
-                    'questiontranslation': e.isSelected ? item.options.extras.questiontranslation : "",
-                    "answer": e.isSelected && item.options.extras.customType === "answer" ? item.options.name : "",
-                    "answeridentifier": e.isSelected ? item.options.extras.answeridentifier : "",
-                    "answertranslation": e.isSelected ? item.options.extras.answertranslation : "",
-                    "freeanswer": e.isSelected ? item.options.extras.freeanswer : "",
-                    "dropdown": e.isSelected ? item.options.extras.dropdown : "",
-                  }
-                  setForm({ ...form, ...formFromClickedNode })
-                } else {
-                  let formClone = { ...formRef.current }
-                  Object.keys(formClone).map(a => {
-                    formClone = { ...formClone, [a]: "" }
-                  })
-                  setForm(formClone)
-                }
-              }
-            });
-          });
+          setallFlows(res.payload.questions)
+          if (res.payload.questions[0].model) {
+            model.deserializeModel(res.payload.questions[0].model, engine);
+          }
+          setForm({ ...form, flowname: res.payload.questions[0].name })
+          setmodelState(res.payload.questions[0]._id)
+          addEventListeners(res.payload.questions[0].name)
           engine.setModel(model);
         }
       }).catch(err => {
@@ -133,6 +139,7 @@ function QuestionsDiagram() {
     engine.setModel(model);
     parseAllNodesForHubspotFields()
   }
+
   const addAnswer = (e) => {
     e.preventDefault()
     const selectedNodes = Object.values(engine.model.activeNodeLayer.models).filter(i => i.options.selected)
@@ -166,44 +173,45 @@ function QuestionsDiagram() {
 
   var checkIfQuestionsMatchWithAnswersAndSyncWithHubspot = (question) => {
     let errors = []
-    var hbField = availableFields.find(a => a.name === question.options.extras.questionidentifier)
-    var As = Object.values(model.layers[1].models).filter(m => m.options.extras.customType === "answer")
-    const answers = As.filter(a => {
-      return Object.keys(question.ports.Out.links).includes(Object.values(a.ports.In.links)[0].options.id)
-    })
-    //TODO `state_de_` is not `state` - overlapping between question and dropdown
-    if (answers.filter(a => !a.options.extras.dropdown).length === 0) {
-      answers.map(aI => {
-        const subHbFields = availableFields.find(aF => aF.name === aI.options.extras.answeridentifier)
-        const rawAnswers = aI.options.name.split(":").reverse()[0].split(',').map(a => a.trim())
-        const notExistingAnswers = rawAnswers.filter(rA => {
-          return !subHbFields.options.map(s => s.value).includes(rA)
-        })
-        if (notExistingAnswers.length == 0) {
-          aI.setSelected(false)
-          aI.options.color = colorDropdown
-        } else {
-          console.log('notExistingAnswers', notExistingAnswers);
-          aI.setSelected(true)
-          aI.options.color = colorError
-          errors.push(`'${notExistingAnswers.join(", ")}' doesnt exist on '${aI.options.name}'`)
-        }
-        // return { answer: aI.options.name, notExistingAnswers }
+    if (model.layers[1].models.length > 0) {
+      var hbField = availableFields.find(a => a.name === question.options.extras.questionidentifier)
+      var As = Object.values(model.layers[1].models).filter(m => m.options.extras.customType === "answer")
+      const answers = As.filter(a => {
+        return Object.keys(question.ports.Out.links).includes(Object.values(a.ports.In.links)[0].options.id)
       })
-    } else {
-      Object.values(question.portsOut[0].links).map(link => {
-        if (answers.filter(a => !a.options.extras.freeanswer).length > 0) {
-          const matchingQuestions = hbField.options.filter(f => f.value === link.targetPort.parent.options.extras.answeridentifier)
-          if (link.targetPort.parent.options.extras.customType !== "answer" || matchingQuestions.length === 0) {
-            if (matchingQuestions.length === 0) {
-              errors.push(`This answer is not present on Hubspot: "${link.targetPort.parent.options.name}"\n\r`)
-            }
-            engine.getModel().getNode(link.targetPort.parent.options.id).setSelected(true);
-            engine.getModel().getNode(link.targetPort.parent.options.id).options.color = colorError
-            return link.targetPort.parent
+      //TODO `state_de_` is not `state` - overlapping between question and dropdown
+      if (answers.filter(a => !a.options.extras.dropdown).length === 0) {
+        answers.map(aI => {
+          const subHbFields = availableFields.find(aF => aF.name === aI.options.extras.answeridentifier)
+          const rawAnswers = aI.options.name.split(":").reverse()[0].split(',').map(a => a.trim())
+          const notExistingAnswers = rawAnswers.filter(rA => {
+            return !subHbFields.options.map(s => s.value).includes(rA)
+          })
+          if (notExistingAnswers.length == 0) {
+            aI.setSelected(false)
+            aI.options.color = colorDropdown
+          } else {
+            console.log('notExistingAnswers', notExistingAnswers);
+            aI.setSelected(true)
+            aI.options.color = colorError
+            errors.push(`'${notExistingAnswers.join(", ")}' doesnt exist on '${aI.options.name}'`)
           }
-        }
-      }).filter(l => !!l)
+        })
+      } else {
+        Object.values(question.portsOut[0].links).map(link => {
+          if (answers.filter(a => !a.options.extras.freeanswer).length > 0) {
+            const matchingQuestions = hbField.options.filter(f => f.value === link.targetPort.parent.options.extras.answeridentifier)
+            if (link.targetPort.parent.options.extras.customType !== "answer" || matchingQuestions.length === 0) {
+              if (matchingQuestions.length === 0) {
+                errors.push(`This answer is not present on Hubspot: "${link.targetPort.parent.options.name}"\n\r`)
+              }
+              engine.getModel().getNode(link.targetPort.parent.options.id).setSelected(true);
+              engine.getModel().getNode(link.targetPort.parent.options.id).options.color = colorError
+              return link.targetPort.parent
+            }
+          }
+        }).filter(l => !!l)
+      }
     }
     return errors
   }
@@ -220,19 +228,6 @@ function QuestionsDiagram() {
       seterror(undefined)
     }
   }
-  const saveModel = () => {
-    setloading(true)
-    fetch(`/admin/questions/update`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json"
-      },
-      body: JSON.stringify(model.serialize())
-    }).then(res => res.json())
-      .then(res => {
-        setloading(false)
-      })
-  }
 
   const cloneSelected = () => {
     setloading(true)
@@ -246,11 +241,74 @@ function QuestionsDiagram() {
       setloading(false)
     })
   }
+
   engine.getActionEventBus().registerAction(new DeleteItemsAction({ keyCodes: [8], modifiers: { shiftKey: true } }));
+
   return (
     <div className="h-100 d-flex flex-column">
       <div>
+        <select
+          className={`custom-select w-auto mr-2`}
+          onChange={e => {
+            const theModelToSet = allFlows.find(f => f.name === e.target.selectedOptions[0].value)
+            if (theModelToSet.model) {
+              model.deserializeModel(theModelToSet.model, engine);
+              setForm({ ...form, flowname: theModelToSet.name })
+              setmodelState(theModelToSet._id)
+              engine.setModel(model);
+            } else {
+              const newModel = new StartNodeModel();
+              model.deserializeModel(newModel, engine);
+              engine.setModel(newModel)
+            }
+            addEventListeners(theModelToSet.name)
+          }}>
+          <option disabled value='' selected>select flow...</option>
+          {allFlows.map((f, i) => (
+            <option key={i} selected={f._id == currentModelId} value={f.name} >{f.name}</option>
+          ))}
+        </select>
+        <button className={`btn btn-secondary mr-2`} onClick={e => {
+          if (form.flowname) {
+            setloading(true)
+            const newModel = new StartNodeModel();
+            engine.setModel(newModel)
+
+            fetch(`/admin/questions/update`, {
+              method: "POST",
+              headers: {
+                "content-type": "application/json"
+              },
+              body: JSON.stringify({
+                _id: "",
+                name: "New Flow",
+                model: newModel.serialize()
+              })
+            }).then(res => res.json())
+              .then(res => {
+                console.log(res);
+                setallFlows([...allFlows, res.payload])
+
+                setForm({ ...form, flowname: res.payload.name })
+                setmodelState(res.payload._id)
+                setloading(false)
+              })
+            seterror(error.splice(error.findIndex(e => e === `Name must be provided`), 1))
+          } else {
+            seterror([...error, `Name must be provided`])
+          }
+        }}>Add Flow</button>
+        <button className={`btn btn-secondary mr-2`} onClick={e => {
+          setnodevisibility(!nodevisibility)
+        }}>Add Nodes</button>
+      </div>
+      <div className={!nodevisibility ? `d-none` : ``}>
         <form onSubmit={addQuestion}>
+          <label htmlFor="flowname">Flow name</label>
+          <input className="form-control" id="flowname" name="flowname" value={form['formname']} value={form.flowname} onChange={(e) => {
+            e.stopPropagation();
+            setForm({ ...form, [e.target.name]: e.target.value })
+          }} />
           <div className=" row">
             <div className="col-md-4">
               <label htmlFor="addquestion">Add Question</label>
@@ -295,7 +353,7 @@ function QuestionsDiagram() {
                   setForm({ ...form, [e.target.name]: e.target.value })
                 }} type="text" data-type="answer" data-color="rgb(256, 204, 1)" style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="addanswer" />
             </div>
-            <div className="col-md-3">
+            <div className="col-md-4">
               <label htmlFor="answertranslation">Answertranslation</label>
               <input className="form-control w-99" name="answertranslation" type="text" value={form['answertranslation']}
                 onChange={(e) => {
@@ -354,12 +412,26 @@ function QuestionsDiagram() {
         <button className="btn btn-success btn-sm"
           disabled={loading}
           onClick={() => {
-            saveModel()
+            setloading(true)
+            fetch(`/admin/questions/update`, {
+              method: "POST",
+              headers: {
+                "content-type": "application/json"
+              },
+              body: JSON.stringify({
+                _id: currentModelId,
+                name: form['flowname'],
+                model: model.serialize()
+              })
+            }).then(res => res.json())
+              .then(res => {
+                setloading(false)
+              })
           }}>{loading ? "Loading" : "Save"}</button>
       </div>
-      {error && (
-        <div claseName="flash m-0 mr-3 alert fade show alert-danger ">
-          Errors: {error.map(e => <div>{e}</div>)}
+      {error && error.length > 0 && (
+        <div className="flash m-0 mr-3 alert fade show alert-danger ">
+          Errors: {error.map((e, i) => <div key={i}>{e}</div>)}
         </div>
       )}
       <CanvasWrapper>

@@ -57,8 +57,8 @@ mixin navigation
                   if page.metapage
                     a.dropdown-item.nav-link(class= currentPath === ("/pages/" + page.slug) ? "active" : "" href='/pages/'+ page.slug)=page.title
 
-          li.position-relative.nav-item.dropdown-custom.z-foreground
-            a.contactlinktext.dropdown-toggle.mx-0.mx-xl-3.mx-lg-2.nav-link.d-flex.align-items-center.h-100(href="/signup" class=course && course.coloraccent ? `` : `text-white` )=__("Apply Now")
+          li.position-relative.nav-item.z-foreground
+            a.contactlinktext.mx-0.mx-xl-3.mx-lg-2.nav-link.d-flex.align-items-center.h-100(href="/signup" class=course && course.coloraccent ? `` : `text-white` )=__("Apply Now")
             .contactlink(class=course && course.coloraccent ? `` : `bg-primary`, style=course && course.coloraccent ? `background-color: ${course.coloraccent}` : `` )
 
           li.position-relative.nav-item.d-flex.align-items-center
