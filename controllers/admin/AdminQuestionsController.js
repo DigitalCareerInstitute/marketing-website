@@ -19,7 +19,7 @@ module.exports.renderQuestions = async (req, res) => {
 
 module.exports.getQuestions = async (req, res) => {
   try {
-    let questions = await Question.findOne({})
+    let questions = await Question.find()
     const response = {
       questions
     }
@@ -48,13 +48,30 @@ module.exports.getQuestions = async (req, res) => {
     console.log(err);
   }
 };
+module.exports.getQuestion = async (req, res) => {
+  try {
+    let questions = await Question.findOne({ name: req.params.questions })
+    const response = {
+      questions
+    }
+    return jsonResponseObject(res, response)
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 module.exports.updateQuestion = async (req, res) => {
   try {
-    let question = await Question.findOneAndUpdate({ model: req.body }).exec({});
-    if (!question) {
-      question = new Question({ model: req.body });
-      responseMsg = `Successfully created`
+    console.log('req.body', JSON.stringify(req.body));
+    let question
+    if (req.body._id === "") {
+      question = new Question({ name: req.body.name, model: req.body.model });
+    } else {
+      question = await Question.findById(req.body._id).exec({});
+      if (question) {
+        question.name = req.body.name
+        question.model = req.body.model
+      }
     }
     await question.save()
     return jsonResponseObject(res, question)

@@ -8,9 +8,13 @@ router
     ensureAuthenticated,
     redirectNonSuperAdmin,
     AdminQuestionsController.renderQuestions)
-  .get("/fetch", 
-    // public because consumed by landingpage
+  .get("/fetch",
+    ensureAuthenticated,
+    redirectNonSuperAdmin,
     AdminQuestionsController.getQuestions)
+router
+  .get("/fetch/:questions",
+    AdminQuestionsController.getQuestion)
 router
   .post("/update",
     ensureAuthenticated,

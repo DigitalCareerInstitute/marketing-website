@@ -14,6 +14,7 @@ const Menulocation = require('./models/menulocation')
 const Location = require('./models/location')
 const Language = require('./models/language')
 const Setting = require('./models/setting')
+const Question = require('./models/question')
 const { languages } = require('./seeddata')
 const flash = require('connect-flash')
 const cron = require('node-cron')
@@ -31,9 +32,9 @@ let redisClient = null;
   const en = Language.findOne({ title: 'en' })
   const de = Language.findOne({ title: 'de' })
   const setting = Setting.findOne().exec({})
+  const questions = Question.find().exec({})
   let createLocalesFile = updateLocaleFile();
-  const res = await Promise.all([en, de, createLocalesFile, setting])
-
+  const res = await Promise.all([en, de, createLocalesFile, setting, questions])
   if (!res[0]) {
     console.log('no english language created. Seeding EN lang into mongoose')
     await Language.create(languages[0])
@@ -42,13 +43,18 @@ let redisClient = null;
     console.log('no german language created. Seeding DE lang into mongoose')
     await Language.create(languages[1])
   }
-
   if (Object.keys(await Course.collection.getIndexes()).includes('order_1')) {
     await Course.collection.dropIndex('order_1')
   }
   if (!res[3]) {
     console.log('No Setting created yet, inserting empty Setting model')
     await Setting.create({})
+  }
+  if (res[4].length === 0) {
+    console.log('No Questions created yet, inserting empty Questions model')
+    const studentQ = Question.create({ name: "student", model: { id: "" } })
+    const companyQ = Question.create({ name: "company", model: { id: "" } })
+    await Promise.all([studentQ, companyQ])
   }
 })()
 
