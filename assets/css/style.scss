@@ -1960,6 +1960,6 @@ input[name*="phone"] {
   }
 }
 
-input:not(:focus):not(:placeholder-shown):invalid  {
+input[placeholder]:not(:focus):not(:placeholder-shown):invalid  {
   border-color: red !important;
 }
