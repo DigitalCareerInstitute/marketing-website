@@ -248,8 +248,8 @@ function QuestionsDiagram() {
     <div className="h-100 d-flex flex-column">
       <div className={!nodevisibility ? `d-none` : ``}>
         <form onSubmit={addQuestion}>
-          <div class="form-row align-items-center">
-            <div class="col-auto flex-column d-flex">
+          <div className="form-row align-items-end">
+            <div className="col-auto flex-column d-flex">
               <label htmlFor="flowselector">flowselector</label>
               <select
                 id="flowselector"
@@ -268,13 +268,13 @@ function QuestionsDiagram() {
                   }
                   addEventListeners(theModelToSet.name)
                 }}>
-                <option disabled value='' selected>select flow...</option>
+                <option disabled value='' defaultChecked>select flow...</option>
                 {allFlows.map((f, i) => (
-                  <option key={i} selected={f._id == currentModelId} value={f.name} >{f.name}</option>
+                  <option key={i} defaultChecked={f._id == currentModelId} value={f.name} >{f.name}</option>
                 ))}
               </select>
             </div>
-            <div class="col-auto px-3 align-items-center d-flex">
+            <div className="col-auto px-3 align-items-center d-flex">
               <input
                 checked={form['active']}
                 name='active'
@@ -286,14 +286,14 @@ function QuestionsDiagram() {
                 }} style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="active" />
               <label className="form-check-label" htmlFor="active">Active?</label>
             </div>
-            <div class="col-auto">
+            <div className="col-auto">
               <label htmlFor="flowname">Flow name</label>
               <input className="form-control" id="flowname" name="flowname" value={form['formname']} value={form.flowname} onChange={(e) => {
                 e.stopPropagation();
                 setForm({ ...form, [e.target.name]: e.target.value })
               }} />
             </div>
-            <div class="col-auto">
+            <div className="col-auto">
               <button className={`btn btn-secondary mr-2`} onClick={e => {
                 if (form.flowname) {
                   setloading(true)
@@ -326,7 +326,7 @@ function QuestionsDiagram() {
                 }
               }}>Add Flow</button>
             </div>
-            <div class="col-auto">
+            <div className="col-auto">
               <button className={`btn btn-secondary mr-2 word-break-break-all`} onClick={e => {
                 setnodevisibility(!nodevisibility)
               }}>Add Nodes</button>
