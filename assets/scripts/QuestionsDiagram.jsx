@@ -272,8 +272,6 @@ function QuestionsDiagram() {
           if (form.flowname) {
             setloading(true)
             const newModel = new StartNodeModel();
-            engine.setModel(newModel)
-
             fetch(`/admin/questions/update`, {
               method: "POST",
               headers: {
@@ -286,11 +284,14 @@ function QuestionsDiagram() {
               })
             }).then(res => res.json())
               .then(res => {
-                console.log(res);
-                setallFlows([...allFlows, res.payload])
-
-                setForm({ ...form, flowname: res.payload.name })
-                setmodelState(res.payload._id)
+                if (res.error) {
+                  seterror([...error, res.error])
+                } else {
+                  engine.setModel(newModel)
+                  setallFlows([...allFlows, res.payload])
+                  setForm({ ...form, flowname: res.payload.name })
+                  setmodelState(res.payload._id)
+                }
                 setloading(false)
               })
             seterror(error.splice(error.findIndex(e => e === `Name must be provided`), 1))
@@ -298,7 +299,7 @@ function QuestionsDiagram() {
             seterror([...error, `Name must be provided`])
           }
         }}>Add Flow</button>
-        <button className={`btn btn-secondary mr-2`} onClick={e => {
+        <button className={`btn btn-secondary mr-2 word-break-break-all`} onClick={e => {
           setnodevisibility(!nodevisibility)
         }}>Add Nodes</button>
       </div>
@@ -425,12 +426,20 @@ function QuestionsDiagram() {
               })
             }).then(res => res.json())
               .then(res => {
+                allFlows[allFlows.findIndex(f => f._id === res.payload._id)] = res.payload
+                setloading(false)
+              }).catch(e => {
                 setloading(false)
               })
           }}>{loading ? "Loading" : "Save"}</button>
       </div>
       {error && error.length > 0 && (
-        <div className="flash m-0 mr-3 alert fade show alert-danger ">
+        <div className=" m-0 mr-3 alert alert-danger">
+          <button type="button" className="close" onClick={e => {
+            seterror([])
+          }}>
+            <span aria-hidden="true">&times;</span>
+          </button>
           Errors: {error.map((e, i) => <div key={i}>{e}</div>)}
         </div>
       )}
