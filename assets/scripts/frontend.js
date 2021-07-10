@@ -432,7 +432,11 @@ Array.from(document.querySelectorAll('.dropdown-custom')).map(dropdown => {
 // }
 // setObserver(document.querySelector('.intersection_observed'))
 
-const questionroot = document.getElementById("questionroot")
+let studentquestionroot = document.getElementById("questionroot")
+let company_questionroot = document.getElementById("company_questionroot")
+
+const questionroot = company_questionroot ? company_questionroot : studentquestionroot
+
 const isGerman = window.location.pathname.indexOf('/de') !== -1
 
 const getAnswers = (question, model) => Object.values(model.layers.find(layer => layer.type === "diagram-nodes").models)
@@ -539,7 +543,7 @@ if (
   questionroot
   // && !localStorage.getItem('dcianswers') 
 ) {
-  fetch(`/admin/questions/fetch/student`, {
+  fetch(`/admin/questions/fetch/${studentquestionroot ? `student` : `company`} `, {
     headers: {
       "content-type": "application/json"
     },
