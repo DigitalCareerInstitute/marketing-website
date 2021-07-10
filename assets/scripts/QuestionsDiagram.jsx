@@ -100,7 +100,7 @@ function QuestionsDiagram() {
           if (res.payload.questions[0].model) {
             model.deserializeModel(res.payload.questions[0].model, engine);
           }
-          setForm({ ...form, flowname: res.payload.questions[0].name })
+          setForm({ ...form, flowname: res.payload.questions[0].name, active: res.payload.questions[0].active })
           setmodelState(res.payload.questions[0]._id)
           addEventListeners(res.payload.questions[0].name)
           engine.setModel(model);
@@ -246,70 +246,92 @@ function QuestionsDiagram() {
 
   return (
     <div className="h-100 d-flex flex-column">
-      <div>
-        <select
-          className={`custom-select w-auto mr-2`}
-          onChange={e => {
-            const theModelToSet = allFlows.find(f => f.name === e.target.selectedOptions[0].value)
-            if (theModelToSet.model) {
-              model.deserializeModel(theModelToSet.model, engine);
-              setForm({ ...form, flowname: theModelToSet.name })
-              setmodelState(theModelToSet._id)
-              engine.setModel(model);
-            } else {
-              const newModel = new StartNodeModel();
-              model.deserializeModel(newModel, engine);
-              engine.setModel(newModel)
-            }
-            addEventListeners(theModelToSet.name)
-          }}>
-          <option disabled value='' selected>select flow...</option>
-          {allFlows.map((f, i) => (
-            <option key={i} selected={f._id == currentModelId} value={f.name} >{f.name}</option>
-          ))}
-        </select>
-        <button className={`btn btn-secondary mr-2`} onClick={e => {
-          if (form.flowname) {
-            setloading(true)
-            const newModel = new StartNodeModel();
-            fetch(`/admin/questions/update`, {
-              method: "POST",
-              headers: {
-                "content-type": "application/json"
-              },
-              body: JSON.stringify({
-                _id: "",
-                name: "New Flow",
-                model: newModel.serialize()
-              })
-            }).then(res => res.json())
-              .then(res => {
-                if (res.error) {
-                  seterror([...error, res.error])
-                } else {
-                  engine.setModel(newModel)
-                  setallFlows([...allFlows, res.payload])
-                  setForm({ ...form, flowname: res.payload.name })
-                  setmodelState(res.payload._id)
-                }
-                setloading(false)
-              })
-            seterror(error.splice(error.findIndex(e => e === `Name must be provided`), 1))
-          } else {
-            seterror([...error, `Name must be provided`])
-          }
-        }}>Add Flow</button>
-        <button className={`btn btn-secondary mr-2 word-break-break-all`} onClick={e => {
-          setnodevisibility(!nodevisibility)
-        }}>Add Nodes</button>
-      </div>
       <div className={!nodevisibility ? `d-none` : ``}>
         <form onSubmit={addQuestion}>
-          <label htmlFor="flowname">Flow name</label>
-          <input className="form-control" id="flowname" name="flowname" value={form['formname']} value={form.flowname} onChange={(e) => {
-            e.stopPropagation();
-            setForm({ ...form, [e.target.name]: e.target.value })
-          }} />
+          <div class="form-row align-items-center">
+            <div class="col-auto flex-column d-flex">
+              <label htmlFor="flowselector">flowselector</label>
+              <select
+                id="flowselector"
+                className={`custom-select w-auto mr-2`}
+                onChange={e => {
+                  const theModelToSet = allFlows.find(f => f.name === e.target.selectedOptions[0].value)
+                  if (theModelToSet.model) {
+                    model.deserializeModel(theModelToSet.model, engine);
+                    setForm({ ...form, flowname: theModelToSet.name, active: theModelToSet.active })
+                    setmodelState(theModelToSet._id)
+                    engine.setModel(model);
+                  } else {
+                    const newModel = new StartNodeModel();
+                    model.deserializeModel(newModel, engine);
+                    engine.setModel(newModel)
+                  }
+                  addEventListeners(theModelToSet.name)
+                }}>
+                <option disabled value='' selected>select flow...</option>
+                {allFlows.map((f, i) => (
+                  <option key={i} selected={f._id == currentModelId} value={f.name} >{f.name}</option>
+                ))}
+              </select>
+            </div>
+            <div class="col-auto px-3 align-items-center d-flex">
+              <input
+                checked={form['active']}
+                name='active'
+                type="checkbox" name="active" className="form-check-input"
+                onChange={(e) => {
+                  e.stopPropagation();
+
+                  setForm({ ...form, [e.target.name]: e.target.checked })
+                }} style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="active" />
+              <label className="form-check-label" htmlFor="active">Active?</label>
+            </div>
+            <div class="col-auto">
+              <label htmlFor="flowname">Flow name</label>
+              <input className="form-control" id="flowname" name="flowname" value={form['formname']} value={form.flowname} onChange={(e) => {
+                e.stopPropagation();
+                setForm({ ...form, [e.target.name]: e.target.value })
+              }} />
+            </div>
+            <div class="col-auto">
+              <button className={`btn btn-secondary mr-2`} onClick={e => {
+                if (form.flowname) {
+                  setloading(true)
+                  const newModel = new StartNodeModel();
+                  fetch(`/admin/questions/update`, {
+                    method: "POST",
+                    headers: {
+                      "content-type": "application/json"
+                    },
+                    body: JSON.stringify({
+                      _id: "",
+                      name: "New Flow",
+                      model: newModel.serialize(),
+                    })
+                  }).then(res => res.json())
+                    .then(res => {
+                      if (res.error) {
+                        seterror([...error, res.error])
+                      } else {
+                        engine.setModel(newModel)
+                        setallFlows([...allFlows, res.payload])
+                        setForm({ ...form, flowname: res.payload.name })
+                        setmodelState(res.payload._id)
+                      }
+                      setloading(false)
+                    })
+                  seterror(error.splice(error.findIndex(e => e === `Name must be provided`), 1))
+                } else {
+                  seterror([...error, `Name must be provided`])
+                }
+              }}>Add Flow</button>
+            </div>
+            <div class="col-auto">
+              <button className={`btn btn-secondary mr-2 word-break-break-all`} onClick={e => {
+                setnodevisibility(!nodevisibility)
+              }}>Add Nodes</button>
+            </div>
+          </div>
           <div className=" row">
             <div className="col-md-4">
               <label htmlFor="addquestion">Add Question</label>
@@ -422,7 +444,8 @@ function QuestionsDiagram() {
               body: JSON.stringify({
                 _id: currentModelId,
                 name: form['flowname'],
-                model: model.serialize()
+                model: model.serialize(),
+                active: form.active
               })
             }).then(res => res.json())
               .then(res => {

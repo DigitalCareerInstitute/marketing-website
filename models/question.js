@@ -8,6 +8,7 @@ var QuestionSchema = new Schema({
     unique: true
   },
   model: Object,
+  active: Boolean
 });
 
 module.exports = mongoose.model("Question", QuestionSchema);
