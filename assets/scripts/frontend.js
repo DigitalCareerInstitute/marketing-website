@@ -549,21 +549,24 @@ if (
     },
   }).then(res => res.json())
     .then(res => {
-      const question = res.payload.questions
-      const diagramNodes = question.model.layers.find(layer => layer.type === "diagram-nodes").models
-      const startquestion = Object.values(diagramNodes).filter(model => model.ports.find(port => port.label === "In").links.length === 0)
-      document.addEventListener('submit', (e) => {
-        if (e.target.classList.contains("dynamicinputform")) {
-          jumpToNextQuestion(e, diagramNodes, question.model)
-        }
-      })
-      document.addEventListener('change', (e) => {
-        if (e.target.classList.contains("dynamicinputradio") && e.target.dataset.trigger === "true") {
-          e.target.elements = [e.target, [...e.target.closest('form').elements].find(i => i.type === "submit")]
-          jumpToNextQuestion(e, diagramNodes, question.model)
-        }
-      })
-      findAnswers(startquestion, question.model)
+      console.log('res.payload', res.payload);
+      if (res.payload.questions.active) {
+        const question = res.payload.questions
+        const diagramNodes = question.model.layers.find(layer => layer.type === "diagram-nodes").models
+        const startquestion = Object.values(diagramNodes).filter(model => model.ports.find(port => port.label === "In").links.length === 0)
+        document.addEventListener('submit', (e) => {
+          if (e.target.classList.contains("dynamicinputform")) {
+            jumpToNextQuestion(e, diagramNodes, question.model)
+          }
+        })
+        document.addEventListener('change', (e) => {
+          if (e.target.classList.contains("dynamicinputradio") && e.target.dataset.trigger === "true") {
+            e.target.elements = [e.target, [...e.target.closest('form').elements].find(i => i.type === "submit")]
+            jumpToNextQuestion(e, diagramNodes, question.model)
+          }
+        })
+        findAnswers(startquestion, question.model)
+      }
     })
 }
 
