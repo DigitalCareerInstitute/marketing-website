@@ -7,11 +7,6 @@ import './questions';
 import 'bootstrap-colorpicker';
 import Quill from 'quill/dist/quill';
 
-
-setTimeout(() => {
-  $('.alert').alert('close');
-}, alertTimeout);
-
 $(function () {
   $('[data-toggle="popover"]').popover();
 });
