@@ -62,21 +62,20 @@ module.exports.getQuestion = async (req, res) => {
 
 module.exports.updateQuestion = async (req, res) => {
   try {
-    console.log('req.body', JSON.stringify(req.body));
     let question
     if (req.body._id === "") {
-      question = new Question({ name: req.body.name, model: req.body.model });
+      question = new Question({ name: req.body.name, model: req.body.model, active: false });
     } else {
       question = await Question.findById(req.body._id).exec({});
       if (question) {
         question.name = req.body.name
         question.model = req.body.model
+        question.active = req.body.active
       }
     }
     await question.save()
     return jsonResponseObject(res, question)
   } catch (err) {
-    console.log(err);
-    return jsonResponseObject(res, err)
+    return jsonResponseObject(res, "", err)
   }
 };
