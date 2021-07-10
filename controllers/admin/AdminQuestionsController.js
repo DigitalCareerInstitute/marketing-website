@@ -62,7 +62,6 @@ module.exports.getQuestion = async (req, res) => {
 
 module.exports.updateQuestion = async (req, res) => {
   try {
-    console.log('req.body', JSON.stringify(req.body));
     let question
     if (req.body._id === "") {
       question = new Question({ name: req.body.name, model: req.body.model });
@@ -76,7 +75,6 @@ module.exports.updateQuestion = async (req, res) => {
     await question.save()
     return jsonResponseObject(res, question)
   } catch (err) {
-    console.log(err);
-    return jsonResponseObject(res, err)
+    return jsonResponseObject(res, "", err)
   }
 };

@@ -221,5 +221,9 @@ const getFilesInDirectoryAsync = async (dir, ext) => {
   return files;
 }
 exports.jsonResponseObject = async (res, payload, error = undefined) => {
-  return res.json({ payload, error })
+  if (error) {
+    return res.status(500).json({ payload, error: error.toString() })
+  } else {
+    return res.json({ payload, error })
+  }
 }
