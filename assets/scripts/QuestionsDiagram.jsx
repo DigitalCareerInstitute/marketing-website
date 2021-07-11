@@ -42,6 +42,7 @@ const CanvasWrapper = styled.div`
 `
 const colorDropdown = "rgb(170, 182, 1)"
 const colorFreeanswer = "rgb(182, 133, 1)"
+const colorAnswer = "rgb(255, 204, 1)"
 const colorError = "rgb(255,0,0)"
 const questioncolor = "rgb(0, 128, 129)"
 let availableFields = []
@@ -173,11 +174,11 @@ function QuestionsDiagram() {
 
   var checkIfQuestionsMatchWithAnswersAndSyncWithHubspot = (question) => {
     let errors = []
-    if (model.layers[1].models.length > 0) {
+    if (Object.values(model.layers[1].models).length > 0) {
       var hbField = availableFields.find(a => a.name === question.options.extras.questionidentifier)
       var As = Object.values(model.layers[1].models).filter(m => m.options.extras.customType === "answer")
       const answers = As.filter(a => {
-        return Object.keys(question.ports.Out.links).includes(Object.values(a.ports.In.links)[0].options.id)
+        return Object.values(a.ports.In.links)[0] && Object.keys(question.ports.Out.links).includes(Object.values(a.ports.In.links)[0].options.id)
       })
       //TODO `state_de_` is not `state` - overlapping between question and dropdown
       if (answers.filter(a => !a.options.extras.dropdown).length === 0) {
@@ -200,15 +201,24 @@ function QuestionsDiagram() {
       } else {
         Object.values(question.portsOut[0].links).map(link => {
           if (answers.filter(a => !a.options.extras.freeanswer).length > 0) {
-            const matchingQuestions = hbField.options.filter(f => f.value === link.targetPort.parent.options.extras.answeridentifier)
-            if (link.targetPort.parent.options.extras.customType !== "answer" || matchingQuestions.length === 0) {
-              if (matchingQuestions.length === 0) {
-                errors.push(`This answer is not present on Hubspot: "${link.targetPort.parent.options.name}"\n\r`)
+            const matchingQuestions = hbField ? hbField.options.filter(f => f.value === link.targetPort.parent.options.extras.answeridentifier) : []
+            // if (link.targetPort.parent.options.extras.customType !== "answer") {
+            if (matchingQuestions.length === 0 && hbField.options.length > 0) {
+              errors.push(`This answer is not present on Hubspot: "${link.targetPort.parent.options.name}"\n\r`)
+              if (!hbField) {
+                question.options.color = colorError
+                errors.push(`This question is not present on Hubspot: "${question.options.name}"\n\r`)
+              } else {
+                question.options.color = questioncolor
               }
               engine.getModel().getNode(link.targetPort.parent.options.id).setSelected(true);
               engine.getModel().getNode(link.targetPort.parent.options.id).options.color = colorError
-              return link.targetPort.parent
+            } else {
+              engine.getModel().getNode(link.targetPort.parent.options.id).setSelected(false);
+              engine.getModel().getNode(link.targetPort.parent.options.id).options.color = colorAnswer
             }
+            return link.targetPort.parent
+            // }
           }
         }).filter(l => !!l)
       }
@@ -283,7 +293,7 @@ function QuestionsDiagram() {
                   e.stopPropagation();
 
                   setForm({ ...form, [e.target.name]: e.target.checked })
-                }} style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="active" />
+                }} style={{ borderColor: colorAnswer, borderStyle: "solid" }} id="active" />
               <label className="form-check-label" htmlFor="active">Active?</label>
             </div>
             <div className="col-auto">
