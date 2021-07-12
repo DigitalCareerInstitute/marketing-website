@@ -201,24 +201,22 @@ function QuestionsDiagram() {
       } else {
         Object.values(question.portsOut[0].links).map(link => {
           if (answers.filter(a => !a.options.extras.freeanswer).length > 0) {
-            const matchingQuestions = hbField ? hbField.options.filter(f => f.value === link.targetPort.parent.options.extras.answeridentifier) : []
-            // if (link.targetPort.parent.options.extras.customType !== "answer") {
-            if (matchingQuestions.length === 0 && hbField.options.length > 0) {
-              errors.push(`This answer is not present on Hubspot: "${link.targetPort.parent.options.name}"\n\r`)
-              if (!hbField) {
-                question.options.color = colorError
-                errors.push(`This question is not present on Hubspot: "${question.options.name}"\n\r`)
+            if (hbField) {
+              const matchingQuestions = hbField && hbField.options.length > 0 ? hbField.options.filter(f => f.value === link.targetPort.parent.options.extras.answeridentifier) : []
+              if (hbField.options.length > 0 && matchingQuestions.length == 0) {
+                errors.push(`This answer is not present on Hubspot: "${link.targetPort.parent.options.name}"\n\r`)
+                engine.getModel().getNode(link.targetPort.parent.options.id).setSelected(true);
+                engine.getModel().getNode(link.targetPort.parent.options.id).options.color = colorError
               } else {
-                question.options.color = questioncolor
+                engine.getModel().getNode(link.targetPort.parent.options.id).setSelected(false);
+                engine.getModel().getNode(link.targetPort.parent.options.id).options.color = colorAnswer
               }
+            } else {
+              errors.push(`This question is not present on Hubspot: "${question.options.name}"\n\r`)
               engine.getModel().getNode(link.targetPort.parent.options.id).setSelected(true);
               engine.getModel().getNode(link.targetPort.parent.options.id).options.color = colorError
-            } else {
-              engine.getModel().getNode(link.targetPort.parent.options.id).setSelected(false);
-              engine.getModel().getNode(link.targetPort.parent.options.id).options.color = colorAnswer
             }
             return link.targetPort.parent
-            // }
           }
         }).filter(l => !!l)
       }
