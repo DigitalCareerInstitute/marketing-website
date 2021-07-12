@@ -38,9 +38,15 @@
 }
 
 footer.site-footer {
+  #footer-items-container{
+    padding-top:100px;
+  }
   #newsletter{
     margin-bottom: -100px;
     transform: translateY(-200px);
+    +#footer-items-container{
+      padding-top:0!important;
+    }     
     input#newsletter_email {
       &:hover,
       &:active,

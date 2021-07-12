@@ -6,10 +6,6 @@ mixin courseOverviewCard(course, classes="col-md-6")
           a.text-dark(href=`/courses/${course.slug}`)
             h5.font-weight-bold=course.headline
             .text-muted.mt-3.mb-5.font-weight-bolder=course.courselength
-          if course.massnahmeNumber && currentPath !== "/tour"
-            .my-3
-              span.mr-2=__("Number")+":"
-              span.padded-text()=course.massnahmeNumber
           if course.startInterval
             .my-3
               span.mr-2=__("Starts every")+":"
@@ -19,8 +15,8 @@ mixin courseOverviewCard(course, classes="col-md-6")
               span.mr-2=__("Language")+":"
               span.padded-text()=course.courseLanguages
         if course.curriculumPdf
-          div
-            a.text-dark(href='/contact' data-toggle='modal', data-target=`#curriculumpopup` data-course=`${course.slug}`) 
+        div
+          a.text-dark(href=`/media/${course.slug}-jc.pdf` target="_blank")
               .d-flex.justify-content-between.align-items-center.mt-4
                 .text-muted=__("Download complete course curriculum")
                 .w-4.h-4

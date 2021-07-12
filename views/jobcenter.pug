@@ -84,10 +84,10 @@ block content
           each course in courses
             +courseOverviewCard(course)
     .pb-5
-    .d-flex.justify-content-end
-      .marker.w-8.h-7.bg-primary.d-flex.justify-content-center.align-items-center
-        .rotate-135.text-white
-          include ../assets/icons/arrow_fat.svg
+    //- .d-flex.justify-content-end
+    //-   .marker.w-8.h-7.bg-primary.d-flex.justify-content-center.align-items-center
+    //-     .rotate-135.text-white
+    //-       include ../assets/icons/arrow_fat.svg
 
     .container.my-5.mt-xl-0
       h2.mb-3=__("Find your contact person") 
@@ -99,14 +99,16 @@ block content
             .customselect.mr-0.mr-md-5
               select.text-center.pr-5(style="padding-right: 80px !important" class="jobcenter-location-select")
                 each location in locations.filter(l => l.isCampus)
-                  option(data-address=`${location.street}, ${location.zip} ${location.name}`)=location.name
-            
-          
-          .p-5.d-flex.justify-content-center.flex-column.align-items-center.text-center
+                  option(data-address=`${location.street}`,data-location=`${location.zip} ${location.name}` data-phone=`${location.phone}`, data-email=`${location.email}`)=location.name
+          .pt-5.pr-5.d-flex.justify-content-center.flex-column.align-items-center.text-center
             .w-5.h-5.text-muted.mb-4
               include ../assets/icons/jobcenter_location.svg
             - firstLocation = locations.filter(l => l.isCampus)[0]
-            #jobcenter_address=`${firstLocation.street}, ${firstLocation.zip} ${firstLocation.name}`
+            small#jobcenter_address=`${firstLocation.street}`
+            small#jobcenter_location=`${firstLocation.zip} ${firstLocation.name}`
+            .p.text-muted.d-none.d-md-block.mb-0
+              a.small#jobcenter_email.text-dark(href=`mailto:${firstLocation.email}` title="Campus Email")=firstLocation.email=`${firstLocation.email}`  
+            small#jobcenter_phone=`${firstLocation.phone}`              
         .col-md-7.px-5.px-md-0
           each location, index in locations
             .shadow-sm.shadow-sm-md-none
@@ -115,7 +117,7 @@ block content
                   .col-md-3.mb-4.mb-md-5
                     .px-0.px-lg-3.pt-4.mw-150.mx-auto
                       +storyImages(employee, 'col')
-                  .col-md-9.d-flex.flex-column.justify-content-end.text-center.text-md-left.mb-4.mb-md-5
+                  .col-md-9.d-flex.flex-column.justify-content-center.text-center.text-md-left.mb-4.mb-md-5
                     h6.font-weight-bold=employee.name
                     .d-flex.flex-md-column.justify-content-center.mb-4.mb-md-0
                       if employee.phone
@@ -125,67 +127,6 @@ block content
                           p.text-muted.mb-1.d-none.d-md-block
                             span.font-weight-bold Tel: 
                             a.text-dark(href=`tel:${employee.phone}` title="Employee Phone")=employee.phone
-                      if employee.email
-                        .position-relative.z-1(class=employee.phone ? "ml-5 ml-md-0" : "")
-                          a.h-3.w-3.mt-3.mb-1.bg-primary-light.circle.d-md-none(href=`mailto:${employee.email}` title="Employee Email")
-                            include ../assets/icons/mail.svg
-                          p.text-muted.d-none.d-md-block.mb-0
-                            span.font-weight-bold Email: 
-                            a.text-dark(href=`mailto:${employee.email}` title="Employee Email")=employee.email
-
-    .pb-5
-    .marker.w-8.h-7.bg-primary.d-flex.justify-content-center.align-items-center
-      include ../assets/icons/rectangle.svg
-    .container.mt-5.mt-xl-0
-      h2.mb-3=__("Our all inclusive service") 
-      =__("In 4 steps to socialinsuranced employment")
-      .mx-5
-        .row.px-md-5.my-5
-          .col-md-6.mb-5.px-2.mb-md-3
-            .border.h-100.d-flex.flex-column.justify-content-between
-              .px-5.pt-5
-                .d-flex.justify-content-center.align-items-center.flex-column.mb-4
-                  .w-13.h-9
-                    include ../assets/icons/jobcenter_online_lesson.svg
-                h5.font-weight-bold=__("MAT")
-                p.mb-4=__("Testing center digital professions in online live distance learning (remote learning).")
-              .d-flex.justify-content-end
-                .bg-primary-light.text-white.w-5.h-5.d-flex.justify-content-center.align-items-center
-                  h3.mb-0.text-white="01"
-          .col-md-6.mb-5.px-2.mb-md-3
-            .border.h-100.d-flex.flex-column.justify-content-between
-              .px-5.pt-5
-                .d-flex.justify-content-center.align-items-center.flex-column.mb-4
-                  .w-13.h-9
-                    include ../assets/icons/jobcenter_web_developer.svg
-                h5.font-weight-bold=__("FbW")
-                p.mb-4=__("Further education to become an online marketing specialist or web and software developer incl. language courses.")
-              .d-flex.justify-content-start
-                .bg-primary-light.text-white.w-5.h-5.d-flex.justify-content-center.align-items-center
-                  h3.mb-0.text-white="02"
-          .col-md-6.mb-5.px-2.mb-md-3
-            .border.h-100.d-flex.flex-column.justify-content-between
-              .d-flex.justify-content-end
-                .bg-primary-light.text-white.w-5.h-5.d-flex.justify-content-center.align-items-center
-                  h3.mb-0.text-white="03"
-              .px-5.pt-5.pt-md-3
-                .d-flex.justify-content-center.align-items-center.flex-column.mb-4
-                  .w-13.h-9
-                    include ../assets/icons/jobcenter_job_interview.svg
-                h5.font-weight-bold=__("Applicationphase")
-                p.mb-4=__("Career training and consulting in the DCI. Access to the wide network of companies and partners.")
-          .col-md-6.mb-5.px-2.mb-md-3
-            .border.h-100.d-flex.flex-column.justify-content-between
-              .d-flex.justify-content-start
-                .bg-primary-light.text-white.w-5.h-5.d-flex.justify-content-center.align-items-center
-                  h3.mb-0.text-white="04"
-              .px-5.pt-5.pt-md-3
-                .d-flex.justify-content-center.align-items-center.flex-column.mb-4
-                  .w-13.h-9
-                    include ../assets/icons/jobcenter_handshake.svg
-                h5.font-weight-bold=__("Inclusion")
-                p.mb-4=__("Placement in an employment employment subject to social insurance.")
-
     .bg-light.position-relative.overflow-hidden.mb-3.py-5
       .container
         .position-absolute.bg-panel.bg-primary.left.bottom.top.shift-left-percent.w-100

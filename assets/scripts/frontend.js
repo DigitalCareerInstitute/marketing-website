@@ -362,6 +362,9 @@ const jobcenterSelect = document.querySelector('.jobcenter-location-select')
 if (jobcenterSelect) {
   jobcenterSelect.addEventListener('change', (e) => {
     document.getElementById('jobcenter_address').innerText = e.target.selectedOptions[0].dataset.address
+    document.getElementById('jobcenter_location').innerText = e.target.selectedOptions[0].dataset.location
+    document.getElementById('jobcenter_email').innerText = e.target.selectedOptions[0].dataset.email || ''
+    document.getElementById('jobcenter_phone').innerText = e.target.selectedOptions[0].dataset.phone || ''
     Array.from(document.querySelectorAll('.jobcenter-location-employee')).map(j => {
       if (j.dataset.location == e.target.selectedOptions[0].innerText) {
         j.classList.remove('hidden')

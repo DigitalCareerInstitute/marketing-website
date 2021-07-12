@@ -55,8 +55,15 @@ mixin locationForm
     .mb-3
       label(for='latitude') Latitude
       input#latitude.form-control(name='latitude', type='number', placeholder='Latitude', autofocus='' value=editPath ?  location.latitude : "", step="any")
-      
 
+    .mb-3
+      label(for='email') Email
+      input#email.form-control(name='email', type='text', placeholder='Email',  autofocus='' value=editPath ?  location.email : "")
+      
+    .mb-3
+      label(for='phone') Phone
+      input#phone.form-control(name='phone', type='text', placeholder='Phone',  autofocus='' value=editPath ?  location.phone : "")
+     
     .btn-group
       if editPath
         a.btn.btn-outline-primary(href="/admin/locations" title="Back")="Back"

@@ -29,6 +29,16 @@ const LocationSchema = new Schema({
     type: Date,
     default: Date.now
   },
+  phone: {
+    type: String,
+    default: undefined
+  },
+  email:{
+    type: String,
+    trim: true,
+    lowercase: true,
+    match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+  },
   avatar: {
     type: String
   },

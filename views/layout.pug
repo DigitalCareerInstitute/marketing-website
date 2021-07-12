@@ -128,9 +128,9 @@ html.h-100(lang=locale === "de" ? 'de': 'en')
       if currentPath && !currentPath.includes('admin') && !currentPath.includes('users')
         footer.site-footer(role='contentinfo' class=user ? "pb-5" : "" style=course && `color: ${course.textColor}`)
           section.position-relative.px-4.px-md-0.pb-5(class=course && course.coloraccent ? `` : `bg-primary-dark`, style=course && course.coloraccent ? `background-color: rgb(${course.coloraccent.replace(/.*\((.*)\)/g, "$1").split(',').map(i => Math.floor(i * 0.8)).join(', ')}` : `` )
-            if currentPath !== "/users/login" && currentPath !== "/users/register"
+            if currentPath !== "/users/login" && currentPath !== "/users/register" && currentPath !== '/jobcenter'
               +newsletter
-            .container
+            .container#footer-items-container
               .row
                 .col-6.col-sm-2.footers-two
                   p.font-weight-bold.mb-4(class=course && course.coloraccent ? `text-white` : `text-muted`)=__("Company")
