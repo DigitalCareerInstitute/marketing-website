@@ -1,17 +1,4 @@
 extends ../layout.pug
 block content
   .container-fluid.text-left.h-100.d-flex.flex-column.overflow-hidden
-
-    h2 
-      | Questions
-      button(class='btn btn-secondary badge ml-2' type='button' data-container='body' data-toggle='popover' data-trigger='hover' data-placement='top' data-content='Link questions to one or multiple answers. If a question is followed by a freeanswer, it should be the only anwer of that question')  ? 
-      button.btn.btn-link.text-left.ml-3(type='button' data-toggle='collapse' data-target='#collapseOne' aria-expanded='true' aria-controls='collapseOne')
-        | Show answers
-
-    #accordionExample.accordion
-      .card
-        #collapseOne.collapse(aria-labelledby='headingOne' data-parent='#accordionExample')
-          .card-body
-            each answer, key in answers
-              pre=answer
     #questionsdiagramroot.flex-grow-1
