@@ -41,24 +41,34 @@ const CanvasWrapper = styled.div`
     background: white;
   }
 `
-const Loader = styled.img`
-  left: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  animation: shine 1s alternate infinite;
-  @keyframes shine {
-    0% {
-      
-      transform: translate(-50%, -50%) rotate(0deg);
-    }
-    50% {
-      
-      transform: translate(-50%, -50%) rotate(400deg);
-    }
-    100% {
-      
-      transform: translate(-50%, -50%) rotate(0deg);
+const Loader = styled.section`
+  opacity: ${props => props.loading ? 0.8 : 0};
+  pointer-events: ${props => props.loading ? `all` : `none`};
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  img {
+    left: 50%;
+    opacity: .7;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: shine 1s alternate infinite;
+    @keyframes shine {
+      0% {
+
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+      50% {
+
+        transform: translate(-50%, -50%) rotate(400deg);
+      }
+      100% {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
     }
   }
 `
@@ -284,9 +294,9 @@ function QuestionsDiagram() {
   return (
     <div className="h-100 d-flex flex-column">
       <h2> Questions
-        <button class="btn btn-secondary badge ml-2" type="button" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Link questions to one or multiple answers. If a question is followed by a freeanswer, it should be the only anwer of that question" data-original-title="" title=""> ?
+        <button className="btn btn-secondary badge ml-2" type="button" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Link questions to one or multiple answers. If a question is followed by a freeanswer, it should be the only anwer of that question" data-original-title="" title=""> ?
         </button>
-        <button class="btn btn-link text-left ml-3" type="button" onClick={e => {
+        <button className="btn btn-link text-left ml-3" type="button" onClick={e => {
           setanswersvisiblity(!answersvisiblity)
         }}>Show answers</button>
         <button className={`btn btn-secondary mr-2 word-break-break-all`} onClick={e => {
@@ -519,10 +529,11 @@ function QuestionsDiagram() {
           Errors: {error.map((e, i) => <div key={i}>{e}</div>)}
         </div>
       )}
-      <CanvasWrapper>
-        {loading ? <Loader src="/media/dci.svg" /> : (
-          <CanvasWidget id='canvas' engine={engine} />
-        )}
+      <CanvasWrapper >
+        <CanvasWidget id='canvas' engine={engine} />
+        <Loader loading={loading} >
+          <img src="/media/dci.svg" />
+        </Loader>
       </CanvasWrapper>
     </div>
   );
