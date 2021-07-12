@@ -6,12 +6,7 @@ const { jsonResponseObject } = require("../../helpers/helper");
 
 module.exports.renderQuestions = async (req, res) => {
   try {
-    const answers = await Answer
-      .find()
-      .exec()
-    res.render("admin/adminQuestions", {
-      answers
-    });
+    res.render("admin/adminQuestions");
   } catch (err) {
     console.log(err);
   }
@@ -34,8 +29,9 @@ module.exports.getQuestions = async (req, res) => {
         json: true
       };
       try {
-        const hubspotCache = await requestPromise(options)
+        const [hubspotCache, answers] = await Promise.all([requestPromise(options), Answer.find().exec()])
         response.hb_fields = hubspotCache
+        response.answers = answers
       } catch (error) {
         console.log('error', error);
       } finally {

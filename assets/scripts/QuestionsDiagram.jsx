@@ -34,11 +34,48 @@ engine.setModel(model);
 const CanvasWrapper = styled.div`
   flex-grow: 1;
   overflow: hidden;
+  position: relative;
   & > div {
     height: 100%;
     width: 100vw;
     background: white;
   }
+`
+const Loader = styled.section`
+  opacity: ${props => props.loading ? 0.8 : 0};
+  pointer-events: ${props => props.loading ? `all` : `none`};
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  img {
+    left: 50%;
+    opacity: .7;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: shine 1s alternate infinite;
+    @keyframes shine {
+      0% {
+
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+      50% {
+
+        transform: translate(-50%, -50%) rotate(400deg);
+      }
+      100% {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+    }
+  }
+`
+const Pre = styled.pre`
+  white-space: unset;
+  padding: 10px;
+  background-color: white;
 `
 const colorDropdown = "rgb(170, 182, 1)"
 const colorFreeanswer = "rgb(182, 133, 1)"
@@ -51,8 +88,10 @@ function QuestionsDiagram() {
   let [form, setForm] = useState({})
   let formRef = useRef(form)
   let [button, setbutton] = useState('Add')
-  let [nodevisibility, setnodevisibility] = useState(true)
+  let [nodevisibility, setnodevisibility] = useState(false)
+  let [answersvisiblity, setanswersvisiblity] = useState(false)
   let [allFlows, setallFlows] = useState([])
+  let [answers, setanswers] = useState([])
   let [currentModelId, setmodelState] = useState("")
   let [error, seterror] = useState([])
   useEffect(() => {
@@ -98,6 +137,7 @@ function QuestionsDiagram() {
         if (res.payload.questions.length > 0) {
           availableFields = res.payload.hb_fields
           setallFlows(res.payload.questions)
+          setanswers(res.payload.answers)
           if (res.payload.questions[0].model) {
             model.deserializeModel(res.payload.questions[0].model, engine);
           }
@@ -253,6 +293,26 @@ function QuestionsDiagram() {
 
   return (
     <div className="h-100 d-flex flex-column">
+      <h2> Questions
+        <button className="btn btn-secondary badge ml-2" type="button" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="Link questions to one or multiple answers. If a question is followed by a freeanswer, it should be the only anwer of that question" data-original-title="" title=""> ?
+        </button>
+        <button className="btn btn-link text-left ml-3" type="button" onClick={e => {
+          setanswersvisiblity(!answersvisiblity)
+        }}>Show answers</button>
+        <button className={`btn btn-secondary mr-2 word-break-break-all`} onClick={e => {
+          setnodevisibility(!nodevisibility)
+        }}>Add Nodes</button>
+      </h2>
+
+
+
+      <div className={!answersvisiblity ? `d-none` : ``}>
+        <div className={`card`}>
+          {answers.map(a => (
+            <Pre className={""}>{JSON.stringify(a.answers)}</Pre>
+          ))}
+        </div>
+      </div>
       <div className={!nodevisibility ? `d-none` : ``}>
         <form onSubmit={addQuestion}>
           <div className="form-row align-items-end">
@@ -332,11 +392,6 @@ function QuestionsDiagram() {
                   seterror([...error, `Name must be provided`])
                 }
               }}>Add Flow</button>
-            </div>
-            <div className="col-auto">
-              <button className={`btn btn-secondary mr-2 word-break-break-all`} onClick={e => {
-                setnodevisibility(!nodevisibility)
-              }}>Add Nodes</button>
             </div>
           </div>
           <div className=" row">
@@ -443,6 +498,7 @@ function QuestionsDiagram() {
           disabled={loading}
           onClick={() => {
             setloading(true)
+            parseAllNodesForHubspotFields()
             fetch(`/admin/questions/update`, {
               method: "POST",
               headers: {
@@ -473,8 +529,11 @@ function QuestionsDiagram() {
           Errors: {error.map((e, i) => <div key={i}>{e}</div>)}
         </div>
       )}
-      <CanvasWrapper>
+      <CanvasWrapper >
         <CanvasWidget id='canvas' engine={engine} />
+        <Loader loading={loading} >
+          <img src="/media/dci.svg" />
+        </Loader>
       </CanvasWrapper>
     </div>
   );
