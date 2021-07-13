@@ -1881,6 +1881,9 @@ body[class*="pages-"] {
   &.iron {
     background-image: url("~/media/dot_iron.svg");
   }
+  &.white {
+    background-image: url("~/media/dot_white.svg");
+  }
 }
 .grayscale {
   filter: grayscale(1);
