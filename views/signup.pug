@@ -1,25 +1,43 @@
 extends layout.pug
 block content
-  div.position-relative.pt-4
+  div.position-relative.pt-4.overflow-hidden
     div.container-fluid.p-0.container-lg.py-lg-5
-      .row.mx-0
-        .col-lg-6.px-0
-          .px-5.px-lg-0.h-100
-            .dotted.red.w-7.h-7.position-absolute.left.top.ml-3.mb-5.z-minus
-            div.h-100.position-relative.h-100
-              .bottom-block
-              .bg-white.shadow-sm.rounded.overflow-hidden.h-100
-                .bg-light-blue.p-5.h-100
-                  .pb-5.pb-lg-0
-                    h1.mb-5=__("Apply to DCI")
-                    p=__("Answer a few short questions and our admissions team will contact you to discuss our course details and your goals.")
-        .col-lg-6.px-0
-          .position-absolute.bg-panel.bg-primary.w-100.d-lg-none.h-100
-          .px-5.px-lg-0.pb-5.pb-lg-0.position-relative.h-100
-            div.h-100
-              .px-lg-3.bg-white.shadow-sm.rounded-right-bottom.rounded-bottom-left.shift-top.shift-lg-reset.h-100
-                #questionroot.d-flex.justify-content-center
-                  div.w-100
-    .bg-primary.position-relative
-      .pb-200.d-lg-none
-    .pb-200.d-none.d-lg-block
+      .position-relative.p-5
+        .bg-primary.h-100.w-100.position-absolute.left.top
+        .bg-white.h-50.w-50.position-absolute.left.top
+        .dotted.red.w-10.h-10.position-absolute.top.left.shift-top-percent
+        .dotted.white.w-3.h-7.position-absolute.left-20.bottom.z-1
+        .dotted.red.w-3.h-3.position-absolute.right.bottom.shift-right-down
+        .row.mx-0
+          .col-lg-5.px-0
+            .px-5.px-lg-0.h-100
+              .dotted.red.w-7.h-7.position-absolute.left.top.ml-3.mb-5.z-minus
+              div.h-100.position-relative.h-100
+                .bottom-block
+                .bg-white.shadow-sm.rounded.overflow-hidden.h-100
+                  .bg-light-blue.p-5.h-100
+                    .pb-5.pb-lg-0
+                      h1.mb-5=__("Apply to DCI")
+                      p=__("Answer a few short questions and our admissions team will contact you to discuss our course details and your goals.")
+          .col-lg-7.px-0
+            .position-absolute.bg-panel.bg-primary.w-100.d-lg-none.h-100
+            .px-5.px-lg-0.pb-5.pb-lg-0.position-relative.h-100
+              div.h-100
+                .px-lg-3.bg-white.shadow-sm.rounded-right-bottom.rounded-bottom-left.shift-top.shift-lg-reset.h-100
+                  #questionroot.d-flex.justify-content-center
+                    div.w-100
+
+
+
+    - randompartners = [...partners.filter(p => p.is_alumni_employer)]
+    - for (let i = randompartners.length - 1; i > 0; i--) {
+        - const j = Math.floor(Math.random() * (i + 1));
+        - [randompartners[i], randompartners[j]] = [randompartners[j], randompartners[i]];
+    - }  
+    .container
+      h6.text-center.mb-3.font-weight-bold.text-muted: +translate("Where Our Graduates Work")
+      .row.justify-content-center.py-5
+        each partner, index in randompartners.splice(0,6)
+          .col-3.col-md-2.partner.h-4.flex-column.align-items-center.justify-content-center(class=index > 3 ? "d-none d-lg-flex" : "d-flex")
+            .p-0.p-lg-2
+              img.partners-logo.w-100.px-0.px-lg-3(alt=partner.title, src="/images/" + partner.partnerlogo, )

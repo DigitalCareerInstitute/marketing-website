@@ -540,6 +540,11 @@ module.exports.thankYou = async (req, res) => {
 }
 
 module.exports.signupCourse = async (req, res, next) => {
+  let query = await getAvailableTranslations(req, res)
+  const partners = await Partner.find({ ...query }, 'link title partnerlogo is_alumni_employer')
+    .sort('order')
+    .exec({})
   return res.render('signup', {
+    partners
   })
 }
