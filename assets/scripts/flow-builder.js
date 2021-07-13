@@ -1,4 +1,5 @@
 import intlTelInput from 'intl-tel-input';
+import { get_form_payload } from "./helper.js"
 import utilsScript from "./intl-tel-input-utils.min.js"
 let studentquestionroot = document.getElementById("questionroot")
 let company_questionroot = document.getElementById("company_questionroot")
