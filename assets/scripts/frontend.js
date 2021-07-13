@@ -5,23 +5,11 @@ import "bootstrap/js/dist/dropdown";
 import "bootstrap/js/dist/collapse";
 import "bootstrap/js/dist/carousel";
 import "bootstrap/js/dist/alert";
-import { alertTimeout } from "./helper.js"
+import { alertTimeout, get_form_payload } from "./helper.js"
 import "./flow-builder"
 
 require("../css/style.scss");
 
-const get_form_payload = (elements) => {
-  const notUnselectedInputs = [...elements].filter(e => e.type === 'radio' && e.checked || e.type != 'radio')
-    .filter(i => i.type !== "submit")
-  return notUnselectedInputs
-    .reduce((acc, el) => {
-      const inputValue = el.type === "checkbox" ? el.checked : el.name === "jobcenter" ? !!Number(el.value) : el.value
-      return {
-        ...acc,
-        [el.name]: inputValue
-      }
-    }, {})
-}
 const toggleNL = (remove = false) => {
   document.getElementById("nlbtn").disabled = remove ? "" : "disabled";
   document.getElementById("nlbtn").innerHTML = remove ? "Subscribe" : "Loading";
