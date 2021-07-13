@@ -1,10 +1,13 @@
-
 export const get_form_payload = (elements) => {
 	const notUnselectedInputs = [...elements].filter(e => e.type === 'radio' && e.checked || e.type != 'radio')
 		.filter(i => i.type !== "submit")
 	return notUnselectedInputs
 		.reduce((acc, el) => {
-			const inputValue = el.type === "checkbox" ? el.checked : el.name === "jobcenter" ? !!Number(el.value) : el.value
+			let inputValue = el.type === "checkbox" ? el.checker : el.name === "jobcenter" ? !!Number(el.value) : el.name.match(/phone/i)
+			const iti = window.intlTelInputGlobals.getInstance(el);
+			if (el.dataset.intlTelInputId) {
+				inputValue = iti.getNumber()
+			}
 			return {
 				...acc,
 				[el.name]: inputValue

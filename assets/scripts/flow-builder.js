@@ -21,6 +21,12 @@ const canTrigger = (questions, model) => {
 	return ifThereAreNotJustButtons.length === 0
 }
 
+const itiConfig = {
+	initialCountry: "de",
+	utilsScript: utilsScript,
+	separateDialCode: true,
+	preferredCountries: ["de", "gb"]
+}
 const findAnswers = (questions, model) => {
 	const diagramLinks = model.layers.find(layer => layer.type === "diagram-links").models
 	if (diagramLinks) {
@@ -55,7 +61,7 @@ const findAnswers = (questions, model) => {
               <div class="w-100 px-5 px-lg-3 px-xl-5">
               ${freeanswers.length > 0 ? "<div class='row'>" + freeanswers.map(answer => {
 				return `<div class="${freeanswers.length === 1 ? "col-md-12" : "col-md-6"}"><label for="freeanswer_${answer.extras.answeridentifier}" >${isGerman ? (answer.extras.answertranslation.indexOf(':') !== -1 ? answer.extras.answertranslation.split(':')[0] : answer.extras.answertranslation) : (answer.name.indexOf(':') !== -1 ? answer.name.split(':')[0] : answer.name)}</label>
-                <input placeholder="${isGerman ? (answer.extras.answertranslation.indexOf(':') !== -1 ? answer.extras.answertranslation.split(':')[1] : "") : (answer.name.indexOf(':') !== -1 ? answer.name.split(':')[1] : "")}" class="form-control mb-4 freeanswer dynamicinput" name="${answer.extras.answeridentifier}" title="must start with + followed by numbers" pattern="${!!answer.extras.answeridentifier.match(/phone/i) ? `\\+\\d*` : `.*`}" data-type="question" type="${answer.extras.answeridentifier.includes("email") ? "email" : answer.extras.answeridentifier.match(/phone/i) ? "tel" : "text"}"  id="freeanswer_${answer.extras.answeridentifier}" required/> </div>`
+                <input placeholder="${isGerman ? (answer.extras.answertranslation.indexOf(':') !== -1 ? answer.extras.answertranslation.split(':')[1] : "") : (answer.name.indexOf(':') !== -1 ? answer.name.split(':')[1] : "")}" class="form-control mb-4 freeanswer dynamicinput" name="${answer.extras.answeridentifier}" title="must start with + followed by numbers" data-type="question" type="${answer.extras.answeridentifier.includes("email") ? "email" : answer.extras.answeridentifier.match(/phone/i) ? "tel" : "text"}"  id="freeanswer_${answer.extras.answeridentifier}" required/> </div>`
 			}).join('') + "</div><span id='error-msg' class='text-danger'></span>" : ""}
               ${dropdowns.length > 0 ? dropdowns.map(answer => (`<label for="dropdown_${answer.extras.answeridentifier}" >${isGerman && answer.extras.answertranslation ? answer.extras.answertranslation.split(":")[0] : answer.name.split(":")[0]}</label><select id="dropdown_${answer.extras.answeridentifier}" name="${answer.extras.answeridentifier}" class='form-select mb-3' class="dynamicinput dropdown" required="required"><option class="form-control mb-4" name="button" type="text" data-type="question" placeholder="${isGerman ? "Auswählen..." : "Select..."}" type="text" value="" disabled selected>${isGerman ? "Auswählen..." : "Select..."}</option>` +
 				(isGerman && answer.extras.answertranslation ? answer.extras.answertranslation : answer.name).split(":").reverse()[0].split(',').map(dropdownItem => `<option class="form-control mb-4" name="button" type="text" data-type="question" placeholder="${answer.extras.answeridentifier}" type="text" > ${dropdownItem}`).join('')
@@ -83,10 +89,7 @@ const findAnswers = (questions, model) => {
     </div>`
 
 		const input = document.querySelector('input[name*="phone"]')
-		const iti = intlTelInput(input, {
-			initialCountry: "de",
-			utilsScript: utilsScript
-		});
+		const iti = intlTelInput(input, itiConfig);
 		input.addEventListener('blur', (e) => {
 			var errorCode = iti.getValidationError();
 			if (errorCode !== 0) {
@@ -118,7 +121,6 @@ if (
 		},
 	}).then(res => res.json())
 		.then(res => {
-			console.log('res.payload', res.payload);
 			if (res.payload.questions.active) {
 				const question = res.payload.questions
 				const diagramNodes = question.model.layers.find(layer => layer.type === "diagram-nodes").models
@@ -172,8 +174,5 @@ const jumpToNextQuestion = (e, diagramNodes, model) => {
 
 const input = document.querySelector('input[name*="phone"]')
 if (input) {
-	const iti = intlTelInput(input, {
-		initialCountry: "de",
-		utilsScript: utilsScript
-	});
+	const iti = intlTelInput(input, itiConfig);
 }
