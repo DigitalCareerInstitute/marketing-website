@@ -224,8 +224,10 @@ function QuestionsDiagram() {
       if (answers.filter(a => !a.options.extras.dropdown).length === 0) {
         answers.map(aI => {
           const subHbFields = availableFields.find(aF => aF.name === aI.options.extras.answeridentifier)
-          const rawAnswers = aI.options.name.split(":").reverse()[0].split(',').map(a => a.trim())
-          const notExistingAnswers = rawAnswers.filter(rA => {
+          const dropdownAnswers = aI.options.name.split(":").reverse()[0]
+          const rawAnswers = dropdownAnswers.split(',').map(a => a.trim())
+          const rawAnswersWithoutLabels = rawAnswers.map(a => a.replace(/\(.*\)/, ''))
+          const notExistingAnswers = rawAnswersWithoutLabels.filter(rA => {
             return !subHbFields.options.map(s => s.value).includes(rA)
           })
           if (notExistingAnswers.length == 0) {
@@ -484,7 +486,7 @@ function QuestionsDiagram() {
                   setForm({ ...form, [e.target.name]: e.target.checked })
                 }} style={{ borderColor: "rgb(255, 204, 1)", borderStyle: "solid" }} id="dropdown" />
               <label className="form-check-label" htmlFor="dropdown">Is dropdown</label>
-              <button className="btn btn-secondary badge ml-2" type="button" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="If checked, the name field gets more complex. Use a label followed by semicolon and then a comma seperated list to define the dropdown and its items. Eg: 'Whats your language level: A1, A2, B1, B2' - or: 'State: Berlin, Bayern'" data-original-title="" title=""> ? </button>
+              <button className="btn btn-secondary badge ml-2" type="button" data-container="body" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="If checked, the name field gets more complex. Use a label followed by semicolon and then a comma seperated list to define the dropdown and its items. You can provide a optional dropdown label also with putting it in ().Eg: 'Whats your language level: A1(Beginner), A2, B1, B2(Mother tongue)' - or: 'State: Berlin(Haupstadt), Bayern'." data-original-title="" title=""> ? </button>
             </div>
           </div>
         </form>
