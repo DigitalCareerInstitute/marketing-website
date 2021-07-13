@@ -1263,6 +1263,8 @@ div[class*=" #{$class-slug}"] {
   .w-#{ $i } {
     width: 1em * $i!important;
   }
+}
+@for $i from 1 through 30 {
   @include media-breakpoint-up(md) {
     .h-md-#{ $i } {
       height: 1em * $i!important;
@@ -1271,6 +1273,8 @@ div[class*=" #{$class-slug}"] {
       width: 1em * $i!important;
     }
   }
+}
+@for $i from 1 through 30 {
   @include media-breakpoint-up(lg) {
     .h-lg-#{ $i } {
       height: 1em * $i!important;
