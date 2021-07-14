@@ -115,13 +115,19 @@ function QuestionsDiagram() {
               "dropdown": e.isSelected ? item.options.extras.dropdown : "",
               "flowname": name
             }
-            setForm({ ...form, ...formFromClickedNode })
+            setForm({ ...formRef.current, ...formFromClickedNode })
           } else {
-            let formClone = { ...formRef.current }
-            Object.keys(formClone).map(a => {
-              formClone = { ...formClone, [a]: "", flowname: name }
-            })
-            setForm(formClone)
+            const formClone = {
+              "question": "",
+              'questionidentifier': "",
+              'questiontranslation': "",
+              "answer": "",
+              "answeridentifier": "",
+              "answertranslation": "",
+              "freeanswer": "",
+              "dropdown": ""
+            }
+            setForm({ ...formRef.current, formClone })
           }
         }
       });
