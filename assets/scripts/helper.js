@@ -3,7 +3,7 @@ export const get_form_payload = (elements) => {
 		.filter(i => i.type !== "submit")
 	return notUnselectedInputs
 		.reduce((acc, el) => {
-			let inputValue = el.type === "checkbox" ? el.checker : el.name === "jobcenter" ? !!Number(el.value) : el.name.match(/phone/i)
+			let inputValue = el.type === "checkbox" ? el.checker : el.name === "jobcenter" ? !!Number(el.value) : el.value
 			const iti = window.intlTelInputGlobals.getInstance(el);
 			if (el.dataset.intlTelInputId) {
 				inputValue = iti.getNumber()
