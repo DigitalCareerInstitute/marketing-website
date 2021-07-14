@@ -25,6 +25,7 @@
 
 @import "global";
 @import "../../node_modules/bootstrap-colorpicker/src/sass/colorpicker";
+@import '../../node_modules/intl-tel-input/build/css/intlTelInput.css';
 @import "footer";
 @import "typography";
 
@@ -62,8 +63,6 @@
       width: calc(100% + 2px);
     }
   }
-}
-#headernav > li {
   z-index: 0;
   a {
     font-weight: 500;
@@ -182,18 +181,7 @@ body:not(.index) #nav-primary {
   }
 }
 
-/* @include media-breakpoint-up(md) {
-  .not-set-active > li { a,
-  > a.active,
-  > a:active,
-  > a:focus,
-  > a:focus-within,
-  > a:hover &:not(.contactlink) {
-    color: #040a3b !important;
-  }
-} */
-
-body:not(.admin) .btn {
+body:not(.admin) .btn:not(.btn-lg) {
   padding: 0.375rem 1.5rem;
 }
 
@@ -651,6 +639,9 @@ body[class*="pages-"] {
 .shadow-top-right {
   box-shadow: -15px 15px 0px 0px rgba(255, 255, 255, 0.25);
 }
+.blue-light-shadow {
+  box-shadow: 0px 4px 20px transparentize($primary-light, 0.85);
+}
 .blue-shadow {
   position: relative;
 
@@ -788,7 +779,7 @@ body:not(.admin) {
   input[type="time"],
   input[type="url"],
   input[type="week"] {
-    background-color: transparent;
+    background-color: $light;
     color: #222;
     padding: 12px;
     font-size: 16px;
@@ -798,15 +789,16 @@ body:not(.admin) {
     outline: none;
     box-sizing: border-box;
     height: 42px;
-    border-radius: 0 !important;
+    border-radius: 5px !important;
     border: none;
-    border-bottom: 1px solid lighten($dark, 10);
+    border: 1px solid lighten($dark, 70);
 
     &:focus,
     &:focus-within,
     &:hover,
     &:active {
       background-color: white;
+      border-color: $primary-light;
     }
   }
   select {
@@ -816,10 +808,6 @@ body:not(.admin) {
 
 ::placeholder {
   color: $gray-800;
-}
-
-.dataPrivacyLink {
-  text-decoration: underline;
 }
 
 /******************************************/
@@ -856,7 +844,7 @@ body:not(.admin) {
 /* Create a custom checkbox */
 .checkmark {
   position: absolute;
-  top: 4px;
+  top: 7px;
   left: 0;
   height: 15px;
   width: 15px;
@@ -1058,6 +1046,9 @@ body:not(.admin) {
 .mw-150 {
   max-width: 150px;
 }
+.w-300px {
+  width: 300px;
+}
 
 @include media-breakpoint-up(md) {
   .mw-md-150 {
@@ -1094,6 +1085,9 @@ body:not(.admin) {
   }
 }
 .shift-top {
+  transform: translateY(-50px);
+}
+.shift-top-percent {
   transform: translateY(-50%);
 }
 .shift-top-10 {
@@ -1110,6 +1104,11 @@ body:not(.admin) {
 }
 .shift-md-reset {
   @include media-breakpoint-up(md) {
+    transform: translate(0, 0) !important;
+  }
+}
+.shift-lg-reset {
+  @include media-breakpoint-up(lg) {
     transform: translate(0, 0) !important;
   }
 }
@@ -1264,6 +1263,8 @@ div[class*=" #{$class-slug}"] {
   .w-#{ $i } {
     width: 1em * $i!important;
   }
+}
+@for $i from 1 through 30 {
   @include media-breakpoint-up(md) {
     .h-md-#{ $i } {
       height: 1em * $i!important;
@@ -1272,6 +1273,8 @@ div[class*=" #{$class-slug}"] {
       width: 1em * $i!important;
     }
   }
+}
+@for $i from 1 through 30 {
   @include media-breakpoint-up(lg) {
     .h-lg-#{ $i } {
       height: 1em * $i!important;
@@ -1425,8 +1428,6 @@ div[class*=" #{$class-slug}"] {
 
 body:not(.admin) {
   .form-control {
-    background-color: transparent;
-
     &:focus,
     &:active {
       background-color: white !important;
@@ -1458,6 +1459,12 @@ body:not(.admin) {
 .rounded {
   border-radius: 0.15rem !important;
 }
+.rounded-right-bottom {
+  border-bottom-right-radius: 0.15rem !important;
+}
+.rounded-bottom-left {
+  border-bottom-left-radius: 0.15rem !important;
+}
 .rounded-md {
   border-radius: 1rem !important;
 }
@@ -1482,7 +1489,7 @@ body:not(.admin) {
 }
 .w-md-100 {
   @include media-breakpoint-up(md) {
-    width: 100%;
+    width: 100% !important;
   }
 }
 .w-md-auto {
@@ -1715,7 +1722,7 @@ body[class*="pages-"] {
   border-color: $red-light!important;
 }
 .border-light-blue {
-  border-color: $light-blue!important;
+  border-color: $primary-trans!important;
 }
 .border-md-0 {
   @include media-breakpoint-up(md) {
@@ -1833,6 +1840,11 @@ body[class*="pages-"] {
 .hidden {
   display: none;
 }
+#questionroot > div > div {
+  .loggedin & {
+    bottom: 50px;
+  }
+}
 
 .adminnote {
   position: absolute;
@@ -1873,6 +1885,9 @@ body[class*="pages-"] {
   &.iron {
     background-image: url("~/media/dot_iron.svg");
   }
+  &.white {
+    background-image: url("~/media/dot_white.svg");
+  }
 }
 .grayscale {
   filter: grayscale(1);
@@ -1912,4 +1927,52 @@ a[tabindex="0"]:focus {
   border: 3px solid #9AC7F9;
   padding: 3px;
   border-radius: 2px;
+}
+
+.bottom-block {
+  display: block;
+  @include media-breakpoint-up(lg) {
+    display: none;
+  }
+  &:after {
+    content: "";
+    height: 50px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: white;
+    z-index: 1;
+  }
+}
+.iti {
+  display: block;
+}
+.iti input, 
+.iti input[type="text"], 
+.iti input[type="tel"] {
+  margin-bottom: 1.5rem !important;
+}
+
+input[name*="phone"] {
+  padding-left: 95px !important;
+}
+.asterix{ 
+  position: relative;
+  &:before {
+    content: "*";
+    position: absolute;
+    top: 0;
+    left: -1em;
+  }
+}
+
+input[placeholder]:not(:focus):not(:placeholder-shown):invalid  {
+  border-color: red !important;
+}
+body div[id^="nb-field-"] div.nb-feedback { 
+  margin-top: 5px !important;
+  padding: 0.5em !important;
+  box-shadow: none !important;
+  border: 0 none !important;
 }

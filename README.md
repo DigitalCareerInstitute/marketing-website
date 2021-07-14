@@ -103,6 +103,11 @@ Eg. update a users admin privileges:
 db.users.findOneAndUpdate({email: "user@digitalcareerinstitute.org}, {$set: {admin: "true", superAdmin: "true", activatedAt: ISODate()}})
 ```
 
+## Data-consistency
+
+To keep the database according to the changes to the model over time, you can create migrations to batch over all records. 
+
+Run them for example with `nodemon migration/runner.js MIGRATION_FILE_NAME.js`
 ## Features
 
 For some actions you need a superadmin account, for some a normal admin role is enough. Contact [@spielhoelle](mailto:thomas.kuhnert@digitalcareerinstitute.org) or [@ majofi](https://github.com/majofi) for extended access rights.

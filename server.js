@@ -14,6 +14,7 @@ const Menulocation = require('./models/menulocation')
 const Location = require('./models/location')
 const Language = require('./models/language')
 const Setting = require('./models/setting')
+const Question = require('./models/question')
 const { languages } = require('./seeddata')
 const flash = require('connect-flash')
 const cron = require('node-cron')
@@ -88,7 +89,6 @@ i18n.configure({
 
 app.use(i18n.init)
 app.use((req, res, next) => {
-  // console.log('i18n lan ==> ',i18n.locale)
   res.setLocale(req.params.locale || '');
   next();
 });
@@ -98,6 +98,7 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 
 app.use(express.static('public'))
 app.use('/assets', express.static(path.join(__dirname, 'node_modules/')))
+app.use('/assets', express.static(path.join(__dirname, 'public/')))
 app.use('/assets', express.static(path.join(__dirname, 'assets/css/')))
 app.use('/assets', express.static(path.join(__dirname, 'assets/icons/')))
 app.use('/fonts', express.static(path.join(__dirname, 'assets/fonts/')))
@@ -125,8 +126,7 @@ app.use(
 )
 app.use(function (req, res, next) {
   var query = req.query
-  if (!!query && Object.keys(query).length > 0 && (req.session.utmParams === undefined || req.session.utmParams.length === 0)) {
-    req.session.utmParams = []
+  if (!!query && Object.keys(query).length > 0) {
     req.session.utmParams = Object.assign(...Object.keys(query).map(paramKey => Array.isArray(query[paramKey]) ? ({ [paramKey]: [...new Set(query[paramKey])] }) : ({ [paramKey]: query[paramKey] })))
   }
   next()
@@ -266,6 +266,7 @@ const eventsAdminRoutes = require('./routes/admin/events')
 const contactsAdminRoutes = require('./routes/admin/contacts')
 const usersAdminRoutes = require('./routes/admin/users')
 const settingsAdminRoutes = require('./routes/admin/settings')
+const questionsAdminRoutes = require('./routes/admin/questions')
 
 app.use(i18nRoutes)
 app.use('/', indexRoutes)
@@ -287,6 +288,7 @@ app.use('/admin/events', eventsAdminRoutes)
 app.use('/admin/menulocations', menulocationAdminRoutes)
 app.use('/admin/contacts', contactsAdminRoutes)
 app.use('/admin/settings', settingsAdminRoutes)
+app.use('/admin/questions', questionsAdminRoutes)
 
 app.use('/admin/users', usersAdminRoutes)
 app.use('/admin/redirects', redirectsAdminRoutes)

@@ -1,7 +1,7 @@
 mixin curriculumForm
   #curriculumpopup.modal(tabindex='-1', role='dialog', aria-labelledby='curriculumpopup', aria-hidden='true')
     .modal-dialog.modal-dialog-centered
-      .modal-content.bg-light.border-radius-0
+      .modal-content.border-radius-0
         .p-4
           .mb-2
             h2.display-4.text-center.text-uppercase=__('How can we reach you?')
@@ -15,7 +15,7 @@ mixin curriculumForm
                 span.text-muted
                 input#email.form-control(name="email" type='email', placeholder='name@example.com', value=contact ? contact.email : '', required)
 
-              p.dataPrivacyLink
+              p
                 label.checkbox.TermsofService.text-muted
                   =__("I have read and agree to the")
                   input(type='checkbox', name='TermsofService', value="true", required)

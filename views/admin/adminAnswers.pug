@@ -1,0 +1,7 @@
+extends ../layout.pug
+block content
+  .container-fluid.mt-5.text-left
+    h1 Answers
+    each answer in answers
+      div
+        = JSON.stringify(answer)

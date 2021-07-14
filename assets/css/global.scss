@@ -13,7 +13,6 @@ $bluedark: #04083c;
 $polygonbackground: #0032ff;
 $bluepale: #3d4269;
 $bluetrans: #f4f5f7;
-$light-blue: #E6EFFF;
 $muted: #868686;
 
 $green: #7aff29;
@@ -62,12 +61,12 @@ $theme-colors: (
 }
 
 .bg-light-blue {
-  background-color: $light-blue;
+  background-color: $primary-trans;
 }
 
 .bg-md-light-blue {
   @include media-breakpoint-up(md) {
-    background-color: $light-blue;
+    background-color: $primary-trans;
   }
 }
 
@@ -80,6 +79,16 @@ $theme-colors: (
   &:active,
   &.active {
     box-shadow: 0px 25px 35px -10px rgba(255, 110, 24, 0.45);
+  }
+}
+.btn-outline-secondary {
+  @include btn-color(white, $secondary, $secondary);
+  transition: all $transition ease;
+  &:hover,
+  &:focus,
+  &:active,
+  &.active {
+    // box-shadow: 0px 25px 35px -10px rgba(255, 110, 24, 0.45);
   }
 }
 .bg-section {
@@ -127,4 +136,14 @@ $theme-colors: (
 
 .border-radius-0 {
   border-radius: 0;
+}
+.btn-check {
+    position: absolute;
+    clip: rect(0,0,0,0);
+    pointer-events: none;
+}
+.btn-check:checked ~ label {
+  background-color: #1f3fc7 !important;
+  color: #fff !important;
+  border-color: #1f3fc7 !important;
 }

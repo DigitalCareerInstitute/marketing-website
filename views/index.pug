@@ -7,7 +7,7 @@ block content
       div.container-lg
         .d-md-none.bg-primary.w-5.h-5.position-absolute.ml-n3
         .d-md-none.bg-light-blue.position-absolute.z-minus.w-5.h-5.mt-3.ml-3
-        .dotted.d-md-none.red.w-6.h-6.rounded-circle.position-absolute.right.mr-5.top-30.shift-top
+        .dotted.d-md-none.red.w-6.h-6.rounded-circle.position-absolute.right.mr-5.top-30.shift-top-percent
         .dotted.d-md-none.blue.w-7.h-7.rounded-circle.position-absolute.left.bottom.ml-3.mb-5
         .row
           .col-md-6.py-5.order-12.order-md-1
@@ -333,5 +333,5 @@ block content
                   h3: +translate("Ready to join? Apply now and join the disruption.")
                   div: +translate("Our admission team is always there for you regardless of your location")
                   .text-center.mt-5
-                    a.btn.btn-lg.btn-secondary.mx-3.mb-4.mb-lg-0.w-100.w-md-auto(href='/contact', data-toggle='modal', data-target='#signupFormModal' title="contact"): +translate("Apply now")
+                    a.btn.btn-lg.btn-secondary.mx-3.mb-4.mb-lg-0.w-100.w-md-auto(href="/signup" title="contact"): +translate("Apply now")
                     a#calltoaction.btn.btn-lg.btn-outline-primary.mx-3.w-100.w-md-auto.scrollbutton(href=`${locale !== 'en' ? `/` + locale : ``}/#courses` title="courses")=__("Browse Courses")
