@@ -187,7 +187,6 @@ module.exports.contact = async (req, res, next) => {
     let hubspotPromise = new Promise(() => { })
 
     let remainingUtmParams = req.session.utmParams ? { ...req.session.utmParams } : []
-    Object.keys(remainingUtmParams).map(q => q.startsWith('utm_') && delete remainingUtmParams[q])
     let properties
 
     if (!!process.env.HUBSPOT_API_KEY) {
