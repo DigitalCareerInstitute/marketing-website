@@ -232,8 +232,13 @@ html.h-100(lang=locale === "de" ? 'de': 'en')
     script(src=`/frontend.bundle.js${process.cwd().replace(/[^\d]/g, '') !== "" ? `?${process.cwd().replace(/[^\d]/g, '')}` : ``}`)
     if currentPath && currentPath.includes('/admin')
       script(src=`/backend.bundle.js${process.cwd().replace(/[^\d]/g, '') !== "" ? `?${process.cwd().replace(/[^\d]/g, '')}` : ``}`)
-    script(type="text/javascript").
-     _NBSettings = {
-        apiKey: 'public_3656c9b99164d18d74697292bfabde3c'
+    script(type='text/javascript').
+      _NBSettings = {
+        apiKey: 'public_3656c9b99164d18d74697292bfabde3c',
+        displayPoweredBy: false,
+        acceptedMessage: "Valid email",
+        inputLatency: 4000,
+        softRejectMessage: "Please enter a valid email",
+        rejectedMessage: "Please enter a valid email"
       };
     script(type="text/javascript" src=`https://cdn.neverbounce.com/widget/dist/NeverBounce.js`)
