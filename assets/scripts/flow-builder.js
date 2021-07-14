@@ -166,7 +166,6 @@ const jumpToNextQuestion = (e, diagramNodes, model) => {
 					questionroot.querySelector('#popup').innerHTML = `<h2 class="text-center">Thanks</h2>`
 					setTimeout(() => {
 						window.location.replace(`${window.location.origin}/thank-you/${data.response.contact_id}`);
-						questionroot.innerHTML = ``
 					}, 500);
 					localStorage.removeItem('dcianswers')
 				} else if (data.response.error) {

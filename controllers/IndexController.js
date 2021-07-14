@@ -105,7 +105,6 @@ module.exports.contact = async (req, res, next) => {
       return;
     }
     if (!email || !firstname || !phone || !TermsofService) {
-      req.flash('danger', 'Please fill out all form fields')
       if (req.headers['content-type'] === 'application/json') {
         const response = {
           error: res.__(`Please fill out all form fields`),
@@ -114,6 +113,7 @@ module.exports.contact = async (req, res, next) => {
           response
         })
       } else {
+        req.flash('danger', 'Please fill out all form fields')
         res.redirect(req.headers.referer)
         next()
         return
