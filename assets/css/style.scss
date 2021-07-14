@@ -1970,3 +1970,9 @@ input[name*="phone"] {
 input[placeholder]:not(:focus):not(:placeholder-shown):invalid  {
   border-color: red !important;
 }
+body div[id^="nb-field-"] div.nb-feedback { 
+  margin-top: 5px !important;
+  padding: 0.5em !important;
+  box-shadow: none !important;
+  border: 0 none !important;
+}

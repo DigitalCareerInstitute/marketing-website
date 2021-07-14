@@ -61,7 +61,7 @@ const findAnswers = (questions, model) => {
               <div class="w-100 px-5 px-lg-3 px-xl-5">
               ${freeanswers.length > 0 ? "<div class='row'>" + freeanswers.map(answer => {
 				return `<div class="${freeanswers.length === 1 ? "col-md-12" : "col-md-6"}"><label for="freeanswer_${answer.extras.answeridentifier}" >${isGerman ? (answer.extras.answertranslation.indexOf(':') !== -1 ? answer.extras.answertranslation.split(':')[0] : answer.extras.answertranslation) : (answer.name.indexOf(':') !== -1 ? answer.name.split(':')[0] : answer.name)}</label>
-                <input placeholder="${isGerman ? (answer.extras.answertranslation.indexOf(':') !== -1 ? answer.extras.answertranslation.split(':')[1] : "") : (answer.name.indexOf(':') !== -1 ? answer.name.split(':')[1] : "")}" class="form-control mb-4 freeanswer dynamicinput" name="${answer.extras.answeridentifier}" title="must start with + followed by numbers" data-type="question" type="${answer.extras.answeridentifier.includes("email") ? "email" : answer.extras.answeridentifier.match(/phone/i) ? "tel" : "text"}"  id="freeanswer_${answer.extras.answeridentifier}" required/> </div>`
+                <input placeholder="${isGerman ? (answer.extras.answertranslation.indexOf(':') !== -1 ? answer.extras.answertranslation.split(':')[1] : "") : (answer.name.indexOf(':') !== -1 ? answer.name.split(':')[1] : "")}" class="form-control mb-4 freeanswer dynamicinput" name="${answer.extras.answeridentifier}" data-type="question" type="${answer.extras.answeridentifier.includes("email") ? "email" : answer.extras.answeridentifier.match(/phone/i) ? "tel" : "text"}"  id="freeanswer_${answer.extras.answeridentifier}" required/> </div>`
 			}).join('') + "</div><span id='error-msg' class='text-danger'></span>" : ""}
               ${dropdowns.length > 0 ? dropdowns.map(answer => (`<label for="dropdown_${answer.extras.answeridentifier}" >${isGerman && answer.extras.answertranslation ? answer.extras.answertranslation.split(":")[0] : answer.name.split(":")[0]}</label><select id="dropdown_${answer.extras.answeridentifier}" name="${answer.extras.answeridentifier}" class='form-select mb-3' class="dynamicinput dropdown" required="required"><option class="form-control mb-4" name="button" type="text" data-type="question" placeholder="${isGerman ? "Auswählen..." : "Select..."}" type="text" value="" disabled selected>${isGerman ? "Auswählen..." : "Select..."}</option>` +
 								(isGerman && answer.extras.answertranslation ? answer.extras.answertranslation : answer.name).split(":").reverse()[0].split(',').map(dropdownItem => `<option class="form-control mb-4" name="button" type="text" data-type="question" value="${dropdownItem.replace(/\(.*\)/, '').trim()}" placeholder="${answer.extras.answeridentifier}" type="text"> ${dropdownItem.replace(/.*\((.*)\)/, '$1')}`).join('')
@@ -79,9 +79,8 @@ const findAnswers = (questions, model) => {
               <div class="">
                 ${nextQuestions.length === 0 ? `<p><label class="checkbox TermsofService text-muted">${isGerman ? `Gelesen und akzeptiert` : `I have read and agree to the`}<input type="checkbox" name="TermsofService" value="true" required="required"><span class="checkmark"></span></label><a href="#" class="ml-1 font-weight-normal text-dark text-decoration-none" data-toggle="modal" data-target="#dataPrivacy">${isGerman ? `Datenschutz` : `Data privacy`}</a></p>` : ``}
                 ${canTrigger(questions, model) ? `` : `<div class="d-flex justify-content-end"><button class="btn btn-lg mb-4  mr-2 answerbutton ${nextQuestions.length === 0 ? "w-md-50 w-100 btn-secondary" : "btn-outline-secondary w-100"}" data-nextquestions="${nextQuestions.map(a => a.id)}" type="submit">${nextQuestions.length === 0 ? (isGerman ? `Abschicken` : `Submit`) : (isGerman ? `Weiter` : `Next`)}`}</button></div>
-                ${nextQuestions.length === 0 ? `<p class='text-muted small asterix'>
-                  With this registration you agree with the storage of your data. These data will be used by Digital Career Institute gGmbH to contact you. You have the right to access, modify, rectify and delete these data.` : ``}
-                </p>
+                ${nextQuestions.length === 0 ? `<p class='text-muted small asterix'>${isGerman ? `Durch Deine Registrierung stimmst Du zu, dass personenbezogene Daten gespeichert werden. Diese dürfen von der Digital Career Institute gGmbH genutzt werden, um mit Dir in Kontakt zu treten, sofern Du dies nicht ausdrücklich untersagst.` : `With this registration you agree with the storage of your data. These data will be used by Digital Career Institute gGmbH to contact you. You have the right to access, modify, rectify and delete these data.`}</p>` : ``}
+
               </div>
             </div>
         </form>
@@ -149,6 +148,10 @@ const jumpToNextQuestion = (e, diagramNodes, model) => {
 	if (nextQuestions.length > 0) {
 		findAnswers(nextQuestions, model)
 	} else {
+		const submitButton = document.querySelector("button[data-nextquestions='']")
+		const buttonOriginalText = submitButton.innerText
+		submitButton.innerText = "Loading..."
+		submitButton.disabled = true
 		let payload = JSON.parse(localStorage.getItem('dcianswers'))
 		if (payload.age) {
 			payload.age_years = payload.age
@@ -163,14 +166,14 @@ const jumpToNextQuestion = (e, diagramNodes, model) => {
 		}).then(res => res.json())
 			.then(data => {
 				if (data.response.contact_id) {
-					questionroot.querySelector('#popup').innerHTML = `<h2 class="text-center">Thanks</h2>`
-					setTimeout(() => {
-						window.location.replace(`${window.location.origin}/thank-you/${data.response.contact_id}`);
-						questionroot.innerHTML = ``
-					}, 500);
+					submitButton.innerText = "Thanks"
 					localStorage.removeItem('dcianswers')
+					questionroot.querySelector('#popup').innerHTML = `<h2 class="text-center">Thanks</h2>`
+					window.location.replace(`${window.location.origin}/thank-you/${data.response.contact_id}`);
 				} else if (data.response.error) {
 					const div = document.createElement('div')
+					submitButton.innerText = buttonOriginalText
+					submitButton.disabled = false
 					div.innerHTML = `<div class="flash m-0 mr-3 alert fade show alert-danger ">Please fill out all form fields<button class="close ml-3" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></div>`
 					document.body.appendChild(div)
 				}

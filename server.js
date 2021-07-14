@@ -94,7 +94,6 @@ i18n.configure({
 
 app.use(i18n.init)
 app.use((req, res, next) => {
-  // console.log('i18n lan ==> ',i18n.locale)
   res.setLocale(req.params.locale || '');
   next();
 });
@@ -132,8 +131,7 @@ app.use(
 )
 app.use(function (req, res, next) {
   var query = req.query
-  if (!!query && Object.keys(query).length > 0 && (req.session.utmParams === undefined || req.session.utmParams.length === 0)) {
-    req.session.utmParams = []
+  if (!!query && Object.keys(query).length > 0) {
     req.session.utmParams = Object.assign(...Object.keys(query).map(paramKey => Array.isArray(query[paramKey]) ? ({ [paramKey]: [...new Set(query[paramKey])] }) : ({ [paramKey]: query[paramKey] })))
   }
   next()
