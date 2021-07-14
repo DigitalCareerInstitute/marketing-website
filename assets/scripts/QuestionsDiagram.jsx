@@ -220,13 +220,12 @@ function QuestionsDiagram() {
       const answers = As.filter(a => {
         return Object.values(a.ports.In.links)[0] && Object.keys(question.ports.Out.links).includes(Object.values(a.ports.In.links)[0].options.id)
       })
-      //TODO `state_de_` is not `state` - overlapping between question and dropdown
       if (answers.filter(a => !a.options.extras.dropdown).length === 0) {
         answers.map(aI => {
           const subHbFields = availableFields.find(aF => aF.name === aI.options.extras.answeridentifier)
           const dropdownAnswers = aI.options.name.split(":").reverse()[0]
           const rawAnswers = dropdownAnswers.split(',').map(a => a.trim())
-          const rawAnswersWithoutLabels = rawAnswers.map(a => a.replace(/\(.*\)/, ''))
+          const rawAnswersWithoutLabels = rawAnswers.map(a => a.replace(/\(.*\)/, '').trim())
           const notExistingAnswers = rawAnswersWithoutLabels.filter(rA => {
             return !subHbFields.options.map(s => s.value).includes(rA)
           })
