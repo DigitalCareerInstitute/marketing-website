@@ -149,6 +149,10 @@ const jumpToNextQuestion = (e, diagramNodes, model) => {
 	if (nextQuestions.length > 0) {
 		findAnswers(nextQuestions, model)
 	} else {
+		const submitButton = document.querySelector("button[data-nextquestions='']")
+		const buttonOriginalText = submitButton.innerText
+		submitButton.innerText = "Loading..."
+		submitButton.disabled = true
 		let payload = JSON.parse(localStorage.getItem('dcianswers'))
 		if (payload.age) {
 			payload.age_years = payload.age
@@ -163,13 +167,14 @@ const jumpToNextQuestion = (e, diagramNodes, model) => {
 		}).then(res => res.json())
 			.then(data => {
 				if (data.response.contact_id) {
-					questionroot.querySelector('#popup').innerHTML = `<h2 class="text-center">Thanks</h2>`
-					setTimeout(() => {
-						window.location.replace(`${window.location.origin}/thank-you/${data.response.contact_id}`);
-					}, 500);
+					submitButton.innerText = "Thanks"
 					localStorage.removeItem('dcianswers')
+					questionroot.querySelector('#popup').innerHTML = `<h2 class="text-center">Thanks</h2>`
+					window.location.replace(`${window.location.origin}/thank-you/${data.response.contact_id}`);
 				} else if (data.response.error) {
 					const div = document.createElement('div')
+					submitButton.innerText = buttonOriginalText
+					submitButton.disabled = false
 					div.innerHTML = `<div class="flash m-0 mr-3 alert fade show alert-danger ">Please fill out all form fields<button class="close ml-3" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></div>`
 					document.body.appendChild(div)
 				}
