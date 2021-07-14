@@ -407,9 +407,11 @@ module.exports.downloadCourseCurriculum = async (req, res, next) => {
     Object.keys(remainingUtmParams).map(q => q.startsWith('utm_') && delete remainingUtmParams[q])
     let properties
     if (!!process.env.HUBSPOT_API_KEY) {
+
+
       properties = [
         { property: 'email', value: email },
-        { property: 'last_touchpoint', value: 'curriculum_download' },
+        { property: 'last_touchpoint', value: 'curriculum_download'},
         {
           property: 'form_payload',
           value: JSON.stringify({
