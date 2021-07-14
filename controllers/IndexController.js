@@ -106,9 +106,18 @@ module.exports.contact = async (req, res, next) => {
     }
     if (!email || !firstname || !phone || !TermsofService) {
       req.flash('danger', 'Please fill out all form fields')
-      res.redirect(req.headers.referer)
-      next()
-      return;
+      if (req.headers['content-type'] === 'application/json') {
+        const response = {
+          error: res.__(`Please fill out all form fields`),
+        }
+        return res.json({
+          response
+        })
+      } else {
+        res.redirect(req.headers.referer)
+        next()
+        return
+      }
     }
     const contact = new Contact()
     contact.firstname = firstname
