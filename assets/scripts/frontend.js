@@ -270,10 +270,6 @@ Array.from(document.querySelectorAll(".ajaxform")).map(form => {
     e.target.querySelector('#contactform_spinner').classList.remove("d-none")
     get_form_payload(e.target.elements)
     payload = { ...payload, course: e.target.dataset.course }
-
-    if (localStorage.getItem('dcianswers')) {
-      payload.answers = JSON.parse(localStorage.getItem('dcianswers'))
-    }
     fetch(e.target.action, {
       method: "POST",
       headers: {

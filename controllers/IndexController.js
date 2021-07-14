@@ -6,7 +6,6 @@ const Location = require('../models/location')
 const Partner = require('../models/partner')
 const Employee = require('../models/employee')
 const Setting = require('../models/setting')
-const Answer = require('../models/answer')
 const request = require('request')
 const requestPromise = require("request-promise");
 const { sendMail, getAsyncRedis, getFbClid } = require('../helpers/helper')
@@ -74,7 +73,7 @@ module.exports.landingpage = async (req, res) => {
 }
 module.exports.contactLocations = async (req, res) => {
   const locations = await Location.find({}).populate('contactEmployee').sort({ order: 1 }).exec();
-  const sortedEmployees = locations.map(l => l.contactEmployee.sort((a, b) => a.order - b.order))
+  const sortedEmployees = locations.map(l => l.contactEmployee.sort((a,b) => a.order - b.order))
   locations.contactEmployee = sortedEmployees
   const contact = req.body
   res.render('contactLocations', {
@@ -211,17 +210,17 @@ module.exports.contact = async (req, res, next) => {
       ];
 
 
-      if (location) {
-        properties.push({ property: 'state_de_', value: location.name })
+      if(location){
+        properties.push({property: 'state_de_', value: location.name } )  
       }
-      if (afa_jc_registered_ !== undefined) {
-        properties.push({ property: 'afa_jc_registered_', value: afa_jc_registered_ })
+      if(jobcenter !== undefined){
+        properties.push({property: 'afa_jc_registered_', value: !jobcenter ? "No" : "Yes" } ) 
       }
-      if (form_are_you_currently_unemployed) {
-        properties.push({ property: 'form_are_you_currently_unemployed', value: form_are_you_currently_unemployed })
+      if(unemployed){
+        properties.push({property: 'form_are_you_currently_unemployed', value: unemployed} ) 
       }
-      if (age_years) {
-        properties.push({ property: 'age', value: age_years })
+      if(age_years){
+        properties.push({property: 'age', value: age_years} ) 
       }
       if (language_level_english) {
         properties.push({ property: 'language_level_english', value: language_level_english })
@@ -229,20 +228,20 @@ module.exports.contact = async (req, res, next) => {
       if (language_level_german) {
         properties.push({ property: 'language_level_german', value: language_level_german })
       }
-      if (req.session.utmParams && req.session.utmParams.utm_source) {
-        properties.push({ property: 'utm_source', value: req.session.utmParams.utm_source })
+      if(req.session.utmParams && req.session.utmParams.utm_source){
+        properties.push({property: 'utm_source', value: req.session.utmParams.utm_source} ) 
       }
-      if (req.session.utmParams && req.session.utmParams.utm_medium) {
-        properties.push({ property: 'utm_medium', value: req.session.utmParams.utm_medium })
+      if(req.session.utmParams && req.session.utmParams.utm_medium){
+        properties.push({property: 'utm_medium', value: req.session.utmParams.utm_medium} ) 
       }
-      if (req.session.utmParams && req.session.utmParams.utm_campaign) {
-        properties.push({ property: 'utm_campaign', value: req.session.utmParams.utm_campaign })
+      if(req.session.utmParams && req.session.utmParams.utm_campaign){
+        properties.push({property: 'utm_campaign', value: req.session.utmParams.utm_campaign} ) 
       }
-      if (req.session.utmParams && req.session.utmParams.utm_content) {
-        properties.push({ property: 'utm_content', value: req.session.utmParams.utm_content })
+      if(req.session.utmParams && req.session.utmParams.utm_content){
+        properties.push({property: 'utm_content', value: req.session.utmParams.utm_content} ) 
       }
-      if (req.session.utmParams && req.session.utmParams.utm_term) {
-        properties.push({ property: 'utm_term', value: req.session.utmParams.utm_term })
+      if(req.session.utmParams && req.session.utmParams.utm_term){
+        properties.push({property: 'utm_term', value: req.session.utmParams.utm_term} ) 
       }
 
       var options = {
@@ -262,8 +261,8 @@ module.exports.contact = async (req, res, next) => {
     contact.properties = properties
     const contactSavepromise = contact.save()
     // TODO remove logging statement
-    console.log("+++++>>>>", req.session);
-    console.log("========>>>>>", options.body.properties);
+    console.log("+++++>>>>",req.session);
+    console.log("========>>>>>",options.body.properties);
     // to save time, mail get send out without waiting for the response
     const info = sendMail(res, req, mailOptions)
     const result = await Promise.all([hubspotPromise, contactSavepromise])
@@ -407,9 +406,11 @@ module.exports.downloadCourseCurriculum = async (req, res, next) => {
     Object.keys(remainingUtmParams).map(q => q.startsWith('utm_') && delete remainingUtmParams[q])
     let properties
     if (!!process.env.HUBSPOT_API_KEY) {
+
+
       properties = [
         { property: 'email', value: email },
-        { property: 'last_touchpoint', value: 'curriculum_download' },
+        { property: 'last_touchpoint', value: 'curriculum_download'},
         {
           property: 'form_payload',
           value: JSON.stringify({
@@ -419,21 +420,22 @@ module.exports.downloadCourseCurriculum = async (req, res, next) => {
         }
       ];
 
-      if (req.session.utmParams && req.session.utmParams.utm_source) {
-        properties.push({ property: 'utm_source', value: req.session.utmParams.utm_source })
+      if(req.session.utmParams && req.session.utmParams.utm_source){
+        properties.push({property: 'utm_source', value: req.session.utmParams.utm_source} ) 
       }
-      if (req.session.utmParams && req.session.utmParams.utm_medium) {
-        properties.push({ property: 'utm_medium', value: req.session.utmParams.utm_medium })
+      if(req.session.utmParams && req.session.utmParams.utm_medium){
+        properties.push({property: 'utm_medium', value: req.session.utmParams.utm_medium} ) 
       }
-      if (req.session.utmParams && req.session.utmParams.utm_campaign) {
-        properties.push({ property: 'utm_campaign', value: req.session.utmParams.utm_campaign })
+      if(req.session.utmParams && req.session.utmParams.utm_campaign){
+        properties.push({property: 'utm_campaign', value: req.session.utmParams.utm_campaign} ) 
       }
-      if (req.session.utmParams && req.session.utmParams.utm_content) {
-        properties.push({ property: 'utm_content', value: req.session.utmParams.utm_content })
+      if(req.session.utmParams && req.session.utmParams.utm_content){
+        properties.push({property: 'utm_content', value: req.session.utmParams.utm_content} ) 
       }
-      if (req.session.utmParams && req.session.utmParams.utm_term) {
-        properties.push({ property: 'utm_term', value: req.session.utmParams.utm_term })
+      if(req.session.utmParams && req.session.utmParams.utm_term){
+        properties.push({property: 'utm_term', value: req.session.utmParams.utm_term} ) 
       }
+
       var options = {
         method: 'POST',
         url: `https://api.hubapi.com/contacts/v1/contact/createOrUpdate/email/${email}`,
