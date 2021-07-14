@@ -162,12 +162,16 @@ const jumpToNextQuestion = (e, diagramNodes, model) => {
 			body: JSON.stringify(payload)
 		}).then(res => res.json())
 			.then(data => {
-				questionroot.querySelector('#popup').innerHTML = `<h2 class="text-center">Thanks</h2>`
-				setTimeout(() => {
-					window.location.replace(`${window.location.origin}/thank-you/${data.response.contact_id}`);
-					questionroot.innerHTML = ``
-				}, 500);
-				localStorage.removeItem('dcianswers')
+				if (data.response.contact_id) {
+					questionroot.querySelector('#popup').innerHTML = `<h2 class="text-center">Thanks</h2>`
+					setTimeout(() => {
+						window.location.replace(`${window.location.origin}/thank-you/${data.response.contact_id}`);
+						questionroot.innerHTML = ``
+					}, 500);
+					localStorage.removeItem('dcianswers')
+				} else if (data.response.error) {
+					alert(data.response.error)
+				}
 			})
 	}
 }
